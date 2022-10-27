@@ -65,8 +65,7 @@ hecho.
 0 No estoy más inquieto o tenso que lo habitual.
 1 Me siento más inquieto o tenso que lo habitual.
 2 Estoy tan inquieto o agitado que me es difícil quedarme quieto
-3 Estoy tan inquieto o agitado que tengo que estar siempre en movimiento o
-haciendo algo.
+3 Estoy tan inquieto o agitado que tengo que estar siempre en movimiento o haciendo algo.
 
 12 Pérdida de Interés
 0 No he perdido el interés en otras actividades o personas.
