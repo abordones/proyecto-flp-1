@@ -1,7 +1,7 @@
 PROJECT N1: Diagnostic survey for depression.
 
 Description: 
-	"Add description."
+	It is a system for conducting an interview with multivalued responses (with values ranging from 0 to 3) in order to diagnose symptoms or the disease of depression.
 
 Project status: 
 	Active - On Track.
