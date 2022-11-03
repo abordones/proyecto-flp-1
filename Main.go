@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -23,13 +24,19 @@ func conectionBD() (conection *sql.DB) {
 func main() {
 
 	connectionEstablished := conectionBD()
+
+	var question string
+	//No tolera espacios, acepta_
+	fmt.Print("Formula tu pregunta: ")
+	fmt.Scanln(&question)
+
 	//InsertUser, err := connectionEstablished.Prepare("INSERT INTO usuarios (nombre, edad) VALUES ('Charles', '33') ")
-	InsertUser, err := connectionEstablished.Prepare("INSERT INTO questions (ID, QUESTION, DESCRIPTION_Q, DELETE_AT, TEST_ID) VALUES (NULL, '¿Duermes siempre a las mismas horas?', 'Conocer patron de sueño', NULL, NULL); ")
+	InsertUser, err := connectionEstablished.Prepare("INSERT INTO questions (ID, QUESTION, DESCRIPTION_Q, DELETE_AT, TEST_ID) VALUES (NULL, ?, 'Conocer patron de sueño', NULL, NULL); ")
 
 	if err != nil {
 		panic(err.Error())
 	}
-	InsertUser.Exec()
+	InsertUser.Exec(question)
 
 	/*
 		fmt.Println("TITULO")
