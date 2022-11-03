@@ -1,17 +1,22 @@
-# proyecto-flp-1
-TITULO
+PROJECT N1: Diagnostic survey for depression.
 
-Description:
+Description: 
+	"Add description."
 
-Project status:
+Project status: 
+	Active - On Track.
 
 Environment Requirements:
 	"You have a working Go environment."
 
 Installing:
-	"Si es requerido, agrega una lista con los pasos mínimos que se necesitan para clonar el proyecto y echarlo a andar en local."
-
+	"Add a list of the minimum steps needed to clone the project and get it running locally."
 
 Authorship:
+	Mati
+	Tsubasa
+	-ABS
+	GonzaloGo
 
 Licensing:
+	CC0 1.0 Universal.
