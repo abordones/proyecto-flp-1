@@ -1,47 +1,74 @@
 package main
 
 import (
-	"fmt"
+	"database/sql"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
+func conectionBD() (conection *sql.DB) {
+
+	driver := "mysql"
+	user := "root"
+	password := ""
+	nameBD := "bd-flp-1"
+
+	conection, err := sql.Open(driver, user+":"+password+"@tcp(127.0.0.1)/"+nameBD)
+	if err != nil {
+		panic(err.Error())
+	}
+	return conection
+}
+
 func main() {
-	fmt.Println("TITULO")
-	fmt.Println("Inicio del cuestionario")
-	//1.-Imprimir Instrucicciones.
-	/*--- Extraer informacion en BD.--- */
 
-	//2.-Recibir al participante.
-	var day int
-	fmt.Print("Ingresar dia: ")
-	fmt.Scanln(&day)
+	connectionEstablished := conectionBD()
+	//InsertUser, err := connectionEstablished.Prepare("INSERT INTO usuarios (nombre, edad) VALUES ('Charles', '33') ")
+	InsertUser, err := connectionEstablished.Prepare("INSERT INTO questions (ID, QUESTION, DESCRIPTION_Q, DELETE_AT, TEST_ID) VALUES (NULL, '¿Duermes siempre a las mismas horas?', 'Conocer patron de sueño', NULL, NULL); ")
 
-	var month int
-	fmt.Print("Ingresar mes: ")
-	fmt.Scanln(&month)
+	if err != nil {
+		panic(err.Error())
+	}
+	InsertUser.Exec()
 
-	var year int
-	fmt.Print("Ingresar anio: ")
-	fmt.Scanln(&year)
+	/*
+		fmt.Println("TITULO")
+		fmt.Println("Inicio del cuestionario")
+		//1.-Imprimir Instrucicciones.
+		/*--- Extraer informacion en BD.---
 
-	var rut string
-	fmt.Print("Ingresar rut: ")
-	fmt.Scanln(&rut)
+		//2.-Recibir al participante.
+		var day int
+		fmt.Print("Ingresar dia: ")
+		fmt.Scanln(&day)
 
-	var name string
-	fmt.Print("Ingresar nombre: ")
-	fmt.Scanln(&name)
+		var month int
+		fmt.Print("Ingresar mes: ")
+		fmt.Scanln(&month)
 
-	var lastName string
-	fmt.Print("Ingresar apellido: ")
-	fmt.Scanln(&lastName)
+		var year int
+		fmt.Print("Ingresar anio: ")
+		fmt.Scanln(&year)
 
-	var age int
-	fmt.Print("Ingresar edad: ")
-	fmt.Scanln(&age)
-	/*--- Guardar informacion en BD.--- */
+		var rut string
+		fmt.Print("Ingresar rut: ")
+		fmt.Scanln(&rut)
+
+		var name string
+		fmt.Print("Ingresar nombre: ")
+		fmt.Scanln(&name)
+
+		var lastName string
+		fmt.Print("Ingresar apellido: ")
+		fmt.Scanln(&lastName)
+
+		var age int
+		fmt.Print("Ingresar edad: ")
+		fmt.Scanln(&age)
+		/*--- Guardar informacion en BD.--- */
 
 	//3.-Realizar preguntas.
-	/*--- Extraer informacion de BD.--- */
+	/*--- Extraer informacion de BD.---
 
 	//4.-Obtener respuestas.
 	var answers [10]int
@@ -57,14 +84,14 @@ func main() {
 			i--
 		}
 	}
-	/*--- Guardar informacion en BD.--- */
+	/*--- Guardar informacion en BD.---
 
 	//5.-Calcular resultados.
 	var result int
 	for i = 0; i < 10; i++ {
 		result = result + answers[i]
 	}
-	/*--- Guardar informacion en BD.--- */
+	/*--- Guardar informacion en BD.---
 
 	//6.-Mostrar resultados.
 	fmt.Printf("El resultado es: %v\n", result) //Respuesta arbitraria.
@@ -83,4 +110,5 @@ func main() {
 
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
+	*/
 }
