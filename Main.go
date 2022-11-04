@@ -25,7 +25,9 @@ func main() {
 
 	connectionEstablished := conectionBD()
 
-	var question string
+	insertQuestion(connectionEstablished)
+
+	/*var question string
 	//No tolera espacios, acepta_
 	fmt.Print("Formula tu pregunta: ")
 	fmt.Scanln(&question)
@@ -36,7 +38,7 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
-	InsertUser.Exec(question)
+	InsertUser.Exec(question)*/
 
 	/*
 		fmt.Println("TITULO")
@@ -118,4 +120,25 @@ func main() {
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
 	*/
+}
+
+func insertQuestion(connectionEstablished *sql.DB) {
+
+	//No tolera espacios, acepta_
+	var question string
+	fmt.Print("Formula tu pregunta: ")
+	fmt.Scanln(&question)
+
+	var description string
+	fmt.Print("Escribe su descripcion: ")
+	fmt.Scanln(&description)
+
+	InsertUser, err := connectionEstablished.Prepare("INSERT INTO questions (ID, QUESTION, DESCRIPTION_Q, DELETE_AT, TEST_ID) VALUES (NULL, ?, ?, 1, NULL); ")
+
+	if err != nil {
+		panic(err.Error())
+	}
+	InsertUser.Exec(question, description)
+
+	fmt.Println("Pregunta Ingresada con exito.")
 }
