@@ -1,34 +1,22 @@
 package main
 
 import (
+	"bufio"
 	"database/sql"
 	"fmt"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 )
-
-func conectionBD() (conection *sql.DB) {
-
-	driver := "mysql"
-	user := "root"
-	password := ""
-	nameBD := "bd-flp-1"
-
-	conection, err := sql.Open(driver, user+":"+password+"@tcp(127.0.0.1)/"+nameBD)
-	if err != nil {
-		panic(err.Error())
-	}
-	return conection
-}
 
 func main() {
 
 	connectionEstablished := conectionBD()
 
 	insertQuestion(connectionEstablished)
+	insertPatient(connectionEstablished)
 
 	/*var question string
-	//No tolera espacios, acepta_
 	fmt.Print("Formula tu pregunta: ")
 	fmt.Scanln(&question)
 
@@ -122,23 +110,79 @@ func main() {
 	*/
 }
 
-func insertQuestion(connectionEstablished *sql.DB) {
+func conectionBD() (conection *sql.DB) {
 
-	//No tolera espacios, acepta_
-	var question string
-	fmt.Print("Formula tu pregunta: ")
-	fmt.Scanln(&question)
+	driver := "mysql"
+	user := "root"
+	password := ""
+	nameBD := "bd-flp-1"
 
-	var description string
-	fmt.Print("Escribe su descripcion: ")
-	fmt.Scanln(&description)
-
-	InsertUser, err := connectionEstablished.Prepare("INSERT INTO questions (ID, QUESTION, DESCRIPTION_Q, DELETE_AT, TEST_ID) VALUES (NULL, ?, ?, 1, NULL); ")
-
+	conection, err := sql.Open(driver, user+":"+password+"@tcp(127.0.0.1)/"+nameBD)
 	if err != nil {
 		panic(err.Error())
 	}
-	InsertUser.Exec(question, description)
+	return conection
+}
+
+func insertQuestion(connectionEstablished *sql.DB) {
+
+	fmt.Print("Formula tu pregunta: ")
+	q := bufio.NewReader(os.Stdin)
+	question, _ := q.ReadString('\n')
+
+	fmt.Print("Escribe su descripcion: ")
+	d := bufio.NewReader(os.Stdin)
+	description, _ := d.ReadString('\n')
+
+	InsertQuestion, err := connectionEstablished.Prepare("INSERT INTO questions (ID, QUESTION, DESCRIPTION_Q, DELETE_AT, TEST_ID) VALUES (NULL, ?, ?, 1, NULL); ")
+	if err != nil {
+		panic(err.Error())
+	}
+	InsertQuestion.Exec(question, description)
 
 	fmt.Println("Pregunta Ingresada con exito.")
+}
+
+func insertPatient(connectionEstablished *sql.DB) {
+
+	var RUN int
+	fmt.Print("Ingresa RUN del paciente: ")
+	fmt.Scanln(&RUN)
+
+	var DV string
+	fmt.Print("Ingresa digito verificador del paciente: ")
+	fmt.Scanln(&DV)
+
+	fmt.Print("Ingresa nombre(s) del paciente: ")
+	n := bufio.NewReader(os.Stdin)
+	names, _ := n.ReadString('\n')
+
+	var fatherName string
+	fmt.Print("Ingresa apellido paterno del paciente: ")
+	fmt.Scanln(&fatherName)
+
+	var motherName string
+	fmt.Print("Ingresa apellido materno del paciente: ")
+	fmt.Scanln(&motherName)
+
+	var phone int
+	fmt.Print("Ingresa el numero de contacto del paciente: ")
+	fmt.Scanln(&phone)
+
+	var email string
+	fmt.Print("Ingresa el correo electronico del paciente: ")
+	fmt.Scanln(&email)
+
+	fmt.Print("Ingresa una observacion: ")
+	o := bufio.NewReader(os.Stdin)
+	observation, _ := o.ReadString('\n')
+
+	//INSERT INTO `patient` (`RUN`, `DV`, `NAMES`, `FATHERNAME`, `MOTHERNAME`, `PHONE`, `MAIL`, `OBSERVATION`, `ID`, `ACTIVE`) VALUES ('28246613', 'k', 'Charles_Juaquin', 'Garcia', 'Jimenez', '999999', 'juja@gmail.com', 'Se demoro en contestar el cuestionario', NULL, '1');
+	insertPatient, err := connectionEstablished.Prepare("INSERT INTO patient (ID, RUN, DV, NAMES, FATHERNAME, MOTHERNAME, PHONE, MAIL, OBSERVATION, ACTIVE) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, '1')")
+	if err != nil {
+		panic(err.Error())
+	}
+	insertPatient.Exec(RUN, DV, names, fatherName, motherName, phone, email, observation)
+
+	fmt.Println("Paciente Ingresado con exito.")
 }
