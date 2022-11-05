@@ -9,6 +9,18 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+type User struct {
+	ID         int
+	RUN        int
+	DV         string
+	names      string
+	fatherName string
+	motherName string
+	email      string
+	password   string
+	active     bool
+}
+
 func main() {
 
 	connectionEstablished := conectionBD()
@@ -16,11 +28,13 @@ func main() {
 	//Son inserciones previsionales -> Funcionan pero faltan modificaciones.
 	//Al estar pendiente la confeccion y concretacion de la BD -> todas las inserciones carecen de FK.
 
-	insertQuestion(connectionEstablished)
-	insertPatient(connectionEstablished)
 	insertUser(connectionEstablished)
+	insertPatient(connectionEstablished)
+	insertQuestion(connectionEstablished)
 	insertAnswer(connectionEstablished)
 	insertTest(connectionEstablished)
+
+	readAllUsers(connectionEstablished)
 
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
@@ -125,7 +139,7 @@ func insertUser(connectionEstablished *sql.DB) {
 	fmt.Scanln(&motherName)
 
 	var email string
-	fmt.Print("Ingresa el correo electronico del paciente: ")
+	fmt.Print("Ingresa tu correo electronico: ")
 	fmt.Scanln(&email)
 
 	var password string
@@ -188,4 +202,44 @@ func insertTest(connectionEstablished *sql.DB) {
 
 	fmt.Println("Test ingresado.")
 
+}
+
+func readAllUsers(connectionEstablished *sql.DB) {
+
+	readUser, err := connectionEstablished.Query("SELECT * FROM users")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	user := User{} //Variable := Struct
+	arrayUser := []User{}
+
+	for readUser.Next() {
+		var ID int
+		var RUN int
+		var DV string
+		var names string
+		var fatherName string
+		var motherName string
+		var email string
+		var password string
+		var active bool
+		err = readUser.Scan(&ID, &RUN, &DV, &names, &fatherName, &motherName, &email, &password, &active)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		user.ID = ID
+		user.RUN = RUN
+		user.DV = DV
+		user.names = names
+		user.fatherName = fatherName
+		user.motherName = motherName
+		user.email = email
+		user.password = password
+		user.active = active
+		arrayUser = append(arrayUser, user)
+
+	}
+	fmt.Println(arrayUser)
 }
