@@ -19,7 +19,8 @@ func main() {
 	insertQuestion(connectionEstablished)
 	insertPatient(connectionEstablished)
 	insertUser(connectionEstablished)
-	insertAnswers(connectionEstablished)
+	insertAnswer(connectionEstablished)
+	insertTest(connectionEstablished)
 
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
@@ -141,7 +142,7 @@ func insertUser(connectionEstablished *sql.DB) {
 
 }
 
-func insertAnswers(connectionEstablished *sql.DB) {
+func insertAnswer(connectionEstablished *sql.DB) {
 
 	var point int
 	fmt.Print("Ingresa el puntaje (entre 0 y 3): ")
@@ -151,12 +152,40 @@ func insertAnswers(connectionEstablished *sql.DB) {
 	o := bufio.NewReader(os.Stdin)
 	observation, _ := o.ReadString('\n')
 
-	insertAnswers, err := connectionEstablished.Prepare("INSERT INTO answers (ID, POINT, OBSERVATION) VALUES (NULL, ?, ?)")
+	insertAnswer, err := connectionEstablished.Prepare("INSERT INTO answers (ID, POINT, OBSERVATION) VALUES (NULL, ?, ?)")
 	if err != nil {
 		panic(err.Error())
 	}
-	insertAnswers.Exec(point, observation)
+	insertAnswer.Exec(point, observation)
 
 	fmt.Println("Respuesta ingresada.")
+
+}
+
+func insertTest(connectionEstablished *sql.DB) {
+
+	fmt.Print("Ingresa nombre del test: ")
+	n := bufio.NewReader(os.Stdin)
+	name, _ := n.ReadString('\n')
+
+	var cutPoint int
+	fmt.Print("Ingresa el cut point: ")
+	fmt.Scanln(&cutPoint)
+
+	var matchPoint int
+	fmt.Print("Ingresa el match point: ")
+	fmt.Scanln(&matchPoint)
+
+	fmt.Print("Ingresa una observacion: ")
+	o := bufio.NewReader(os.Stdin)
+	observation, _ := o.ReadString('\n')
+
+	insertTest, err := connectionEstablished.Prepare("INSERT INTO tests (ID, NAME, CUTPOINT, MATCHPOINT, OBSERVATION) VALUES (NULL, ?, ?, ?, ?);")
+	if err != nil {
+		panic(err.Error())
+	}
+	insertTest.Exec(name, cutPoint, matchPoint, observation)
+
+	fmt.Println("Test ingresado.")
 
 }
