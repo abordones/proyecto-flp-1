@@ -13,6 +13,9 @@ func main() {
 
 	connectionEstablished := conectionBD()
 
+	//Son inserciones previsionales -> Funcionan pero faltan modificaciones.
+	//Al estar pendiente la confeccion y concretacion de la BD -> todas las inserciones carecen de FK.
+
 	insertQuestion(connectionEstablished)
 	insertPatient(connectionEstablished)
 	insertUser(connectionEstablished)
