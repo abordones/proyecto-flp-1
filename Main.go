@@ -27,7 +27,6 @@ func main() {
 
 	//Son inserciones previsionales -> Funcionan pero faltan modificaciones.
 	//Al estar pendiente la confeccion y concretacion de la BD -> todas las inserciones carecen de FK.
-
 	insertUser(connectionEstablished)
 	insertPatient(connectionEstablished)
 	insertQuestion(connectionEstablished)
@@ -35,6 +34,11 @@ func main() {
 	insertTest(connectionEstablished)
 
 	readAllUsers(connectionEstablished)
+
+	fmt.Printf("ID del usuario a deshabilitar: ")
+	var ID int
+	fmt.Scan(&ID)
+	disableUser(connectionEstablished, ID)
 
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
@@ -242,4 +246,16 @@ func readAllUsers(connectionEstablished *sql.DB) {
 
 	}
 	fmt.Println(arrayUser)
+}
+
+func disableUser(connectionEstablished *sql.DB, ID int) {
+
+	idUser := ID
+	disableUser, err := connectionEstablished.Prepare("UPDATE users SET ACTIVE=false WHERE ID=?")
+	if err != nil {
+		panic(err.Error())
+	}
+	disableUser.Exec(idUser)
+
+	fmt.Printf("El usuario ID (%v) ha sido deshabilitado.\n", idUser)
 }
