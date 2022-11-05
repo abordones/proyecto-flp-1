@@ -19,6 +19,7 @@ func main() {
 	insertQuestion(connectionEstablished)
 	insertPatient(connectionEstablished)
 	insertUser(connectionEstablished)
+	insertAnswers(connectionEstablished)
 
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
@@ -137,5 +138,25 @@ func insertUser(connectionEstablished *sql.DB) {
 	insertUser.Exec(RUN, DV, names, fatherName, motherName, email, password)
 
 	fmt.Println("Usuario ingresado con exito.")
+
+}
+
+func insertAnswers(connectionEstablished *sql.DB) {
+
+	var point int
+	fmt.Print("Ingresa el puntaje (entre 0 y 3): ")
+	fmt.Scanln(&point)
+
+	fmt.Print("Ingresa una observacion: ")
+	o := bufio.NewReader(os.Stdin)
+	observation, _ := o.ReadString('\n')
+
+	insertAnswers, err := connectionEstablished.Prepare("INSERT INTO answers (ID, POINT, OBSERVATION) VALUES (NULL, ?, ?)")
+	if err != nil {
+		panic(err.Error())
+	}
+	insertAnswers.Exec(point, observation)
+
+	fmt.Println("Respuesta ingresada.")
 
 }
