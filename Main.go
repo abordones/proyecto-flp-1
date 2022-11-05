@@ -21,6 +21,19 @@ type User struct {
 	active     bool
 }
 
+type Patient struct {
+	ID          int
+	RUN         int
+	DV          string
+	names       string
+	fatherName  string
+	motherName  string
+	phone       int
+	email       string
+	observation string
+	active      bool
+}
+
 func main() {
 
 	connectionEstablished := conectionBD()
@@ -33,12 +46,12 @@ func main() {
 	insertAnswer(connectionEstablished)
 	insertTest(connectionEstablished)
 
-	readAllUsers(connectionEstablished)
+	//Reciben conexion y una 'ID'
+	disableUser(connectionEstablished, 1)    //No confirma si el usuario existe.
+	disablePatient(connectionEstablished, 1) //No confirma si el usuario existe.
 
-	fmt.Printf("ID del usuario a deshabilitar: ")
-	var ID int
-	fmt.Scan(&ID)
-	disableUser(connectionEstablished, ID) //No confirma si el usuario existe.
+	readAllUsers(connectionEstablished)
+	readAllPatients(connectionEstablished)
 
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
@@ -111,7 +124,7 @@ func insertPatient(connectionEstablished *sql.DB) {
 	o := bufio.NewReader(os.Stdin)
 	observation, _ := o.ReadString('\n')
 
-	insertPatient, err := connectionEstablished.Prepare("INSERT INTO patients (ID, RUN, DV, NAMES, FATHERNAME, MOTHERNAME, PHONE, MAIL, OBSERVATION, ACTIVE) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, '1')")
+	insertPatient, err := connectionEstablished.Prepare("INSERT INTO patients (ID, RUN, DV, NAMES, FATHERNAME, MOTHERNAME, PHONE, EMAIL, OBSERVATION, ACTIVE) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, '1')")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -248,6 +261,47 @@ func readAllUsers(connectionEstablished *sql.DB) {
 	fmt.Println(arrayUser)
 }
 
+func readAllPatients(connectionEstablished *sql.DB) {
+
+	readPatient, err := connectionEstablished.Query("SELECT * FROM patients")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	patient := Patient{} //Variable := Struct
+	arrayPatient := []Patient{}
+	for readPatient.Next() {
+		var ID int
+		var RUN int
+		var DV string
+		var names string
+		var fatherName string
+		var motherName string
+		var phone int
+		var email string
+		var observation string
+		var active bool
+		err = readPatient.Scan(&ID, &RUN, &DV, &names, &fatherName, &motherName, &phone, &email, &observation, &active)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		patient.ID = ID
+		patient.RUN = RUN
+		patient.DV = DV
+		patient.names = names
+		patient.fatherName = fatherName
+		patient.motherName = motherName
+		patient.phone = phone
+		patient.email = email
+		patient.observation = observation
+		patient.active = active
+		arrayPatient = append(arrayPatient, patient)
+	}
+	fmt.Println(arrayPatient)
+
+}
+
 func disableUser(connectionEstablished *sql.DB, ID int) {
 
 	idUser := ID
@@ -258,4 +312,16 @@ func disableUser(connectionEstablished *sql.DB, ID int) {
 	disableUser.Exec(idUser)
 
 	fmt.Printf("El usuario ID (%v) ha sido deshabilitado.\n", idUser)
+}
+
+func disablePatient(connectionEstablished *sql.DB, ID int) {
+
+	idPatient := ID
+	disablePatient, err := connectionEstablished.Prepare("UPDATE patients SET ACTIVE=false WHERE ID=?")
+	if err != nil {
+		panic(err.Error())
+	}
+	disablePatient.Exec(idPatient)
+
+	fmt.Printf("El paciente ID (%v) ha sido deshabilitado.\n", idPatient)
 }
