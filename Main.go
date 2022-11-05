@@ -38,7 +38,7 @@ func main() {
 	fmt.Printf("ID del usuario a deshabilitar: ")
 	var ID int
 	fmt.Scan(&ID)
-	disableUser(connectionEstablished, ID)
+	disableUser(connectionEstablished, ID) //No confirma si el usuario existe.
 
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
