@@ -1,88 +1,13 @@
 /*==============================================================*/
-/* DBMS name:      Sybase SQL Anywhere 12                       */
-/* Created on:     03-11-2022 12:49:52                          */
-/*==============================================================*/
-
-
-if exists(select 1 from sys.sysforeignkey where role='FK_ANSWERS_RESPONDER_TESTS') then
-    alter table ANSWERS
-       delete foreign key FK_ANSWERS_RESPONDER_TESTS
-end if;
-
-if exists(select 1 from sys.sysforeignkey where role='FK_POLLS_EJERCER_USERS') then
-    alter table POLLS
-       delete foreign key FK_POLLS_EJERCER_USERS
-end if;
-
-if exists(select 1 from sys.sysforeignkey where role='FK_QUESTION_PREGUNTAR_TESTS') then
-    alter table QUESTIONS
-       delete foreign key FK_QUESTION_PREGUNTAR_TESTS
-end if;
-
-if exists(select 1 from sys.sysforeignkey where role='FK_TESTS_ESTAR_POLLS') then
-    alter table TESTS
-       delete foreign key FK_TESTS_ESTAR_POLLS
-end if;
-
-if exists(select 1 from sys.sysforeignkey where role='FK_USAR_USAR_POLLS') then
-    alter table USAR
-       delete foreign key FK_USAR_USAR_POLLS
-end if;
-
-if exists(select 1 from sys.sysforeignkey where role='FK_USAR_USAR2_PATIENTS') then
-    alter table USAR
-       delete foreign key FK_USAR_USAR2_PATIENTS
-end if;
-
-drop index if exists ANSWERS.RESPONDER_FK;
-
-drop index if exists ANSWERS.ANSWERS_PK;
-
-drop table if exists ANSWERS;
-
-drop index if exists PATIENTS.PATIENTS_PK;
-
-drop table if exists PATIENTS;
-
-drop index if exists POLLS.EJERCER_FK;
-
-drop index if exists POLLS.POLLS_PK;
-
-drop table if exists POLLS;
-
-drop index if exists QUESTIONS.PREGUNTAR_FK;
-
-drop index if exists QUESTIONS.QUESTIONS_PK;
-
-drop table if exists QUESTIONS;
-
-drop index if exists TESTS.ESTAR_FK;
-
-drop index if exists TESTS.TESTS_PK;
-
-drop table if exists TESTS;
-
-drop index if exists USAR.USAR_FK;
-
-drop index if exists USAR.USAR2_FK;
-
-drop index if exists USAR.USAR_PK;
-
-drop table if exists USAR;
-
-drop index if exists USERS.USERS_PK;
-
-drop table if exists USERS;
-
-/*==============================================================*/
 /* Table: ANSWERS                                               */
 /*==============================================================*/
 create table ANSWERS 
 (
-   ID_A                 integer                        not null,
+   ID_A                 integer                        not null		AUTO_INCREMENT,
    ID_T                 integer                        not null,
    POINT_A              integer                        null,
-   OBSERVATION_A        long varchar                   null,
+   OBSERVATION_A        varchar(200)                   null,
+   ACTIVE_A             smallint                       null,
    constraint PK_ANSWERS primary key (ID_A)
 );
 
@@ -105,7 +30,7 @@ ID_T ASC
 /*==============================================================*/
 create table PATIENTS 
 (
-   ID_P                 integer                        not null,
+   ID_P                 integer                        not null		AUTO_INCREMENT,
    RUN_P                integer                        null,
    DV_P                 char(1)                        null,
    NAME_P               char(100)                      null,
@@ -113,8 +38,9 @@ create table PATIENTS
    MOTHERNAME_P         char(100)                      null,
    PHONE_P              integer                        null,
    EMAIL_P              varchar(100)                   null,
-   OBSERVATION_P        long varchar                   null,
-   DELETE_P             smallint                       null,
+   BIRTHDAY_U           date                           null,
+   OBSERVATION_P        varchar(200)                   null,
+   ACTIVE_P             smallint                       null,
    constraint PK_PATIENTS primary key (ID_P)
 );
 
@@ -130,8 +56,9 @@ ID_P ASC
 /*==============================================================*/
 create table POLLS 
 (
-   ID_PO                integer                        not null,
-   ID                   char(10)                       not null,
+   ID_PO                integer                        not null		AUTO_INCREMENT,
+   ID_T                 integer                        not null,
+   ID_U                 integer                        not null,
    constraint PK_POLLS primary key (ID_PO)
 );
 
@@ -143,10 +70,17 @@ ID_PO ASC
 );
 
 /*==============================================================*/
-/* Index: EJERCER_FK                                            */
+/* Index: ESTAR_FK                                              */
 /*==============================================================*/
-create index EJERCER_FK on POLLS (
-ID ASC
+create index ESTAR_FK on POLLS (
+ID_T ASC
+);
+
+/*==============================================================*/
+/* Index: HACER_FK                                              */
+/*==============================================================*/
+create index HACER_FK on POLLS (
+ID_U ASC
 );
 
 /*==============================================================*/
@@ -154,11 +88,11 @@ ID ASC
 /*==============================================================*/
 create table QUESTIONS 
 (
-   ID_Q                 integer                        not null,
+   ID_Q                 integer                        not null		AUTO_INCREMENT,
    ID_T                 integer                        not null,
-   QUESTION_Q           varchar(200)                   null,
-   DESCRIPTION_Q        long varchar                   null,
-   DELETE_Q             smallint                       null,
+   QUESTION_Q           varchar(100)                   null,
+   DESCRIPTION_Q        varchar(200)                   null,
+   ACTIVE_Q             smallint                       null,
    constraint PK_QUESTIONS primary key (ID_Q)
 );
 
@@ -181,12 +115,12 @@ ID_T ASC
 /*==============================================================*/
 create table TESTS 
 (
-   ID_T                 integer                        not null,
-   ID_PO                integer                        not null,
+   ID_T                 integer                        not null		AUTO_INCREMENT,
    NAME_T               char(100)                      null,
    CUTPOINT_T           integer                        null,
    MATCHPOINT_T         integer                        null,
-   OBSERVATION_T        long varchar                   null,
+   OBSERVATION_T        varchar(200)                   null,
+   ACTIVE_T             smallint                       null,
    constraint PK_TESTS primary key (ID_T)
 );
 
@@ -198,19 +132,13 @@ ID_T ASC
 );
 
 /*==============================================================*/
-/* Index: ESTAR_FK                                              */
-/*==============================================================*/
-create index ESTAR_FK on TESTS (
-ID_PO ASC
-);
-
-/*==============================================================*/
 /* Table: USAR                                                  */
 /*==============================================================*/
 create table USAR 
 (
    ID_PO                integer                        not null,
    ID_P                 integer                        not null,
+   DATE                 date                           null,
    constraint PK_USAR primary key (ID_PO, ID_P)
 );
 
@@ -241,25 +169,24 @@ ID_PO ASC
 /*==============================================================*/
 create table USERS 
 (
-   ID                   char(10)                       not null,
-   RUN                  integer                        null,
-   DV                   char(1)                        null,
-   NAMES                char(100)                      null,
-   FATHERNAME           char(100)                      null,
-   MOTHERNAME           char(100)                      null,
-   DAY                  integer                        null,
-   MONTH                integer                        null,
-   YEAR                 integer                        null,
-   PASSWORD             varchar(100)                   null,
-   "DELETE"             smallint                       null,
-   constraint PK_USERS primary key (ID)
+   ID_U                 integer                        not null		AUTO_INCREMENT,
+   RUN_U                integer                        null,
+   DV_U                 char(1)                        null,
+   NAME_U               char(200)                      null,
+   FATHERNAME_U         char(100)                      null,
+   MOTHERNAME_U         char(100)                      null,
+   BIRTHDAY_U           date                           null,
+   PASSWORD_U           varchar(100)                   null,
+   EMAIL_U              varchar(100)                   null,
+   ACTIVE_U             smallint                       null,
+   constraint PK_USERS primary key (ID_U)
 );
 
 /*==============================================================*/
 /* Index: USERS_PK                                              */
 /*==============================================================*/
 create unique index USERS_PK on USERS (
-ID ASC
+ID_U ASC
 );
 
 alter table ANSWERS
@@ -269,20 +196,20 @@ alter table ANSWERS
       on delete restrict;
 
 alter table POLLS
-   add constraint FK_POLLS_EJERCER_USERS foreign key (ID)
-      references USERS (ID)
+   add constraint FK_POLLS_ESTAR_TESTS foreign key (ID_T)
+      references TESTS (ID_T)
+      on update restrict
+      on delete restrict;
+
+alter table POLLS
+   add constraint FK_POLLS_HACER_USERS foreign key (ID_U)
+      references USERS (ID_U)
       on update restrict
       on delete restrict;
 
 alter table QUESTIONS
    add constraint FK_QUESTION_PREGUNTAR_TESTS foreign key (ID_T)
       references TESTS (ID_T)
-      on update restrict
-      on delete restrict;
-
-alter table TESTS
-   add constraint FK_TESTS_ESTAR_POLLS foreign key (ID_PO)
-      references POLLS (ID_PO)
       on update restrict
       on delete restrict;
 
@@ -297,4 +224,3 @@ alter table USAR
       references PATIENTS (ID_P)
       on update restrict
       on delete restrict;
-
