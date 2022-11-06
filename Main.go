@@ -40,18 +40,18 @@ func main() {
 
 	//Son inserciones previsionales -> Funcionan pero faltan modificaciones.
 	//Al estar pendiente la confeccion y concretacion de la BD -> todas las inserciones carecen de FK.
-	insertUser(connectionEstablished)
-	insertPatient(connectionEstablished)
-	insertQuestion(connectionEstablished)
+	//insertUser(connectionEstablished)
+	//insertPatient(connectionEstablished)
+	//insertQuestion(connectionEstablished)
 	insertAnswer(connectionEstablished)
-	insertTest(connectionEstablished)
+	//insertTest(connectionEstablished)
 
 	//Reciben conexion y una 'ID'
-	disableUser(connectionEstablished, 1)    //No confirma si el usuario existe.
-	disablePatient(connectionEstablished, 1) //No confirma si el usuario existe.
+	//disableUser(connectionEstablished, 1)    //No confirma si el usuario existe.
+	//disablePatient(connectionEstablished, 1) //No confirma si el usuario existe.
 
-	readAllUsers(connectionEstablished)
-	readAllPatients(connectionEstablished)
+	//readAllUsers(connectionEstablished)
+	//readAllPatients(connectionEstablished)
 
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
