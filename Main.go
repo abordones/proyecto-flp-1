@@ -38,14 +38,12 @@ func main() {
 
 	connectionEstablished := conectionBD()
 
-	//Son inserciones previsionales -> Funcionan pero faltan modificaciones.
-	//Al estar pendiente la confeccion y concretacion de la BD -> todas las inserciones carecen de FK.
+	//Insertions
 	//insertUser(connectionEstablished)
 	//insertPatient(connectionEstablished)
-	insertTest(connectionEstablished)
-
-	//insertQuestion(connectionEstablished, 1)
-	//insertAnswer(connectionEstablished)
+	//insertTest(connectionEstablished)
+	//insertQuestion(connectionEstablished, 1) 		//Recibe ID de Test.
+	insertAnswer(connectionEstablished, 1) //Recibe ID de Question.
 
 	//Reciben conexion y una 'ID'
 	//disableUser(connectionEstablished, 1)    //No confirma si el usuario existe.
@@ -209,7 +207,7 @@ func insertTest(connectionEstablished *sql.DB) {
 	fmt.Println("Test ingresado.")
 }
 
-func insertAnswer(connectionEstablished *sql.DB) {
+func insertAnswer(connectionEstablished *sql.DB, ID_question int) {
 
 	var point int
 	fmt.Print("Ingresa el puntaje (entre 0 y 3): ")
@@ -219,11 +217,11 @@ func insertAnswer(connectionEstablished *sql.DB) {
 	o := bufio.NewReader(os.Stdin)
 	observation, _ := o.ReadString('\n')
 
-	insertAnswer, err := connectionEstablished.Prepare("INSERT INTO answers (ID, POINT, OBSERVATION) VALUES (NULL, ?, ?)")
+	insertAnswer, err := connectionEstablished.Prepare("INSERT INTO answers (ID_A, ID_Q, POINT_A, OBSERVATION_A, ACTIVE_A) VALUES (NULL, ?, ?, ?, '1')")
 	if err != nil {
 		panic(err.Error())
 	}
-	insertAnswer.Exec(point, observation)
+	insertAnswer.Exec(ID_question, point, observation)
 
 	fmt.Println("Respuesta ingresada.")
 
