@@ -4,11 +4,25 @@
 create table ANSWERS 
 (
    ID_A                 integer                        not null		AUTO_INCREMENT,
-   ID_T                 integer                        not null,
+   ID_Q                 integer                        not null,
    POINT_A              integer                        null,
    OBSERVATION_A        varchar(200)                   null,
    ACTIVE_A             smallint                       null,
    constraint PK_ANSWERS primary key (ID_A)
+);
+
+/*==============================================================*/
+/* Index: ANSWERS_PK                                            */
+/*==============================================================*/
+create unique index ANSWERS_PK on ANSWERS (
+ID_A ASC
+);
+
+/*==============================================================*/
+/* Index: TENER_FK                                              */
+/*==============================================================*/
+create index TENER_FK on ANSWERS (
+ID_Q ASC
 );
 
 /*==============================================================*/
@@ -31,6 +45,13 @@ create table PATIENTS
 );
 
 /*==============================================================*/
+/* Index: PATIENTS_PK                                           */
+/*==============================================================*/
+create unique index PATIENTS_PK on PATIENTS (
+ID_P ASC
+);
+
+/*==============================================================*/
 /* Table: POLLS                                                 */
 /*==============================================================*/
 create table POLLS 
@@ -42,16 +63,51 @@ create table POLLS
 );
 
 /*==============================================================*/
+/* Index: POLLS_PK                                              */
+/*==============================================================*/
+create unique index POLLS_PK on POLLS (
+ID_PO ASC
+);
+
+/*==============================================================*/
+/* Index: ESTAR_FK                                              */
+/*==============================================================*/
+create index ESTAR_FK on POLLS (
+ID_T ASC
+);
+
+/*==============================================================*/
+/* Index: HACER_FK                                              */
+/*==============================================================*/
+create index HACER_FK on POLLS (
+ID_U ASC
+);
+
+/*==============================================================*/
 /* Table: QUESTIONS                                             */
 /*==============================================================*/
 create table QUESTIONS 
 (
    ID_Q                 integer                        not null		AUTO_INCREMENT,
    ID_T                 integer                        not null,
-   QUESTION_Q           varchar(100)                   null,
+   QUESTION_Q           varchar(200)                   null,
    DESCRIPTION_Q        varchar(200)                   null,
    ACTIVE_Q             smallint                       null,
    constraint PK_QUESTIONS primary key (ID_Q)
+);
+
+/*==============================================================*/
+/* Index: QUESTIONS_PK                                          */
+/*==============================================================*/
+create unique index QUESTIONS_PK on QUESTIONS (
+ID_Q ASC
+);
+
+/*==============================================================*/
+/* Index: PREGUNTAR_FK                                          */
+/*==============================================================*/
+create index PREGUNTAR_FK on QUESTIONS (
+ID_T ASC
 );
 
 /*==============================================================*/
@@ -69,6 +125,13 @@ create table TESTS
 );
 
 /*==============================================================*/
+/* Index: TESTS_PK                                              */
+/*==============================================================*/
+create unique index TESTS_PK on TESTS (
+ID_T ASC
+);
+
+/*==============================================================*/
 /* Table: USAR                                                  */
 /*==============================================================*/
 create table USAR 
@@ -80,6 +143,28 @@ create table USAR
 );
 
 /*==============================================================*/
+/* Index: USAR_PK                                               */
+/*==============================================================*/
+create unique index USAR_PK on USAR (
+ID_PO ASC,
+ID_P ASC
+);
+
+/*==============================================================*/
+/* Index: USAR2_FK                                              */
+/*==============================================================*/
+create index USAR2_FK on USAR (
+ID_P ASC
+);
+
+/*==============================================================*/
+/* Index: USAR_FK                                               */
+/*==============================================================*/
+create index USAR_FK on USAR (
+ID_PO ASC
+);
+
+/*==============================================================*/
 /* Table: USERS                                                 */
 /*==============================================================*/
 create table USERS 
@@ -87,10 +172,10 @@ create table USERS
    ID_U                 integer                        not null		AUTO_INCREMENT,
    RUN_U                integer                        null,
    DV_U                 char(1)                        null,
-   NAME_U               char(200)                      null,
+   NAME_U              char(200)                      null,
    FATHERNAME_U         char(100)                      null,
    MOTHERNAME_U         char(100)                      null,
-   BIRTHDAY_U           date                           null,
+   BIRTHDAY_U          date                           null,
    PASSWORD_U           varchar(100)                   null,
    EMAIL_U              varchar(100)                   null,
    ACTIVE_U             smallint                       null,
@@ -105,8 +190,8 @@ ID_U ASC
 );
 
 alter table ANSWERS
-   add constraint FK_ANSWERS_RESPONDER_TESTS foreign key (ID_T)
-      references TESTS (ID_T)
+   add constraint FK_ANSWERS_TENER_QUESTION foreign key (ID_Q)
+      references QUESTIONS (ID_Q)
       on update restrict
       on delete restrict;
 

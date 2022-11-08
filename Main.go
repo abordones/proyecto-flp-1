@@ -42,9 +42,10 @@ func main() {
 	//Al estar pendiente la confeccion y concretacion de la BD -> todas las inserciones carecen de FK.
 	//insertUser(connectionEstablished)
 	//insertPatient(connectionEstablished)
-	//insertQuestion(connectionEstablished)
-	insertAnswer(connectionEstablished)
-	//insertTest(connectionEstablished)
+	insertTest(connectionEstablished)
+
+	//insertQuestion(connectionEstablished, 1)
+	//insertAnswer(connectionEstablished)
 
 	//Reciben conexion y una 'ID'
 	//disableUser(connectionEstablished, 1)    //No confirma si el usuario existe.
@@ -71,7 +72,7 @@ func conectionBD() (conection *sql.DB) {
 	return conection
 }
 
-func insertQuestion(connectionEstablished *sql.DB) {
+func insertQuestion(connectionEstablished *sql.DB, ID_test int) {
 
 	fmt.Print("Formula tu pregunta: ")
 	q := bufio.NewReader(os.Stdin)
@@ -81,11 +82,11 @@ func insertQuestion(connectionEstablished *sql.DB) {
 	d := bufio.NewReader(os.Stdin)
 	description, _ := d.ReadString('\n')
 
-	InsertQuestion, err := connectionEstablished.Prepare("INSERT INTO questions (ID, QUESTION, DESCRIPTION_Q, DELETE_AT, TEST_ID) VALUES (NULL, ?, ?, 1, NULL); ")
+	InsertQuestion, err := connectionEstablished.Prepare("INSERT INTO questions (ID_Q, ID_T, QUESTION_Q, DESCRIPTION_Q, ACTIVE_Q) VALUES (NULL, ?, ?, ?, 1); ")
 	if err != nil {
 		panic(err.Error())
 	}
-	InsertQuestion.Exec(question, description)
+	InsertQuestion.Exec(ID_test, question, description)
 
 	fmt.Println("Pregunta ingresada con exito.")
 }
@@ -120,15 +121,19 @@ func insertPatient(connectionEstablished *sql.DB) {
 	fmt.Print("Ingresa el correo electronico del paciente: ")
 	fmt.Scanln(&email)
 
+	var birthday string
+	fmt.Print("Ingresa tu fecha de nacimineto (yyyy-mm-dd): ")
+	fmt.Scanln(&birthday)
+
 	fmt.Print("Ingresa una observacion: ")
 	o := bufio.NewReader(os.Stdin)
 	observation, _ := o.ReadString('\n')
 
-	insertPatient, err := connectionEstablished.Prepare("INSERT INTO patients (ID, RUN, DV, NAMES, FATHERNAME, MOTHERNAME, PHONE, EMAIL, OBSERVATION, ACTIVE) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, '1')")
+	insertPatient, err := connectionEstablished.Prepare("INSERT INTO patients (ID_P, RUN_P, DV_P, NAME_P, FATHERNAME_P, MOTHERNAME_P, PHONE_P, EMAIL_P, BIRTHDAY_P, OBSERVATION_P, ACTIVE_P) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, '1')")
 	if err != nil {
 		panic(err.Error())
 	}
-	insertPatient.Exec(RUN, DV, names, fatherName, motherName, phone, email, observation)
+	insertPatient.Exec(RUN, DV, names, fatherName, motherName, phone, email, birthday, observation)
 
 	fmt.Println("Paciente ingresado con exito.")
 }
@@ -155,6 +160,10 @@ func insertUser(connectionEstablished *sql.DB) {
 	fmt.Print("Ingresa tu apellido materno: ")
 	fmt.Scanln(&motherName)
 
+	var birthday string
+	fmt.Print("Ingresa tu fecha de nacimineto (yyyy-mm-dd): ")
+	fmt.Scanln(&birthday)
+
 	var email string
 	fmt.Print("Ingresa tu correo electronico: ")
 	fmt.Scanln(&email)
@@ -163,14 +172,41 @@ func insertUser(connectionEstablished *sql.DB) {
 	fmt.Print("Ingresa tu contrasena: ")
 	fmt.Scanln(&password)
 
-	insertUser, err := connectionEstablished.Prepare("INSERT INTO users (ID, RUN, DV, NAMES, FATHERNAME, MOTHERNAME, EMAIL, PASSWORD, ACTIVE) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, '1');")
+	insertUser, err := connectionEstablished.Prepare("INSERT INTO users (ID_U, RUN_U, DV_U, NAME_U, FATHERNAME_U, MOTHERNAME_U, BIRTHDAY_U, EMAIL_U, PASSWORD_U, ACTIVE_U) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, '1');")
 	if err != nil {
 		panic(err.Error())
 	}
-	insertUser.Exec(RUN, DV, names, fatherName, motherName, email, password)
+	insertUser.Exec(RUN, DV, names, fatherName, motherName, birthday, email, password)
 
 	fmt.Println("Usuario ingresado con exito.")
 
+}
+
+func insertTest(connectionEstablished *sql.DB) {
+
+	fmt.Print("Nombra al test: ")
+	n := bufio.NewReader(os.Stdin)
+	name, _ := n.ReadString('\n')
+
+	var cutPoint int
+	fmt.Print("Ingresa el puntaje de corte: ")
+	fmt.Scanln(&cutPoint)
+
+	var matchPoint int
+	fmt.Print("Ingresa puntaje match: ")
+	fmt.Scanln(&matchPoint)
+
+	fmt.Print("Ingresa una observacion: ")
+	o := bufio.NewReader(os.Stdin)
+	observation, _ := o.ReadString('\n')
+
+	insertTest, err := connectionEstablished.Prepare("INSERT INTO tests (ID_T, NAME_T, CUTPOINT_T, MATCHPOINT_T, OBSERVATION_T, ACTIVE_T) VALUES (NULL, ?, ?, ?, ?, '1')")
+	if err != nil {
+		panic(err.Error())
+	}
+	insertTest.Exec(name, cutPoint, matchPoint, observation)
+
+	fmt.Println("Test ingresado.")
 }
 
 func insertAnswer(connectionEstablished *sql.DB) {
@@ -190,34 +226,6 @@ func insertAnswer(connectionEstablished *sql.DB) {
 	insertAnswer.Exec(point, observation)
 
 	fmt.Println("Respuesta ingresada.")
-
-}
-
-func insertTest(connectionEstablished *sql.DB) {
-
-	fmt.Print("Ingresa nombre del test: ")
-	n := bufio.NewReader(os.Stdin)
-	name, _ := n.ReadString('\n')
-
-	var cutPoint int
-	fmt.Print("Ingresa el cut point: ")
-	fmt.Scanln(&cutPoint)
-
-	var matchPoint int
-	fmt.Print("Ingresa el match point: ")
-	fmt.Scanln(&matchPoint)
-
-	fmt.Print("Ingresa una observacion: ")
-	o := bufio.NewReader(os.Stdin)
-	observation, _ := o.ReadString('\n')
-
-	insertTest, err := connectionEstablished.Prepare("INSERT INTO tests (ID, NAME, CUTPOINT, MATCHPOINT, OBSERVATION) VALUES (NULL, ?, ?, ?, ?);")
-	if err != nil {
-		panic(err.Error())
-	}
-	insertTest.Exec(name, cutPoint, matchPoint, observation)
-
-	fmt.Println("Test ingresado.")
 
 }
 
