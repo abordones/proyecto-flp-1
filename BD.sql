@@ -24,7 +24,7 @@ create table PATIENTS
    MOTHERNAME_P         char(100)                      null,
    PHONE_P              integer                        null,
    EMAIL_P              varchar(100)                   null,
-   BIRTHDAY_U           date                           null,
+   BIRTHDAY_P           date                           null,
    OBSERVATION_P        varchar(200)                   null,
    ACTIVE_P             smallint                       null,
    constraint PK_PATIENTS primary key (ID_P)
