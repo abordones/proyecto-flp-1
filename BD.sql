@@ -111,20 +111,19 @@ ID_T ASC
 );
 
 /*==============================================================*/
-/* Table: SESSION                                             */
+/* Table: SESSIONS                                              */
 /*==============================================================*/
-create table SESSION 
+create table SESSIONS 
 (
    ID_P                 integer                        not null,
    ID_PO                integer                        not null,
-   DATE_S               date                           null,
-   constraint PK_SESSION primary key (ID_P, ID_PO)
+   constraint PK_SESSIONS primary key (ID_P, ID_PO)
 );
 
 /*==============================================================*/
 /* Index: SESSION_PK                                            */
 /*==============================================================*/
-create unique index SESSION_PK on SESSION (
+create unique index SESSION_PK on SESSIONS (
 ID_P ASC,
 ID_PO ASC
 );
@@ -132,14 +131,14 @@ ID_PO ASC
 /*==============================================================*/
 /* Index: SESSION2_FK                                           */
 /*==============================================================*/
-create index SESSION2_FK on SESSION (
+create index SESSION2_FK on SESSIONS (
 ID_PO ASC
 );
 
 /*==============================================================*/
 /* Index: SESSION_FK                                            */
 /*==============================================================*/
-create index SESSION_FK on SESSION (
+create index SESSION_FK on SESSIONS (
 ID_P ASC
 );
 
@@ -213,14 +212,14 @@ alter table QUESTIONS
       on update restrict
       on delete restrict;
 
-alter table SESSION
-   add constraint FK_SESSION_SESSION_PATIENTS foreign key (ID_P)
+alter table SESSIONS
+   add constraint FK_SESSIONS_SESSIONS_PATIENTS foreign key (ID_P)
       references PATIENTS (ID_P)
       on update restrict
       on delete restrict;
 
-alter table SESSION
-   add constraint FK_SESSION_SESSION2_POLLS foreign key (ID_PO)
+alter table SESSIONS
+   add constraint FK_SESSIONS_SESSIONS2_POLLS foreign key (ID_PO)
       references POLLS (ID_PO)
       on update restrict
       on delete restrict;
