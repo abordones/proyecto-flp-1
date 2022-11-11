@@ -61,6 +61,12 @@ type Answer struct {
 	active      bool
 }
 
+type Poll struct {
+	ID   int
+	ID_u int
+	ID_t int
+}
+
 func main() {
 
 	connectionEstablished := conectionBD()
@@ -85,7 +91,8 @@ func main() {
 	//readAllPatients(connectionEstablished)
 	//readAllTests(connectionEstablished)
 	//readAllQuestions(connectionEstablished)
-	readAllAnswers(connectionEstablished)
+	//readAllAnswers(connectionEstablished)
+	readAllPolls(connectionEstablished)
 
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
@@ -459,6 +466,31 @@ func readAllAnswers(connectionEstablished *sql.DB) {
 		arrayAnswer = append(arrayAnswer, answer)
 	}
 	fmt.Println(arrayAnswer)
+}
+
+func readAllPolls(connectionEstablished *sql.DB) {
+	fmt.Println("Mostrando todas las encuestas")
+	readPolls, err := connectionEstablished.Query("SELECT * FROM polls")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	poll := Poll{} //Variable := Struct
+	arrayPoll := []Poll{}
+	for readPolls.Next() {
+		var ID int
+		var ID_u int
+		var ID_t int
+		err = readPolls.Scan(&ID, &ID_u, &ID_t)
+		if err != nil {
+			panic(err.Error())
+		}
+		poll.ID = ID
+		poll.ID_u = ID_u
+		poll.ID_t = ID_t
+		arrayPoll = append(arrayPoll, poll)
+	}
+	fmt.Println(arrayPoll)
 }
 
 func disableUser(connectionEstablished *sql.DB, ID int) {
