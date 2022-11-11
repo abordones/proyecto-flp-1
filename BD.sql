@@ -34,12 +34,12 @@ create table PATIENTS
    RUN_P                integer                        null,
    DV_P                 char(1)                        null,
    NAME_P               char(100)                      null,
-   FATHERNAME_P         char(100)                      null,
-   MOTHERNAME_P         char(100)                      null,
-   PHONE_P              integer                        null,
-   EMAIL_P              varchar(100)                   null,
+   FATHERNAME_P         char(50)                       null,
+   MOTHERNAME_P         char(50)                       null,
    BIRTHDAY_P           date                           null,
-   OBSERVATION_P        varchar(200)                   null,
+   PHONE_P              integer                        null,
+   EMAIL_P              varchar(70)                    null,
+   OBSERVATION_P        varchar(500)                   null,
    ACTIVE_P             smallint                       null,
    constraint PK_PATIENTS primary key (ID_P)
 );
@@ -90,7 +90,7 @@ create table QUESTIONS
 (
    ID_Q                 integer                        not null		AUTO_INCREMENT,
    ID_T                 integer                        not null,
-   QUESTION_Q           varchar(200)                   null,
+   QUESTION_Q           varchar(100)                   null,
    DESCRIPTION_Q        varchar(200)                   null,
    ACTIVE_Q             smallint                       null,
    constraint PK_QUESTIONS primary key (ID_Q)
@@ -111,6 +111,39 @@ ID_T ASC
 );
 
 /*==============================================================*/
+/* Table: "SESSION"                                             */
+/*==============================================================*/
+create table "SESSION" 
+(
+   ID_PO                integer                        not null,
+   ID_P                 integer                        not null,
+   "DATE"               date                           null,
+   constraint PK_SESSION primary key (ID_PO, ID_P)
+);
+
+/*==============================================================*/
+/* Index: USAR_PK                                               */
+/*==============================================================*/
+create unique index USAR_PK on "SESSION" (
+ID_PO ASC,
+ID_P ASC
+);
+
+/*==============================================================*/
+/* Index: USAR2_FK                                              */
+/*==============================================================*/
+create index USAR2_FK on "SESSION" (
+ID_P ASC
+);
+
+/*==============================================================*/
+/* Index: USAR_FK                                               */
+/*==============================================================*/
+create index USAR_FK on "SESSION" (
+ID_PO ASC
+);
+
+/*==============================================================*/
 /* Table: TESTS                                                 */
 /*==============================================================*/
 create table TESTS 
@@ -119,7 +152,7 @@ create table TESTS
    NAME_T               char(100)                      null,
    CUTPOINT_T           integer                        null,
    MATCHPOINT_T         integer                        null,
-   OBSERVATION_T        varchar(200)                   null,
+   OBSERVATION_T        varchar(500)                   null,
    ACTIVE_T             smallint                       null,
    constraint PK_TESTS primary key (ID_T)
 );
@@ -132,39 +165,6 @@ ID_T ASC
 );
 
 /*==============================================================*/
-/* Table: USAR                                                  */
-/*==============================================================*/
-create table USAR 
-(
-   ID_PO                integer                        not null,
-   ID_P                 integer                        not null,
-   DATE                 date                           null,
-   constraint PK_USAR primary key (ID_PO, ID_P)
-);
-
-/*==============================================================*/
-/* Index: USAR_PK                                               */
-/*==============================================================*/
-create unique index USAR_PK on USAR (
-ID_PO ASC,
-ID_P ASC
-);
-
-/*==============================================================*/
-/* Index: USAR2_FK                                              */
-/*==============================================================*/
-create index USAR2_FK on USAR (
-ID_P ASC
-);
-
-/*==============================================================*/
-/* Index: USAR_FK                                               */
-/*==============================================================*/
-create index USAR_FK on USAR (
-ID_PO ASC
-);
-
-/*==============================================================*/
 /* Table: USERS                                                 */
 /*==============================================================*/
 create table USERS 
@@ -172,12 +172,12 @@ create table USERS
    ID_U                 integer                        not null		AUTO_INCREMENT,
    RUN_U                integer                        null,
    DV_U                 char(1)                        null,
-   NAME_U              char(200)                      null,
-   FATHERNAME_U         char(100)                      null,
-   MOTHERNAME_U         char(100)                      null,
-   BIRTHDAY_U          date                           null,
-   PASSWORD_U           varchar(100)                   null,
-   EMAIL_U              varchar(100)                   null,
+   NAME_U               char(100)                      null,
+   FATHERNAME_U         char(50)                       null,
+   MOTHERNAME_U         char(50)                       null,
+   BIRTHDAY_U           date                           null,
+   EMAIL_U              varchar(70)                    null,
+   PASSWORD_U           varchar(50)                    null,
    ACTIVE_U             smallint                       null,
    constraint PK_USERS primary key (ID_U)
 );
@@ -213,14 +213,14 @@ alter table QUESTIONS
       on update restrict
       on delete restrict;
 
-alter table USAR
-   add constraint FK_USAR_USAR_POLLS foreign key (ID_PO)
+alter table "SESSION"
+   add constraint FK_SESSION_SESSION_POLLS foreign key (ID_PO)
       references POLLS (ID_PO)
       on update restrict
       on delete restrict;
 
-alter table USAR
-   add constraint FK_USAR_USAR2_PATIENTS foreign key (ID_P)
+alter table "SESSION"
+   add constraint FK_SESSION_SESSION2_PATIENTS foreign key (ID_P)
       references PATIENTS (ID_P)
       on update restrict
       on delete restrict;

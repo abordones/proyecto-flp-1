@@ -39,11 +39,11 @@ func main() {
 	connectionEstablished := conectionBD()
 
 	//Insertions
-	//insertUser(connectionEstablished)
+	insertUser(connectionEstablished)
 	//insertPatient(connectionEstablished)
 	//insertTest(connectionEstablished)
 	//insertQuestion(connectionEstablished, 1) 		//Recibe ID Test pero NO confirma si existe ID Test.
-	insertAnswer(connectionEstablished, 1) //Recibe ID Question pero NO confirma si existe ID Question.
+	//insertAnswer(connectionEstablished, 1) //Recibe ID Question pero NO confirma si existe ID Question.
 
 	//Reciben conexion y una 'ID'
 	//disableUser(connectionEstablished, 1)    //No confirma si el usuario existe.
