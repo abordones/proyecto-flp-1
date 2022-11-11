@@ -78,13 +78,13 @@ func main() {
 	connectionEstablished := conectionBD()
 
 	//-----------------------------INSERTION-----------------------------
-	insertUser(connectionEstablished)
+	//insertUser(connectionEstablished)
 	//insertPatient(connectionEstablished)
 	//insertTest(connectionEstablished)
 	//insertQuestion(connectionEstablished, 1) //Recibe ID Test.
 	//insertAnswer(connectionEstablished, 1) //Recibe ID Question.
 	//insertPoll(connectionEstablished, 1, 1) //Recibe ID user, ID test.
-	//insertSession(connectionEstablished, 1, 1) //Recibe ID patient y ID poll.
+	insertSession(connectionEstablished, 1, 1) //Recibe ID patient y ID poll.
 
 	//-------------------------------STATE-------------------------------
 	//stateUser(connectionEstablished, 1)
@@ -100,7 +100,7 @@ func main() {
 	//readAllQuestions(connectionEstablished)
 	//readAllAnswers(connectionEstablished)
 	//readAllPolls(connectionEstablished)
-	//readAllSessions(connectionEstablished)
+	readAllSessions(connectionEstablished)
 
 	fmt.Println("FIN.")
 }
@@ -290,7 +290,7 @@ func insertSession(connectionEstablished *sql.DB, ID_patient int, ID_poll int) {
 	fmt.Print("Ingresa una fecha (yyyy-mm-dd): ")
 	fmt.Scanln(&date)
 
-	insertSession, err := connectionEstablished.Prepare("INSERT INTO session (ID_p, ID_po, DATE_s) VALUES ( ?, ?, ?)")
+	insertSession, err := connectionEstablished.Prepare("INSERT INTO sessions (ID_p, ID_po, DATE_s) VALUES ( ?, ?, ?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -504,7 +504,7 @@ func readAllPolls(connectionEstablished *sql.DB) {
 
 func readAllSessions(connectionEstablished *sql.DB) {
 	fmt.Println("Mostrando todas las sesiones")
-	readSessions, err := connectionEstablished.Query("SELECT * FROM session")
+	readSessions, err := connectionEstablished.Query("SELECT * FROM sessions")
 	if err != nil {
 		panic(err.Error())
 	}

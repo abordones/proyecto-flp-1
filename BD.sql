@@ -117,6 +117,7 @@ create table SESSIONS
 (
    ID_P                 integer                        not null,
    ID_PO                integer                        not null,
+   DATE_S               date                           null,
    constraint PK_SESSIONS primary key (ID_P, ID_PO)
 );
 
@@ -223,3 +224,4 @@ alter table SESSIONS
       references POLLS (ID_PO)
       on update restrict
       on delete restrict;
+
