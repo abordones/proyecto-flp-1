@@ -63,7 +63,8 @@ func main() {
 	//insertTest(connectionEstablished)
 	//insertQuestion(connectionEstablished, 1) //Recibe ID Test pero NO confirma si existe ID Test.
 	//insertAnswer(connectionEstablished, 1) //Recibe ID Question pero NO confirma si existe ID Question.
-	//insertPoll(connectionEstablished, 1, 1) //ID usuario, ID test.
+	//insertPoll(connectionEstablished, 1, 1) //ID user, ID test.
+	insertSession(connectionEstablished, 1, 1) //ID patient y ID poll.
 
 	//Reciben conexion y una 'ID'
 	//disableUser(connectionEstablished, 1)    //No confirma si el usuario existe.
@@ -256,6 +257,21 @@ func insertPoll(connectionEstablished *sql.DB, ID_user int, ID_test int) {
 	insertPoll.Exec(ID_user, ID_test)
 
 	fmt.Println("Encuesta ingresada.")
+}
+
+func insertSession(connectionEstablished *sql.DB, ID_patient int, ID_poll int) {
+
+	var date string
+	fmt.Print("Ingresa una fecha (yyyy-mm-dd): ")
+	fmt.Scanln(&date)
+
+	insertSession, err := connectionEstablished.Prepare("INSERT INTO session (ID_p, ID_po, DATE_s) VALUES ( ?, ?, ?)")
+	if err != nil {
+		panic(err.Error())
+	}
+	insertSession.Exec(ID_patient, ID_poll, date)
+
+	fmt.Println("Sesion ingresada.")
 }
 
 func readAllUsers(connectionEstablished *sql.DB) {
