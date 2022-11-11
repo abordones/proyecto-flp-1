@@ -77,30 +77,31 @@ func main() {
 
 	connectionEstablished := conectionBD()
 
-	//Insertions
+	//-----------------------------INSERTION-----------------------------
 	//insertUser(connectionEstablished)
 	//insertPatient(connectionEstablished)
 	//insertTest(connectionEstablished)
-	//insertQuestion(connectionEstablished, 1) //Recibe ID Test pero NO confirma si existe ID Test.
-	//insertAnswer(connectionEstablished, 1) //Recibe ID Question pero NO confirma si existe ID Question.
-	//insertPoll(connectionEstablished, 1, 1) //ID user, ID test.
-	//insertSession(connectionEstablished, 1, 1) //ID patient y ID poll.
+	//insertQuestion(connectionEstablished, 1) 		//Recibe ID Test pero NO confirma si existe ID Test.
+	//insertAnswer(connectionEstablished, 1) 		//Recibe ID Question pero NO confirma si existe ID Question.
+	//insertPoll(connectionEstablished, 1, 1) 		//ID user, ID test.
+	//insertSession(connectionEstablished, 1, 1) 		//ID patient y ID poll.
 
-	//Reciben conexion y una 'ID'
-	//disableUser(connectionEstablished, 1)    //No confirma si el usuario existe.
-	//disablePatient(connectionEstablished, 1) //No confirma si el usuario existe.
-	//disableTest(connectionEstablished, 1)
-	//disableQuestion(connectionEstablished, 1)
-	//disableAnswer(connectionEstablished, 1)
+	//-------------------------------STATE-------------------------------
+	stateUser(connectionEstablished, 1)
+	//statePatient(connectionEstablished, 1)
+	//stateTest(connectionEstablished, 1)
+	//stateQuestion(connectionEstablished, 1)
+	//stateAnswer(connectionEstablished, 1)
 
+	//-------------------------------READ-------------------------------
 	//readAllUsers(connectionEstablished)
 	//readAllPatients(connectionEstablished)
 	//readAllTests(connectionEstablished)
 	//readAllQuestions(connectionEstablished)
-	readAllAnswers(connectionEstablished)
+	//readAllAnswers(connectionEstablished)
 	//readAllPolls(connectionEstablished)
 	//readAllSessions(connectionEstablished)
-	//7.-Cerrar y finalizar.
+
 	fmt.Println("FIN.")
 }
 
@@ -526,62 +527,102 @@ func readAllSessions(connectionEstablished *sql.DB) {
 	fmt.Println(arraySession)
 }
 
-func disableUser(connectionEstablished *sql.DB, ID int) {
+func stateUser(connectionEstablished *sql.DB, ID int) {
+
+	var active int
+	fmt.Print("Para activar ingrese (1) para desactivar ingrese (0): ")
+	fmt.Scanln(&active)
 
 	idUser := ID
-	disableUser, err := connectionEstablished.Prepare("UPDATE users SET ACTIVE_u=false WHERE ID_u=?")
+	stateUser, err := connectionEstablished.Prepare("UPDATE users SET ACTIVE_u=? WHERE ID_u=?")
 	if err != nil {
 		panic(err.Error())
 	}
-	disableUser.Exec(idUser)
+	stateUser.Exec(active, idUser)
 
-	fmt.Printf("El usuario ID (%v) ha sido deshabilitado.\n", idUser)
+	if active == 0 {
+		fmt.Printf("El usuario ID (%v) ha sido deshabilitado.\n", idUser)
+	} else {
+		fmt.Printf("El usuario ID (%v) ha sido habilitado.\n", idUser)
+	}
 }
 
-func disablePatient(connectionEstablished *sql.DB, ID int) {
+func statePatient(connectionEstablished *sql.DB, ID int) {
+
+	var active int
+	fmt.Print("Para activar ingrese (1) para desactivar ingrese (0): ")
+	fmt.Scanln(&active)
 
 	idPatient := ID
-	disablePatient, err := connectionEstablished.Prepare("UPDATE patients SET ACTIVE_p=false WHERE ID_p=?")
+	statePatient, err := connectionEstablished.Prepare("UPDATE patients SET ACTIVE_p=? WHERE ID_p=?")
 	if err != nil {
 		panic(err.Error())
 	}
-	disablePatient.Exec(idPatient)
+	statePatient.Exec(active, idPatient)
 
-	fmt.Printf("El paciente ID (%v) ha sido deshabilitado.\n", idPatient)
+	if active == 0 {
+		fmt.Printf("El paciente ID (%v) ha sido deshabilitado.\n", idPatient)
+	} else {
+		fmt.Printf("El paciente ID (%v) ha sido habilitado.\n", idPatient)
+	}
 }
 
-func disableTest(connectionEstablished *sql.DB, ID int) {
+func stateTest(connectionEstablished *sql.DB, ID int) {
+
+	var active int
+	fmt.Print("Para activar ingrese (1) para desactivar ingrese (0): ")
+	fmt.Scanln(&active)
 
 	idTest := ID
-	disableTest, err := connectionEstablished.Prepare("UPDATE tests SET ACTIVE_t=false WHERE ID_t=?")
+	stateTest, err := connectionEstablished.Prepare("UPDATE tests SET ACTIVE_t=? WHERE ID_t=?")
 	if err != nil {
 		panic(err.Error())
 	}
-	disableTest.Exec(idTest)
+	stateTest.Exec(active, idTest)
 
-	fmt.Printf("El paciente ID (%v) ha sido deshabilitado.\n", idTest)
+	if active == 0 {
+		fmt.Printf("El test ID (%v) ha sido deshabilitado.\n", idTest)
+	} else {
+		fmt.Printf("El test ID (%v) ha sido habilitado.\n", idTest)
+	}
 }
 
-func disableQuestion(connectionEstablished *sql.DB, ID int) {
+func stateQuestion(connectionEstablished *sql.DB, ID int) {
+
+	var active int
+	fmt.Print("Para activar ingrese (1) para desactivar ingrese (0): ")
+	fmt.Scanln(&active)
 
 	idQuestion := ID
-	disableQuestion, err := connectionEstablished.Prepare("UPDATE questions SET ACTIVE_q=false WHERE ID_q=?")
+	stateQuestion, err := connectionEstablished.Prepare("UPDATE questions SET ACTIVE_q=? WHERE ID_q=?")
 	if err != nil {
 		panic(err.Error())
 	}
-	disableQuestion.Exec(idQuestion)
+	stateQuestion.Exec(active, idQuestion)
 
-	fmt.Printf("La pregunta ID (%v) ha sido deshabilitado.\n", idQuestion)
+	if active == 0 {
+		fmt.Printf("La pregunta ID (%v) ha sido deshabilitado.\n", idQuestion)
+	} else {
+		fmt.Printf("La pregunta ID (%v) ha sido habilitado.\n", idQuestion)
+	}
 }
 
-func disableAnswer(connectionEstablished *sql.DB, ID int) {
+func stateAnswer(connectionEstablished *sql.DB, ID int) {
+
+	var active int
+	fmt.Print("Para activar ingrese (1) para desactivar ingrese (0): ")
+	fmt.Scanln(&active)
 
 	idAnswer := ID
-	disableQuestion, err := connectionEstablished.Prepare("UPDATE answers SET ACTIVE_a=false WHERE ID_a=?")
+	stateAnswer, err := connectionEstablished.Prepare("UPDATE answers SET ACTIVE_a=? WHERE ID_a=?")
 	if err != nil {
 		panic(err.Error())
 	}
-	disableQuestion.Exec(idAnswer)
+	stateAnswer.Exec(active, idAnswer)
 
-	fmt.Printf("La respuesta ID (%v) ha sido deshabilitado.\n", idAnswer)
+	if active == 0 {
+		fmt.Printf("La respuesta ID (%v) ha sido deshabilitado.\n", idAnswer)
+	} else {
+		fmt.Printf("La respuesta ID (%v) ha sido habilitado.\n", idAnswer)
+	}
 }
