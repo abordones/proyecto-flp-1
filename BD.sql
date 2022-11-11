@@ -57,8 +57,8 @@ ID_P ASC
 create table POLLS 
 (
    ID_PO                integer                        not null		AUTO_INCREMENT,
-   ID_T                 integer                        not null,
    ID_U                 integer                        not null,
+   ID_T                 integer                        not null,
    constraint PK_POLLS primary key (ID_PO)
 );
 
@@ -70,17 +70,17 @@ ID_PO ASC
 );
 
 /*==============================================================*/
+/* Index: REALIZAR_FK                                           */
+/*==============================================================*/
+create index REALIZAR_FK on POLLS (
+ID_U ASC
+);
+
+/*==============================================================*/
 /* Index: ESTAR_FK                                              */
 /*==============================================================*/
 create index ESTAR_FK on POLLS (
 ID_T ASC
-);
-
-/*==============================================================*/
-/* Index: HACER_FK                                              */
-/*==============================================================*/
-create index HACER_FK on POLLS (
-ID_U ASC
 );
 
 /*==============================================================*/
@@ -90,7 +90,7 @@ create table QUESTIONS
 (
    ID_Q                 integer                        not null		AUTO_INCREMENT,
    ID_T                 integer                        not null,
-   QUESTION_Q           varchar(100)                   null,
+   QUESTION_Q           varchar(150)                   null,
    DESCRIPTION_Q        varchar(200)                   null,
    ACTIVE_Q             smallint                       null,
    constraint PK_QUESTIONS primary key (ID_Q)
@@ -111,36 +111,36 @@ ID_T ASC
 );
 
 /*==============================================================*/
-/* Table: "SESSION"                                             */
+/* Table: SESSION                                             */
 /*==============================================================*/
-create table "SESSION" 
+create table SESSION 
 (
-   ID_PO                integer                        not null,
    ID_P                 integer                        not null,
-   "DATE"               date                           null,
-   constraint PK_SESSION primary key (ID_PO, ID_P)
+   ID_PO                integer                        not null,
+   DATE_S               date                           null,
+   constraint PK_SESSION primary key (ID_P, ID_PO)
 );
 
 /*==============================================================*/
-/* Index: USAR_PK                                               */
+/* Index: SESSION_PK                                            */
 /*==============================================================*/
-create unique index USAR_PK on "SESSION" (
-ID_PO ASC,
-ID_P ASC
-);
-
-/*==============================================================*/
-/* Index: USAR2_FK                                              */
-/*==============================================================*/
-create index USAR2_FK on "SESSION" (
-ID_P ASC
-);
-
-/*==============================================================*/
-/* Index: USAR_FK                                               */
-/*==============================================================*/
-create index USAR_FK on "SESSION" (
+create unique index SESSION_PK on SESSION (
+ID_P ASC,
 ID_PO ASC
+);
+
+/*==============================================================*/
+/* Index: SESSION2_FK                                           */
+/*==============================================================*/
+create index SESSION2_FK on SESSION (
+ID_PO ASC
+);
+
+/*==============================================================*/
+/* Index: SESSION_FK                                            */
+/*==============================================================*/
+create index SESSION_FK on SESSION (
+ID_P ASC
 );
 
 /*==============================================================*/
@@ -152,7 +152,7 @@ create table TESTS
    NAME_T               char(100)                      null,
    CUTPOINT_T           integer                        null,
    MATCHPOINT_T         integer                        null,
-   OBSERVATION_T        varchar(500)                   null,
+   DESCRIPTION_T        varchar(500)                   null,
    ACTIVE_T             smallint                       null,
    constraint PK_TESTS primary key (ID_T)
 );
@@ -177,7 +177,7 @@ create table USERS
    MOTHERNAME_U         char(50)                       null,
    BIRTHDAY_U           date                           null,
    EMAIL_U              varchar(70)                    null,
-   PASSWORD_U           varchar(50)                    null,
+   PASSWORD_U           varchar(70)                    null,
    ACTIVE_U             smallint                       null,
    constraint PK_USERS primary key (ID_U)
 );
@@ -202,7 +202,7 @@ alter table POLLS
       on delete restrict;
 
 alter table POLLS
-   add constraint FK_POLLS_HACER_USERS foreign key (ID_U)
+   add constraint FK_POLLS_REALIZAR_USERS foreign key (ID_U)
       references USERS (ID_U)
       on update restrict
       on delete restrict;
@@ -213,14 +213,14 @@ alter table QUESTIONS
       on update restrict
       on delete restrict;
 
-alter table "SESSION"
-   add constraint FK_SESSION_SESSION_POLLS foreign key (ID_PO)
-      references POLLS (ID_PO)
+alter table SESSION
+   add constraint FK_SESSION_SESSION_PATIENTS foreign key (ID_P)
+      references PATIENTS (ID_P)
       on update restrict
       on delete restrict;
 
-alter table "SESSION"
-   add constraint FK_SESSION_SESSION2_PATIENTS foreign key (ID_P)
-      references PATIENTS (ID_P)
+alter table SESSION
+   add constraint FK_SESSION_SESSION2_POLLS foreign key (ID_PO)
+      references POLLS (ID_PO)
       on update restrict
       on delete restrict;
