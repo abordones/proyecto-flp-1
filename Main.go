@@ -36,6 +36,15 @@ type Patient struct {
 	active      bool
 }
 
+type Test struct {
+	ID          int
+	name        string
+	cutPoint    int
+	matchPoint  int
+	description string
+	active      bool
+}
+
 func main() {
 
 	connectionEstablished := conectionBD()
@@ -43,7 +52,7 @@ func main() {
 	//Insertions
 	//insertUser(connectionEstablished)
 	//insertPatient(connectionEstablished)
-	insertTest(connectionEstablished)
+	//insertTest(connectionEstablished)
 	//insertQuestion(connectionEstablished, 1) 		//Recibe ID Test pero NO confirma si existe ID Test.
 	//insertAnswer(connectionEstablished, 1) //Recibe ID Question pero NO confirma si existe ID Question.
 
@@ -53,6 +62,7 @@ func main() {
 
 	//readAllUsers(connectionEstablished)
 	//readAllPatients(connectionEstablished)
+	readAllTest(connectionEstablished)
 
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
@@ -229,6 +239,7 @@ func insertAnswer(connectionEstablished *sql.DB, ID_question int) {
 
 func readAllUsers(connectionEstablished *sql.DB) {
 
+	fmt.Println("Mostrando a todos los usuarios")
 	readUser, err := connectionEstablished.Query("SELECT * FROM users")
 	if err != nil {
 		panic(err.Error())
@@ -271,6 +282,7 @@ func readAllUsers(connectionEstablished *sql.DB) {
 
 func readAllPatients(connectionEstablished *sql.DB) {
 
+	fmt.Println("Mostrando a todos los pacientes")
 	readPatient, err := connectionEstablished.Query("SELECT * FROM patients")
 	if err != nil {
 		panic(err.Error())
@@ -309,6 +321,38 @@ func readAllPatients(connectionEstablished *sql.DB) {
 		arrayPatient = append(arrayPatient, patient)
 	}
 	fmt.Println(arrayPatient)
+}
+
+func readAllTest(connectionEstablished *sql.DB) {
+
+	fmt.Println("Mostrando todos los tests")
+	readTest, err := connectionEstablished.Query("SELECT * FROM tests")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	test := Test{} //Variable := Struct
+	arrayTest := []Test{}
+	for readTest.Next() {
+		var ID int
+		var name string
+		var cutPoint int
+		var matchPoint int
+		var description string
+		var active bool
+		err = readTest.Scan(&ID, &name, &cutPoint, &matchPoint, &description, &active)
+		if err != nil {
+			panic(err.Error())
+		}
+		test.ID = ID
+		test.name = name
+		test.cutPoint = cutPoint
+		test.matchPoint = matchPoint
+		test.description = description
+		test.active = active
+		arrayTest = append(arrayTest, test)
+	}
+	fmt.Println(arrayTest)
 }
 
 func disableUser(connectionEstablished *sql.DB, ID int) {
