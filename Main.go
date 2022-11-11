@@ -78,16 +78,16 @@ func main() {
 	connectionEstablished := conectionBD()
 
 	//-----------------------------INSERTION-----------------------------
-	//insertUser(connectionEstablished)
+	insertUser(connectionEstablished)
 	//insertPatient(connectionEstablished)
 	//insertTest(connectionEstablished)
-	//insertQuestion(connectionEstablished, 1) 		//Recibe ID Test pero NO confirma si existe ID Test.
-	//insertAnswer(connectionEstablished, 1) 		//Recibe ID Question pero NO confirma si existe ID Question.
-	//insertPoll(connectionEstablished, 1, 1) 		//ID user, ID test.
-	//insertSession(connectionEstablished, 1, 1) 		//ID patient y ID poll.
+	//insertQuestion(connectionEstablished, 1) //Recibe ID Test.
+	//insertAnswer(connectionEstablished, 1) //Recibe ID Question.
+	//insertPoll(connectionEstablished, 1, 1) //Recibe ID user, ID test.
+	//insertSession(connectionEstablished, 1, 1) //Recibe ID patient y ID poll.
 
 	//-------------------------------STATE-------------------------------
-	stateUser(connectionEstablished, 1)
+	//stateUser(connectionEstablished, 1)
 	//statePatient(connectionEstablished, 1)
 	//stateTest(connectionEstablished, 1)
 	//stateQuestion(connectionEstablished, 1)
