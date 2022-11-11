@@ -63,6 +63,7 @@ func main() {
 	//insertTest(connectionEstablished)
 	//insertQuestion(connectionEstablished, 1) //Recibe ID Test pero NO confirma si existe ID Test.
 	//insertAnswer(connectionEstablished, 1) //Recibe ID Question pero NO confirma si existe ID Question.
+	//insertPoll(connectionEstablished, 1, 1) //ID usuario, ID test.
 
 	//Reciben conexion y una 'ID'
 	//disableUser(connectionEstablished, 1)    //No confirma si el usuario existe.
@@ -72,7 +73,7 @@ func main() {
 	//readAllUsers(connectionEstablished)
 	//readAllPatients(connectionEstablished)
 	//readAllTests(connectionEstablished)
-	readAllQuestions(connectionEstablished)
+	//readAllQuestions(connectionEstablished)
 
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
@@ -245,6 +246,16 @@ func insertAnswer(connectionEstablished *sql.DB, ID_question int) {
 	insertAnswer.Exec(ID_question, point, observation)
 
 	fmt.Println("Respuesta ingresada.")
+}
+
+func insertPoll(connectionEstablished *sql.DB, ID_user int, ID_test int) {
+	insertPoll, err := connectionEstablished.Prepare("INSERT INTO polls (ID_po, ID_u, ID_t) VALUES (NULL, ?, ?)")
+	if err != nil {
+		panic(err.Error())
+	}
+	insertPoll.Exec(ID_user, ID_test)
+
+	fmt.Println("Encuesta ingresada.")
 }
 
 func readAllUsers(connectionEstablished *sql.DB) {
