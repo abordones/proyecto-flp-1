@@ -43,7 +43,7 @@ func main() {
 	//Insertions
 	//insertUser(connectionEstablished)
 	//insertPatient(connectionEstablished)
-	//insertTest(connectionEstablished)
+	insertTest(connectionEstablished)
 	//insertQuestion(connectionEstablished, 1) 		//Recibe ID Test pero NO confirma si existe ID Test.
 	//insertAnswer(connectionEstablished, 1) //Recibe ID Question pero NO confirma si existe ID Question.
 
@@ -52,7 +52,7 @@ func main() {
 	//disablePatient(connectionEstablished, 1) //No confirma si el usuario existe.
 
 	//readAllUsers(connectionEstablished)
-	readAllPatients(connectionEstablished)
+	//readAllPatients(connectionEstablished)
 
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
@@ -195,15 +195,15 @@ func insertTest(connectionEstablished *sql.DB) {
 	fmt.Print("Ingresa puntaje match: ")
 	fmt.Scanln(&matchPoint)
 
-	fmt.Print("Ingresa una observacion: ")
+	fmt.Print("Ingresa una descripcion: ")
 	o := bufio.NewReader(os.Stdin)
-	observation, _ := o.ReadString('\n')
+	description, _ := o.ReadString('\n')
 
-	insertTest, err := connectionEstablished.Prepare("INSERT INTO tests (ID_T, NAME_T, CUTPOINT_T, MATCHPOINT_T, OBSERVATION_T, ACTIVE_T) VALUES (NULL, ?, ?, ?, ?, '1')")
+	insertTest, err := connectionEstablished.Prepare("INSERT INTO tests (ID_T, NAME_T, CUTPOINT_T, MATCHPOINT_T, DESCRIPTION_T, ACTIVE_T) VALUES (NULL, ?, ?, ?, ?, '1')")
 	if err != nil {
 		panic(err.Error())
 	}
-	insertTest.Exec(name, cutPoint, matchPoint, observation)
+	insertTest.Exec(name, cutPoint, matchPoint, description)
 
 	fmt.Println("Test ingresado.")
 }
