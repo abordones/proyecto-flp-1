@@ -59,6 +59,7 @@ func main() {
 	//Reciben conexion y una 'ID'
 	//disableUser(connectionEstablished, 1)    //No confirma si el usuario existe.
 	//disablePatient(connectionEstablished, 1) //No confirma si el usuario existe.
+	disableTest(connectionEstablished, 1)
 
 	//readAllUsers(connectionEstablished)
 	//readAllPatients(connectionEstablished)
@@ -358,7 +359,7 @@ func readAllTest(connectionEstablished *sql.DB) {
 func disableUser(connectionEstablished *sql.DB, ID int) {
 
 	idUser := ID
-	disableUser, err := connectionEstablished.Prepare("UPDATE users SET ACTIVE=false WHERE ID=?")
+	disableUser, err := connectionEstablished.Prepare("UPDATE users SET ACTIVE_u=false WHERE ID_u=?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -370,11 +371,23 @@ func disableUser(connectionEstablished *sql.DB, ID int) {
 func disablePatient(connectionEstablished *sql.DB, ID int) {
 
 	idPatient := ID
-	disablePatient, err := connectionEstablished.Prepare("UPDATE patients SET ACTIVE=false WHERE ID=?")
+	disablePatient, err := connectionEstablished.Prepare("UPDATE patients SET ACTIVE_p=false WHERE ID_p=?")
 	if err != nil {
 		panic(err.Error())
 	}
 	disablePatient.Exec(idPatient)
 
 	fmt.Printf("El paciente ID (%v) ha sido deshabilitado.\n", idPatient)
+}
+
+func disableTest(connectionEstablished *sql.DB, ID int) {
+
+	idTest := ID
+	disableTest, err := connectionEstablished.Prepare("UPDATE tests SET ACTIVE_t=false WHERE ID_t=?")
+	if err != nil {
+		panic(err.Error())
+	}
+	disableTest.Exec(idTest)
+
+	fmt.Printf("El paciente ID (%v) ha sido deshabilitado.\n", idTest)
 }
