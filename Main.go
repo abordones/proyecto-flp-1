@@ -97,9 +97,9 @@ func main() {
 	//readAllPatients(connectionEstablished)
 	//readAllTests(connectionEstablished)
 	//readAllQuestions(connectionEstablished)
-	//readAllAnswers(connectionEstablished)
+	readAllAnswers(connectionEstablished)
 	//readAllPolls(connectionEstablished)
-	readAllSessions(connectionEstablished)
+	//readAllSessions(connectionEstablished)
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
 }
@@ -300,8 +300,8 @@ func insertSession(connectionEstablished *sql.DB, ID_patient int, ID_poll int) {
 
 func readAllUsers(connectionEstablished *sql.DB) {
 
-	fmt.Println("Mostrando a todos los usuarios")
-	readUser, err := connectionEstablished.Query("SELECT * FROM users")
+	fmt.Println("Mostrando a todos los usuarios activos")
+	readUser, err := connectionEstablished.Query("SELECT * FROM users WHERE ACTIVE_U=true")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -343,8 +343,8 @@ func readAllUsers(connectionEstablished *sql.DB) {
 
 func readAllPatients(connectionEstablished *sql.DB) {
 
-	fmt.Println("Mostrando a todos los pacientes")
-	readPatient, err := connectionEstablished.Query("SELECT * FROM patients")
+	fmt.Println("Mostrando a todos los pacientes activos")
+	readPatient, err := connectionEstablished.Query("SELECT * FROM patients WHERE ACTIVE_P=true")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -386,8 +386,8 @@ func readAllPatients(connectionEstablished *sql.DB) {
 
 func readAllTests(connectionEstablished *sql.DB) {
 
-	fmt.Println("Mostrando todos los tests")
-	readTest, err := connectionEstablished.Query("SELECT * FROM tests")
+	fmt.Println("Mostrando todos los tests activos")
+	readTest, err := connectionEstablished.Query("SELECT * FROM tests WHERE ACTIVE_T=true")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -417,8 +417,9 @@ func readAllTests(connectionEstablished *sql.DB) {
 }
 
 func readAllQuestions(connectionEstablished *sql.DB) {
-	fmt.Println("Mostrando todas las preguntas")
-	readQuestion, err := connectionEstablished.Query("SELECT * FROM questions")
+
+	fmt.Println("Mostrando todas las preguntas activas")
+	readQuestion, err := connectionEstablished.Query("SELECT * FROM questions WHERE ACTIVE_Q=true")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -446,8 +447,9 @@ func readAllQuestions(connectionEstablished *sql.DB) {
 }
 
 func readAllAnswers(connectionEstablished *sql.DB) {
-	fmt.Println("Mostrando todas las respuestas")
-	readAnswers, err := connectionEstablished.Query("SELECT * FROM answers")
+
+	fmt.Println("Mostrando todas las respuestas activas")
+	readAnswers, err := connectionEstablished.Query("SELECT * FROM answers WHERE ACTIVE_A=true")
 	if err != nil {
 		panic(err.Error())
 	}
