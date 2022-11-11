@@ -45,6 +45,14 @@ type Test struct {
 	active      bool
 }
 
+type Question struct {
+	ID          int
+	ID_t        int
+	question    string
+	description string
+	active      bool
+}
+
 func main() {
 
 	connectionEstablished := conectionBD()
@@ -53,17 +61,18 @@ func main() {
 	//insertUser(connectionEstablished)
 	//insertPatient(connectionEstablished)
 	//insertTest(connectionEstablished)
-	//insertQuestion(connectionEstablished, 1) 		//Recibe ID Test pero NO confirma si existe ID Test.
+	//insertQuestion(connectionEstablished, 1) //Recibe ID Test pero NO confirma si existe ID Test.
 	//insertAnswer(connectionEstablished, 1) //Recibe ID Question pero NO confirma si existe ID Question.
 
 	//Reciben conexion y una 'ID'
 	//disableUser(connectionEstablished, 1)    //No confirma si el usuario existe.
 	//disablePatient(connectionEstablished, 1) //No confirma si el usuario existe.
-	disableTest(connectionEstablished, 1)
+	//disableTest(connectionEstablished, 1)
 
 	//readAllUsers(connectionEstablished)
 	//readAllPatients(connectionEstablished)
-	readAllTest(connectionEstablished)
+	//readAllTests(connectionEstablished)
+	readAllQuestions(connectionEstablished)
 
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
@@ -324,7 +333,7 @@ func readAllPatients(connectionEstablished *sql.DB) {
 	fmt.Println(arrayPatient)
 }
 
-func readAllTest(connectionEstablished *sql.DB) {
+func readAllTests(connectionEstablished *sql.DB) {
 
 	fmt.Println("Mostrando todos los tests")
 	readTest, err := connectionEstablished.Query("SELECT * FROM tests")
@@ -354,6 +363,36 @@ func readAllTest(connectionEstablished *sql.DB) {
 		arrayTest = append(arrayTest, test)
 	}
 	fmt.Println(arrayTest)
+}
+
+func readAllQuestions(connectionEstablished *sql.DB) {
+	fmt.Println("Mostrando todas las preguntas")
+	readQuestion, err := connectionEstablished.Query("SELECT * FROM questions")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	questions := Question{} //Variable := Struct
+	arrayQuestions := []Question{}
+	for readQuestion.Next() {
+		var ID int
+		var ID_t int
+		var question string
+		var description string
+		var active bool
+		err = readQuestion.Scan(&ID, &ID_t, &question, &description, &active)
+		if err != nil {
+			panic(err.Error())
+		}
+		questions.ID = ID
+		questions.ID_t = ID_t
+		questions.question = question
+		questions.description = description
+		questions.active = active
+		arrayQuestions = append(arrayQuestions, questions)
+	}
+	fmt.Println(arrayQuestions)
+
 }
 
 func disableUser(connectionEstablished *sql.DB, ID int) {
