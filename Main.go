@@ -53,6 +53,14 @@ type Question struct {
 	active      bool
 }
 
+type Answer struct {
+	ID          int
+	ID_q        int
+	point       string
+	observation string
+	active      bool
+}
+
 func main() {
 
 	connectionEstablished := conectionBD()
@@ -71,12 +79,13 @@ func main() {
 	//disablePatient(connectionEstablished, 1) //No confirma si el usuario existe.
 	//disableTest(connectionEstablished, 1)
 	//disableQuestion(connectionEstablished, 1)
-	disableAnswer(connectionEstablished, 1)
+	//disableAnswer(connectionEstablished, 1)
 
 	//readAllUsers(connectionEstablished)
 	//readAllPatients(connectionEstablished)
 	//readAllTests(connectionEstablished)
 	//readAllQuestions(connectionEstablished)
+	readAllAnswers(connectionEstablished)
 
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
@@ -421,6 +430,35 @@ func readAllQuestions(connectionEstablished *sql.DB) {
 		arrayQuestions = append(arrayQuestions, questions)
 	}
 	fmt.Println(arrayQuestions)
+}
+
+func readAllAnswers(connectionEstablished *sql.DB) {
+	fmt.Println("Mostrando todas las respuestas")
+	readAnswers, err := connectionEstablished.Query("SELECT * FROM answers")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	answer := Answer{} //Variable := Struct
+	arrayAnswer := []Answer{}
+	for readAnswers.Next() {
+		var ID int
+		var ID_q int
+		var point string
+		var observation string
+		var active bool
+		err = readAnswers.Scan(&ID, &ID_q, &point, &observation, &active)
+		if err != nil {
+			panic(err.Error())
+		}
+		answer.ID = ID
+		answer.ID_q = ID_q
+		answer.point = point
+		answer.observation = observation
+		answer.active = active
+		arrayAnswer = append(arrayAnswer, answer)
+	}
+	fmt.Println(arrayAnswer)
 }
 
 func disableUser(connectionEstablished *sql.DB, ID int) {
