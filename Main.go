@@ -13,9 +13,10 @@ type User struct {
 	ID         int
 	RUN        int
 	DV         string
-	names      string
+	name       string
 	fatherName string
 	motherName string
+	birthday   string
 	email      string
 	password   string
 	active     bool
@@ -25,9 +26,10 @@ type Patient struct {
 	ID          int
 	RUN         int
 	DV          string
-	names       string
+	name        string
 	fatherName  string
 	motherName  string
+	birthday    string
 	phone       int
 	email       string
 	observation string
@@ -39,7 +41,7 @@ func main() {
 	connectionEstablished := conectionBD()
 
 	//Insertions
-	insertUser(connectionEstablished)
+	//insertUser(connectionEstablished)
 	//insertPatient(connectionEstablished)
 	//insertTest(connectionEstablished)
 	//insertQuestion(connectionEstablished, 1) 		//Recibe ID Test pero NO confirma si existe ID Test.
@@ -50,7 +52,7 @@ func main() {
 	//disablePatient(connectionEstablished, 1) //No confirma si el usuario existe.
 
 	//readAllUsers(connectionEstablished)
-	//readAllPatients(connectionEstablished)
+	readAllPatients(connectionEstablished)
 
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
@@ -177,7 +179,6 @@ func insertUser(connectionEstablished *sql.DB) {
 	insertUser.Exec(RUN, DV, names, fatherName, motherName, birthday, email, password)
 
 	fmt.Println("Usuario ingresado con exito.")
-
 }
 
 func insertTest(connectionEstablished *sql.DB) {
@@ -224,7 +225,6 @@ func insertAnswer(connectionEstablished *sql.DB, ID_question int) {
 	insertAnswer.Exec(ID_question, point, observation)
 
 	fmt.Println("Respuesta ingresada.")
-
 }
 
 func readAllUsers(connectionEstablished *sql.DB) {
@@ -241,13 +241,14 @@ func readAllUsers(connectionEstablished *sql.DB) {
 		var ID int
 		var RUN int
 		var DV string
-		var names string
+		var name string
 		var fatherName string
 		var motherName string
+		var birthday string
 		var email string
 		var password string
 		var active bool
-		err = readUser.Scan(&ID, &RUN, &DV, &names, &fatherName, &motherName, &email, &password, &active)
+		err = readUser.Scan(&ID, &RUN, &DV, &name, &fatherName, &motherName, &birthday, &email, &password, &active)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -255,10 +256,11 @@ func readAllUsers(connectionEstablished *sql.DB) {
 		user.ID = ID
 		user.RUN = RUN
 		user.DV = DV
-		user.names = names
+		user.name = name
 		user.fatherName = fatherName
 		user.motherName = motherName
 		user.email = email
+		user.birthday = birthday
 		user.password = password
 		user.active = active
 		arrayUser = append(arrayUser, user)
@@ -280,14 +282,15 @@ func readAllPatients(connectionEstablished *sql.DB) {
 		var ID int
 		var RUN int
 		var DV string
-		var names string
+		var name string
 		var fatherName string
 		var motherName string
+		var birthday string
 		var phone int
 		var email string
 		var observation string
 		var active bool
-		err = readPatient.Scan(&ID, &RUN, &DV, &names, &fatherName, &motherName, &phone, &email, &observation, &active)
+		err = readPatient.Scan(&ID, &RUN, &DV, &name, &fatherName, &motherName, &birthday, &phone, &email, &observation, &active)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -295,9 +298,10 @@ func readAllPatients(connectionEstablished *sql.DB) {
 		patient.ID = ID
 		patient.RUN = RUN
 		patient.DV = DV
-		patient.names = names
+		patient.name = name
 		patient.fatherName = fatherName
 		patient.motherName = motherName
+		patient.birthday = birthday
 		patient.phone = phone
 		patient.email = email
 		patient.observation = observation
@@ -305,7 +309,6 @@ func readAllPatients(connectionEstablished *sql.DB) {
 		arrayPatient = append(arrayPatient, patient)
 	}
 	fmt.Println(arrayPatient)
-
 }
 
 func disableUser(connectionEstablished *sql.DB, ID int) {
