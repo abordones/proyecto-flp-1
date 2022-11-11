@@ -67,6 +67,12 @@ type Poll struct {
 	ID_t int
 }
 
+type Session struct {
+	ID    int
+	ID_po int
+	date  string
+}
+
 func main() {
 
 	connectionEstablished := conectionBD()
@@ -92,8 +98,8 @@ func main() {
 	//readAllTests(connectionEstablished)
 	//readAllQuestions(connectionEstablished)
 	//readAllAnswers(connectionEstablished)
-	readAllPolls(connectionEstablished)
-
+	//readAllPolls(connectionEstablished)
+	readAllSessions(connectionEstablished)
 	//7.-Cerrar y finalizar.
 	fmt.Println("FIN.")
 }
@@ -491,6 +497,31 @@ func readAllPolls(connectionEstablished *sql.DB) {
 		arrayPoll = append(arrayPoll, poll)
 	}
 	fmt.Println(arrayPoll)
+}
+
+func readAllSessions(connectionEstablished *sql.DB) {
+	fmt.Println("Mostrando todas las sesiones")
+	readSessions, err := connectionEstablished.Query("SELECT * FROM session")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	session := Session{} //Variable := Struct
+	arraySession := []Session{}
+	for readSessions.Next() {
+		var ID int
+		var ID_po int
+		var date string
+		err = readSessions.Scan(&ID, &ID_po, &date)
+		if err != nil {
+			panic(err.Error())
+		}
+		session.ID = ID
+		session.ID_po = ID_po
+		session.date = date
+		arraySession = append(arraySession, session)
+	}
+	fmt.Println(arraySession)
 }
 
 func disableUser(connectionEstablished *sql.DB, ID int) {
