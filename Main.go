@@ -64,12 +64,14 @@ func main() {
 	//insertQuestion(connectionEstablished, 1) //Recibe ID Test pero NO confirma si existe ID Test.
 	//insertAnswer(connectionEstablished, 1) //Recibe ID Question pero NO confirma si existe ID Question.
 	//insertPoll(connectionEstablished, 1, 1) //ID user, ID test.
-	insertSession(connectionEstablished, 1, 1) //ID patient y ID poll.
+	//insertSession(connectionEstablished, 1, 1) //ID patient y ID poll.
 
 	//Reciben conexion y una 'ID'
 	//disableUser(connectionEstablished, 1)    //No confirma si el usuario existe.
 	//disablePatient(connectionEstablished, 1) //No confirma si el usuario existe.
 	//disableTest(connectionEstablished, 1)
+	//disableQuestion(connectionEstablished, 1)
+	disableAnswer(connectionEstablished, 1)
 
 	//readAllUsers(connectionEstablished)
 	//readAllPatients(connectionEstablished)
@@ -419,7 +421,6 @@ func readAllQuestions(connectionEstablished *sql.DB) {
 		arrayQuestions = append(arrayQuestions, questions)
 	}
 	fmt.Println(arrayQuestions)
-
 }
 
 func disableUser(connectionEstablished *sql.DB, ID int) {
@@ -456,4 +457,28 @@ func disableTest(connectionEstablished *sql.DB, ID int) {
 	disableTest.Exec(idTest)
 
 	fmt.Printf("El paciente ID (%v) ha sido deshabilitado.\n", idTest)
+}
+
+func disableQuestion(connectionEstablished *sql.DB, ID int) {
+
+	idQuestion := ID
+	disableQuestion, err := connectionEstablished.Prepare("UPDATE questions SET ACTIVE_q=false WHERE ID_q=?")
+	if err != nil {
+		panic(err.Error())
+	}
+	disableQuestion.Exec(idQuestion)
+
+	fmt.Printf("La pregunta ID (%v) ha sido deshabilitado.\n", idQuestion)
+}
+
+func disableAnswer(connectionEstablished *sql.DB, ID int) {
+
+	idAnswer := ID
+	disableQuestion, err := connectionEstablished.Prepare("UPDATE answers SET ACTIVE_a=false WHERE ID_a=?")
+	if err != nil {
+		panic(err.Error())
+	}
+	disableQuestion.Exec(idAnswer)
+
+	fmt.Printf("La respuesta ID (%v) ha sido deshabilitado.\n", idAnswer)
 }
