@@ -115,23 +115,23 @@ func main() {
 	//1.B. Ingresar Usuario.
 	//insertUser(connectionEstablished) //Como conocer su ID?
 
-	//2.B. Agregar respuestas.
+	//2.B. Imprimir TEST.
+	//Necesito ID Test e imprimir desde Questions (WHERE ID_T='?').
+
+	//3.B. Agregar respuestas.
 	//Imprimir question segun ID?
 	//insertAnswer(connectionEstablished, 1) //Recibe ID Question. //Como conocer el ID question generado?
-	//Imprimir question segun ID?
 	//insertAnswer(connectionEstablished, 2) //Recibe ID Question. //Como conocer el ID question generado?
-	//Imprimir question segun ID?
 	//insertAnswer(connectionEstablished, 3) //Recibe ID Question. //Como conocer el ID question generado?
-	//Imprimir question segun ID?
 	//insertAnswer(connectionEstablished, 4) //Recibe ID Question. //Como conocer el ID question generado?
 
-	//3.B. Actualizar matchPoint de TEST.
+	//4.B. Actualizar matchPoint de TEST.
 	//Comprararlo con cutPointy dar resultado -> Deperesion/Normal.
 
-	//4.B. Ingresar POll.
+	//5.B. Ingresar POll.
 	//insertPoll(connectionEstablished, 1, 2) //Recibe ID user, ID test. //Se requiere esa info.
 
-	//5.B. Ingresar SESSION.
+	//6.B. Ingresar SESSION.
 	//insertSession(connectionEstablished, 1, 2) //Recibe ID patient y ID poll. //Se requiere esa info.
 
 	readAllUsers(connectionEstablished)
