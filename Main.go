@@ -84,7 +84,7 @@ func main() {
 	//insertQuestion(connectionEstablished, 1) //Recibe ID Test.
 	//insertAnswer(connectionEstablished, 1) //Recibe ID Question.
 	//insertPoll(connectionEstablished, 1, 1) //Recibe ID user, ID test.
-	insertSession(connectionEstablished, 1, 1) //Recibe ID patient y ID poll.
+	//insertSession(connectionEstablished, 1, 1) //Recibe ID patient y ID poll.
 
 	//-------------------------------STATE-------------------------------
 	//stateUser(connectionEstablished, 1)
@@ -100,9 +100,42 @@ func main() {
 	//readAllQuestions(connectionEstablished)
 	//readAllAnswers(connectionEstablished)
 	//readAllPolls(connectionEstablished)
-	readAllSessions(connectionEstablished)
+	//readAllSessions(connectionEstablished)
 
-	fmt.Println("FIN.")
+	fmt.Println("------------------------------INICIO------------------------------")
+	//1.A. Crear test.
+	//insertTest(connectionEstablished) //Como conocer el ID del test generado?
+
+	//2.A. Agregarle preguntas.
+	//insertQuestion(connectionEstablished, 2) //Recibe ID Test. //Como conocer el ID del test generado?
+	//insertQuestion(connectionEstablished, 2) //Recibe ID Test. //Como conocer el ID del test generado?
+	//insertQuestion(connectionEstablished, 2) //Recibe ID Test. //Como conocer el ID del test generado?
+	//insertQuestion(connectionEstablished, 2) //Recibe ID Test. //Como conocer el ID del test generado?
+
+	//1.B. Ingresar Usuario.
+	//insertUser(connectionEstablished) //Como conocer su ID?
+
+	//2.B. Agregar respuestas.
+	//Imprimir question segun ID?
+	//insertAnswer(connectionEstablished, 1) //Recibe ID Question. //Como conocer el ID question generado?
+	//Imprimir question segun ID?
+	//insertAnswer(connectionEstablished, 2) //Recibe ID Question. //Como conocer el ID question generado?
+	//Imprimir question segun ID?
+	//insertAnswer(connectionEstablished, 3) //Recibe ID Question. //Como conocer el ID question generado?
+	//Imprimir question segun ID?
+	//insertAnswer(connectionEstablished, 4) //Recibe ID Question. //Como conocer el ID question generado?
+
+	//3.B. Actualizar matchPoint de TEST.
+	//Comprararlo con cutPointy dar resultado -> Deperesion/Normal.
+
+	//4.B. Ingresar POll.
+	//insertPoll(connectionEstablished, 1, 2) //Recibe ID user, ID test. //Se requiere esa info.
+
+	//5.B. Ingresar SESSION.
+	//insertSession(connectionEstablished, 1, 2) //Recibe ID patient y ID poll. //Se requiere esa info.
+
+	readAllUsers(connectionEstablished)
+	fmt.Println("--------------------------------FIN-------------------------------")
 }
 
 func conectionBD() (conection *sql.DB) {
