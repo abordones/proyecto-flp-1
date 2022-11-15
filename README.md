@@ -1,19 +1,21 @@
-PROJECT N1: Diagnostic survey for depression.
+# PROJECT N1: Diagnostic survey for depression.
 
-- Description: 
+## Description: 
 	It is a system for conducting an interview with multivalued responses (with values ranging from 0 to 3) in order to diagnose symptoms or the disease of depression.
 
-- Project status: 
+## Project status: 
 	Active - On Track.
 
 - Environment Requirements:
 	"You have a working Go environment."
 
-- Installing:
-	"Instalar GOLANG"
-	- Dirijase a la pagina oficial del lenguaje https://golang.google.cn/doc/install
-	- Haga click en descargar en la version mas estable, en este caso /version que ocupamos/
-	- ejecute el archivo descargado, el cual se descargara la 
+## Installing:
+
+Building this system requires some dependencies, this are required and must be installed separately.
+
+	- all versions of Go for Windows are available on https://golang.google.cn/doc/install
+	- Download the Golang according to your system architecture and get go1.19.3 version 
+	- Execute the downloaded archive file and wherever you want to install this
 		
 	"Add a list of the minimum steps needed to clone the project and get it running locally."
 	"Pasos para la conexion al sistema:"
