@@ -20,8 +20,9 @@ PROJECT N1: Diagnostic survey for depression.
 		- PATH: esta variable intida la instalacion en la carpeta bin C:\Program Files\Go\bin
 	- Open a command prompt and cd to your proyect directory:
 		- $ go mod init sistema
-		- $ go get -u github.com/go-sql-driver/mysql "
-	- "Pasos para tener habilitar relaciones en PHPMyAdmin"
+		- $ go get -u github.com/go-sql-driver/mysql 
+		
+	"Pasos para tener habilitar relaciones en PHPMyAdmin"
 	1.- Iniciar Wampserver, dirigirse a 'MySQL', seleccionar 'my.ini'.
 	2.- Editar 'default-storage'. Debe quedar de la siguiente manera:
 		- ;default-storage-engine=MYISAM
