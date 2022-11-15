@@ -19,7 +19,7 @@ Building this system requires some dependencies, this are required and must be i
 - Execute the downloaded archive file and wherever you want to install this.
 - To check if your device is installed:
 	- go to the Command line an run the following command: 
-	" go version "
+	go version
 - Set the environment variables. Right click on My PC and select Choose the Advanced System Settings
 from the right side and click on Environment Variables:
 	- GOROOT: this variable denote your path instalation C:\Program Files\Go 
