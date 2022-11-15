@@ -10,6 +10,11 @@ PROJECT N1: Diagnostic survey for depression.
 	"You have a working Go environment."
 
 - Installing:
+	"Instalar GOLANG"
+	- Dirijase a la pagina oficial del lenguaje https://golang.google.cn/doc/install
+	- Haga click en descargar en la version mas estable, en este caso /version que ocupamos/
+	- ejecute el archivo descargado, el cual se descargara la 
+		
 	"Add a list of the minimum steps needed to clone the project and get it running locally."
 	"Pasos para la conexion al sistema:"
  	- Crear las siguientes variables de entorno:
