@@ -659,3 +659,10 @@ func stateAnswer(connectionEstablished *sql.DB, ID int) {
 		fmt.Printf("La respuesta ID (%v) ha sido habilitado.\n", idAnswer)
 	}
 }
+func menu(connectionEstablished *sql.DB){
+	
+	var option int
+	fmt.Print(" ")
+	fmt.Scanl(&option)
+	
+}
