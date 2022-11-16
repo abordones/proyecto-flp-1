@@ -552,6 +552,10 @@ func stateAnswer(connectionEstablished *sql.DB, ID int) {
 //updates
 func updatePatients(connectionEstablished *sql.DB){
 
+	var ID int
+	fmt.Print("Ingrese ID del Paciente: ")
+	fmt.Scanln(&ID)
+
 	var RUN int
 	fmt.Print("Ingresa RUN del paciente: ")
 	fmt.Scanln(&RUN)
@@ -587,22 +591,22 @@ func updatePatients(connectionEstablished *sql.DB){
 	o := bufio.NewReader(os.Stdin)
 	observation, _ := o.ReadString('\n')
 
-	var ID int
-	fmt.Print("Ingrese ID del Paciente: ")
-	fmt.Scanln(&ID)
-
 	idPatients := ID
 
 	updatePatients, err:= connectionEstablished.Prepare("UPDATE patients SET (RUN_P = ?, DV_P = ?, NAME_P = ?, FATHERNAME_P = ?, MOTHERNAME_P = ?, PHONE_P = ?, EMAIL_P = ?, BIRTHDAY_P = ?, OBSERVATION_P = ?) WHERE ID_P= ?")
 	if err != nil {
 		panic(err.Error())
 	}
-	updatePatients.Exec(ID, RUN, DV, names, fatherName, motherName, phone, email, birthday, observation)
+	updatePatients.Exec( RUN, DV, names, fatherName, motherName, phone, email, birthday, observation, ID)
 	fmt.Print("Datos actualizados con exito")
 }
 
 func updateUsers(connectionEstablished *sql.DB){
-
+		
+	var ID int
+	fmt.Print("Ingrese ID del Usuario: ")
+	fmt.Scanln(&ID)
+	
 	var RUN int
 	fmt.Print("Ingresa tu RUN: ")
 	fmt.Scanln(&RUN)
@@ -634,23 +638,21 @@ func updateUsers(connectionEstablished *sql.DB){
 	var password string
 	fmt.Print("Ingresa tu contraseña: ")
 	fmt.Scanln(&password)
-		
-	var ID int
-	fmt.Print("Ingrese ID del Usuario: ")
-	fmt.Scanln(&ID)
-	
 	
 	insertUser, err := connectionEstablished.Prepare("UPDATE users SET (RUN_U= ?, DV_U, NAME_U= ?, FATHERNAME_U= ?, MOTHERNAME_U= ?, BIRTHDAY_U= ?, EMAIL_U= ?, PASSWORD_U= ?) WHERE ID_U= ?")
 	if err != nil {
 		panic(err.Error())
 	}
 
-	updateUsers.Exec(ID, RUN, DV, names, fatherName, motherName, email, birthday, email, password)
+	updateUsers.Exec(RUN, DV, names, fatherName, motherName, email, birthday, email, password, ID)
 	fmt.Print("Datos actualizados con exito")
 }
 
 func updateQuestions(connectionEstablished *sql.DB, ID_test int){
 	
+	fmt.Print("Ingresa la ID de la pregunta: ")
+	fmt.Scanln(&idTest)
+
 	fmt.Print("Formula tu pregunta: ")
 	q := bufio.NewReader(os.Stdin)
 	question, _ := q.ReadString('\n')
@@ -658,19 +660,19 @@ func updateQuestions(connectionEstablished *sql.DB, ID_test int){
 	d := bufio.NewReader(os.Stdin)
 	description, _ := d.ReadString('\n')
 
-	fmt.Print("Ingresa la ID de la pregunta: ")
-	fmt.Scanln(&idTest)
-	
 	InsertQuestion, err := connectionEstablished.Prepare("UPDATE questions SET (QUESTION_Q= ?, DESCRIPTION_Q= ?) WHERE (ID_Q = ?); ")
 	if err != nil {
 		panic(err.Error())
 	}
 	
-	InsertQuestion.Exec(ID_test, ID_question, question, description)
+	InsertQuestion.Exec(question, description, ID_question)
 	fmt.Println("Pregunta actualizada con exito.")
 }
 
 func updateAnswers(connectionEstablished *sql.DB, ID_question int){
+
+	fmt.Print("Ingresa la ID de la pregunta: ")
+	fmt.Scanl(&idAnswer)
 
 	var point int
 	fmt.Print("Ingresa el nuevo puntaje (entre 0 y 3): ")
@@ -679,14 +681,12 @@ func updateAnswers(connectionEstablished *sql.DB, ID_question int){
 	o := bufio.NewReader(os.Stdin)
 	observation, _ := o.ReadString('\n')
 
-	fmt.Print("Ingresa la ID de la pregunta: ")
-	fmt.Scanl(&idAnswer)
 
 	insertAnswer, err := connectionEstablished.Prepare("UPDATE answers SET (POINT_A= ?, OBSERVATION_A= ?) WHERE (ID_A= ?)")
 	if err != nil {
 		panic(err.Error())
 	}
-	insertAnswer.Exec(ID ,ID_question, point, observation)
+	insertAnswer.Exec(point, observation, ID)
 	fmt.Println("Respuesta actualizada con exito.")
 
 } 
