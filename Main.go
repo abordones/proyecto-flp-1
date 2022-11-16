@@ -549,8 +549,8 @@ func stateAnswer(connectionEstablished *sql.DB, ID int) {
 	}
 }
 
-//updates
-func updatePatients(connectionEstablished *sql.DB){
+// updates
+func updatePatients(connectionEstablished *sql.DB) {
 
 	var ID int
 	fmt.Print("Ingrese ID del Paciente: ")
@@ -559,31 +559,31 @@ func updatePatients(connectionEstablished *sql.DB){
 	var RUN int
 	fmt.Print("Ingresa RUN del paciente: ")
 	fmt.Scanln(&RUN)
-	
+
 	var DV string
 	fmt.Print("Ingresa digito verificador del paciente: ")
 	fmt.Scanln(&DV)
-	
+
 	fmt.Print("Ingresa nombre(s) del paciente: ")
 	n := bufio.NewReader(os.Stdin)
 	names, _ := n.ReadString('\n')
-	
+
 	var fatherName string
 	fmt.Print("Ingresa apellido paterno del paciente: ")
 	fmt.Scanln(&fatherName)
-	
+
 	var motherName string
 	fmt.Print("Ingresa apellido materno del paciente: ")
 	fmt.Scanln(&motherName)
-	
+
 	var phone int
 	fmt.Print("Ingresa el numero de contacto del paciente: ")
 	fmt.Scanln(&phone)
-	
+
 	var email string
 	fmt.Print("Ingresa el correo electronico del paciente: ")
 	fmt.Scanln(&email)
-	
+
 	var birthday string
 	fmt.Print("Ingresa tu fecha de nacimineto (yyyy-mm-dd): ")
 	fmt.Scanln(&birthday)
@@ -591,55 +591,55 @@ func updatePatients(connectionEstablished *sql.DB){
 	o := bufio.NewReader(os.Stdin)
 	observation, _ := o.ReadString('\n')
 
-	idPatients := ID
+	//idPatients := ID
 
-	updatePatients, err:= connectionEstablished.Prepare("UPDATE patients SET (RUN_P = ?, DV_P = ?, NAME_P = ?, FATHERNAME_P = ?, MOTHERNAME_P = ?, PHONE_P = ?, EMAIL_P = ?, BIRTHDAY_P = ?, OBSERVATION_P = ?) WHERE ID_P= ?")
+	updatePatients, err := connectionEstablished.Prepare("UPDATE patients SET (RUN_P = ?, DV_P = ?, NAME_P = ?, FATHERNAME_P = ?, MOTHERNAME_P = ?, PHONE_P = ?, EMAIL_P = ?, BIRTHDAY_P = ?, OBSERVATION_P = ?) WHERE ID_P= ?")
 	if err != nil {
 		panic(err.Error())
 	}
-	updatePatients.Exec( RUN, DV, names, fatherName, motherName, phone, email, birthday, observation, ID)
+	updatePatients.Exec(RUN, DV, names, fatherName, motherName, phone, email, birthday, observation, ID)
 	fmt.Print("Datos actualizados con exito")
 }
 
-func updateUsers(connectionEstablished *sql.DB){
-		
+func updateUsers(connectionEstablished *sql.DB) {
+
 	var ID int
 	fmt.Print("Ingrese ID del Usuario: ")
 	fmt.Scanln(&ID)
-	
+
 	var RUN int
 	fmt.Print("Ingresa tu RUN: ")
 	fmt.Scanln(&RUN)
-	
+
 	var DV string
 	fmt.Print("Ingresa tu digito verificador: ")
 	fmt.Scanln(&DV)
-	
+
 	fmt.Print("Ingresa tu(s) nombre(s): ")
 	n := bufio.NewReader(os.Stdin)
 	names, _ := n.ReadString('\n')
-	
+
 	var fatherName string
 	fmt.Print("Ingresa tu apellido paterno: ")
 	fmt.Scanln(&fatherName)
-	
+
 	var motherName string
 	fmt.Print("Ingresa tu apellido materno: ")
 	fmt.Scanln(&motherName)
-	
+
 	var birthday string
 	fmt.Print("Ingresa tu fecha de nacimineto (yyyy-mm-dd): ")
 	fmt.Scanln(&birthday)
-	
+
 	var email string
 	fmt.Print("Ingresa tu correo electronico: ")
 	fmt.Scanln(&email)
-	
+
 	var password string
 	fmt.Print("Ingresa tu contraseña: ")
 	fmt.Scanln(&password)
-	
-	insertUser, err := connectionEstablished.Prepare("UPDATE users SET (RUN_U= ?, DV_U, NAME_U= ?, FATHERNAME_U= ?, MOTHERNAME_U= ?, BIRTHDAY_U= ?, EMAIL_U= ?, PASSWORD_U= ?) WHERE ID_U= ?")
+
+	updateUsers, err := connectionEstablished.Prepare("UPDATE users SET (RUN_U= ?, DV_U, NAME_U= ?, FATHERNAME_U= ?, MOTHERNAME_U= ?, BIRTHDAY_U= ?, EMAIL_U= ?, PASSWORD_U= ?) WHERE ID_U= ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -648,8 +648,8 @@ func updateUsers(connectionEstablished *sql.DB){
 	fmt.Print("Datos actualizados con exito")
 }
 
-func updateQuestions(connectionEstablished *sql.DB, ID_test int){
-	
+func updateQuestions(connectionEstablished *sql.DB, ID_test int) {
+	var ID_question int
 	fmt.Print("Ingresa la ID de la pregunta: ")
 	fmt.Scanln(&ID_question)
 
@@ -664,13 +664,13 @@ func updateQuestions(connectionEstablished *sql.DB, ID_test int){
 	if err != nil {
 		panic(err.Error())
 	}
-	
+
 	InsertQuestion.Exec(question, description, ID_question)
 	fmt.Println("Pregunta actualizada con exito.")
 }
 
-func updateAnswers(connectionEstablished *sql.DB, ID_question int){
-
+func updateAnswers(connectionEstablished *sql.DB, ID_question int) {
+	var idAnswer int
 	fmt.Print("Ingresa la ID de la pregunta: ")
 	fmt.Scanln(&idAnswer)
 
@@ -681,7 +681,6 @@ func updateAnswers(connectionEstablished *sql.DB, ID_question int){
 	o := bufio.NewReader(os.Stdin)
 	observation, _ := o.ReadString('\n')
 
-
 	insertAnswer, err := connectionEstablished.Prepare("UPDATE answers SET (POINT_A= ?, OBSERVATION_A= ?) WHERE (ID_A= ?)")
 	if err != nil {
 		panic(err.Error())
@@ -689,19 +688,77 @@ func updateAnswers(connectionEstablished *sql.DB, ID_question int){
 	insertAnswer.Exec(point, observation, idAnswer)
 	fmt.Println("Respuesta actualizada con exito.")
 
-} 
-
-
-func menu(connectionEstablished *sql.DB){
-
-	
-	var option int
-	fmt.Print(" ")
-	fmt.Scanl(&option)
-
-
 }
 
+func menu(connectionEstablished *sql.DB) {
 
+	var option int
+	fmt.Print(" ")
+	fmt.Print("Ingrese una opcion a elegir:\n 1.Crear test o ingresar preguntas segun test\n 2. Buscar paciente existente\n 4. Registrar paciente\n")
+	fmt.Print(" 5. Ver test\n 6. Responder preguntas\n 7. Ver ponderacion de paciente\n 8. Ver informacion paciente\n 9. Mas opciones\n ")
+	fmt.Scanln(&option)
 
+	//1.1 usuario crea test//
+	//1.2 usuario ingresa preguntas//
+	//2 usuario busca paciente si es que existe
+	//3 usuario registrara a paciente
+	//4 llamar print test
+	//5 paciente solo respondera preguntas
+	//6 se printearan los puntajes segun paciente
+	//7 print info paciente
+	//8 mas opciones
+	//9 CRUD
 
+	switch option {
+	case 1:
+		var idtest, cantquests, selection int
+		fmt.Println("Seleccione alguna de las opciones:\n 1)Crear test\n 2)Agregar Preguntas")
+		fmt.Scanln(&selection)
+		if selection == 1 {
+
+			insertTest(connectionEstablished)
+			//primary := "PRIMARY"
+			//r/eadIDTest, err := connectionEstablished.Prepare("SHOW KEYS FROM TESTS WHERE ID_t = ? ")
+			//if err != nil {
+			//	panic(err.Error())
+			//}
+			//readIDTest.Exec(primary)
+		} else if selection == 2 {
+
+			fmt.Println("Ingrese ID del test para ingresar las preguntas: ")
+			fmt.Scanln(&idtest)
+
+			fmt.Println("Ingrese la cantidad de preguntas deseada para el test: ")
+			fmt.Scanln(&cantquests)
+
+			for i := 1; i <= cantquests; i++ {
+
+				fmt.Printf("-----Pregunta numero %d -----\n", i)
+
+				insertQuestion(connectionEstablished, idtest)
+			}
+		} else {
+			fmt.Println("Ingrese una opcion valida")
+		}
+
+	case 2:
+
+		var idPatient int
+		fmt.Println("Ingrese ID del paciente a buscar: ")
+		fmt.Scanln(&idPatient)
+
+		readPatient(connectionEstablished, idPatient)
+
+	case 3:
+
+		insertPatient(connectionEstablished)
+
+	case 4:
+	case 5:
+	case 6:
+	case 7:
+	case 8:
+	case 9:
+	}
+
+	
