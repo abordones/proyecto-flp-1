@@ -415,6 +415,37 @@ func readAllTests(connectionEstablished *sql.DB) {
 	}
 	fmt.Println(arrayTest)
 }
+func readQuestionsbyTest(connectionEstablished *sql.DB, ID_test int) {
+
+	fmt.Println("Mostrando todos los tests activos")
+	readQuestions, err := connectionEstablished.Query("SELECT * FROM questions WHERE ID_t= ? ", ID_test)
+	if err != nil {
+		panic(err.Error())
+	}
+	if err != nil {
+		panic(err.Error())
+	}
+	questions := Question{} //Variable := Struct
+	arrayQuestions := []Question{}
+	for readQuestions.Next() {
+		var ID int
+		var ID_t int
+		var question string
+		var description string
+		var active bool
+		err = readQuestions.Scan(&ID, &ID_t, &question, &description, &active)
+		if err != nil {
+			panic(err.Error())
+		}
+		questions.ID = ID
+		questions.ID_t = ID_t
+		questions.question = question
+		questions.description = description
+		questions.active = active
+		arrayQuestions = append(arrayQuestions, questions)
+	}
+	fmt.Println(arrayQuestions)
+}
 func readAllQuestions(connectionEstablished *sql.DB) {
 	fmt.Println("Mostrando todas las preguntas activas")
 	readQuestion, err := connectionEstablished.Query("SELECT * FROM questions WHERE ACTIVE_Q=true")
@@ -741,15 +772,15 @@ func menu(connectionEstablished *sql.DB) {
 
 	var option int
 	fmt.Print(" ")
-	fmt.Print("Ingrese una opcion a elegir:\n 1.Crear test o ingresar preguntas segun test\n 2. Buscar paciente existente\n 4. Registrar paciente\n")
-	fmt.Print(" 5. Ver test\n 6. Responder preguntas\n 7. Ver ponderacion de paciente\n 8. Ver informacion paciente\n 9. Mas opciones\n ")
+	fmt.Print("Ingrese una opcion a elegir:\n 1.Crear test o ingresar preguntas segun test\n 2. Buscar paciente existente\n 3. Registrar paciente\n")
+	fmt.Print(" 4. Ver test\n 5. Responder preguntas\n 6. Ver ponderacion de paciente\n 7. Ver informacion paciente\n 8. Mas opciones\n ")
 	fmt.Scanln(&option)
 
 	//1.1 usuario crea test//
 	//1.2 usuario ingresa preguntas//
 	//2 usuario busca paciente si es que existe
 	//3 usuario registrara a paciente
-	//4 llamar print test
+	//4 mostrar test
 	//5 paciente solo respondera preguntas
 	//6 se printearan los puntajes segun paciente
 	//7 print info paciente
@@ -789,8 +820,8 @@ func menu(connectionEstablished *sql.DB) {
 		}
 
 	case 2:
-
 		var idPatient int
+
 		fmt.Println("Ingrese ID del paciente a buscar: ")
 		fmt.Scanln(&idPatient)
 
@@ -801,7 +832,15 @@ func menu(connectionEstablished *sql.DB) {
 		insertPatient(connectionEstablished)
 
 	case 4:
+		var idTest int
+
+		fmt.Println("Ingrese ID del test a mostrar: ")
+		fmt.Scanln(&idTest)
+
+		readQuestionsbyTest(connectionEstablished, idTest)
+
 	case 5:
+
 	case 6:
 	case 7:
 	case 8:
