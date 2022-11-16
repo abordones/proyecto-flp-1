@@ -550,14 +550,55 @@ func stateAnswer(connectionEstablished *sql.DB, ID int) {
 }
 
 //updates
-
-/* 
 func updatePatients(connectionEstablished *sql.DB){
 	
+	var ID int
+	fmt.Print("Ingrese ID del Paciente: ")
+	fmt.Scanln(&ID)
+
 	var RUN int
 	fmt.Print("Ingresa RUN del paciente: ")
 	fmt.Scanln(&RUN)
+	
+	var DV string
+	fmt.Print("Ingresa digito verificador del paciente: ")
+	fmt.Scanln(&DV)
+	
+	fmt.Print("Ingresa nombre(s) del paciente: ")
+	n := bufio.NewReader(os.Stdin)
+	names, _ := n.ReadString('\n')
+	
+	var fatherName string
+	fmt.Print("Ingresa apellido paterno del paciente: ")
+	fmt.Scanln(&fatherName)
+	
+	var motherName string
+	fmt.Print("Ingresa apellido materno del paciente: ")
+	fmt.Scanln(&motherName)
+	
+	var phone int
+	fmt.Print("Ingresa el numero de contacto del paciente: ")
+	fmt.Scanln(&phone)
+	
+	var email string
+	fmt.Print("Ingresa el correo electronico del paciente: ")
+	fmt.Scanln(&email)
+	
+	var birthday string
+	fmt.Print("Ingresa tu fecha de nacimineto (yyyy-mm-dd): ")
+	fmt.Scanln(&birthday)
+	fmt.Print("Ingresa una nueva observacion: ")
+	o := bufio.NewReader(os.Stdin)
+	observation, _ := o.ReadString('\n')
 
+	idPatients := ID
+
+	updatePatients, err:= connectionEstablished.Prepare("UPDATE answers SET (RUN_P = ?, DV_P = ?, NAME_P = ?, FATHERNAME_P = ?, MOTHERNAME_P = ?, PHONE_P = ?, EMAIL_P = ?, BIRTHDAY_P = ?, OBSERVATION_P = ?) WHERE ID_P= ?")
+	if err != nil {
+		panic(err.Error())
+	}
+	updatePatients.Exec(ID, RUN, DV, names, fatherName, motherName, phone, email, birthday, observation)
+	fmt.Print("Datos actualizados con exito")
 }
 
 func updateUsers(connectionEstablished *sql.DB){
@@ -580,9 +621,11 @@ func updateAnswers(connectionEstablished *sql.DB){
 
 func menu(connectionEstablished *sql.DB){
 
+	
 	var option int
 	fmt.Print(" ")
 	fmt.Scanl(&option)
+
 
 }
 
