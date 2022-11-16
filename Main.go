@@ -103,8 +103,10 @@ func main() {
 	//readAllSessions(connectionEstablished)
 
 	fmt.Println("------------------------------INICIO------------------------------")
+
+	menu(connectionEstablished)
 	//1.A. Crear test.
-	//insertTest(connectionEstablished) //Como conocer el ID del test generado?
+	//listo insertTest(connectionEstablished) //Como conocer el ID del test generado?
 
 	//2.A. Agregarle preguntas.
 	//insertQuestion(connectionEstablished, 2) //Recibe ID Test. //Como conocer el ID del test generado?
@@ -134,7 +136,7 @@ func main() {
 	//6.B. Ingresar SESSION.
 	//insertSession(connectionEstablished, 1, 2) //Recibe ID patient y ID poll. //Se requiere esa info.
 
-	readAllUsers(connectionEstablished)
+	//readAllUsers(connectionEstablished)
 	fmt.Println("--------------------------------FIN-------------------------------")
 }
 
@@ -417,6 +419,46 @@ func readAllPatients(connectionEstablished *sql.DB) {
 	}
 	fmt.Println(arrayPatient)
 }
+func readPatient(connectionEstablished *sql.DB, ID_patient int) {
+
+	fmt.Println("Mostrando al paciente")
+	readPatient, err := connectionEstablished.Query("SELECT * FROM patients WHERE ID_p= ? ", ID_patient)
+	if err != nil {
+		panic(err.Error())
+	}
+	patient := Patient{}
+	arrayPatient := []Patient{}
+	for readPatient.Next() {
+		var ID int
+		var RUN int
+		var DV string
+		var name string
+		var fatherName string
+		var motherName string
+		var birthday string
+		var phone int
+		var email string
+		var observation string
+		var active bool
+		err = readPatient.Scan(&ID, &RUN, &DV, &name, &fatherName, &motherName, &birthday, &phone, &email, &observation, &active)
+		if err != nil {
+			panic(err.Error())
+		}
+		patient.ID = ID
+		patient.RUN = RUN
+		patient.DV = DV
+		patient.name = name
+		patient.fatherName = fatherName
+		patient.motherName = motherName
+		patient.birthday = birthday
+		patient.phone = phone
+		patient.email = email
+		patient.observation = observation
+		patient.active = active
+		arrayPatient = append(arrayPatient, patient)
+	}
+	fmt.Println(arrayPatient)
+}
 
 func readAllTests(connectionEstablished *sql.DB) {
 
@@ -659,10 +701,75 @@ func stateAnswer(connectionEstablished *sql.DB, ID int) {
 		fmt.Printf("La respuesta ID (%v) ha sido habilitado.\n", idAnswer)
 	}
 }
-func menu(connectionEstablished *sql.DB){
-	
+func menu(connectionEstablished *sql.DB) {
+
 	var option int
 	fmt.Print(" ")
-	fmt.Scanl(&option)
-	
+	fmt.Print("Ingrese una opcion a elegir:\n 1.Crear test o ingresar preguntas segun test\n 2. Buscar paciente existente\n 4. Registrar paciente\n")
+	fmt.Print(" 5. Ver test\n 6. Responder preguntas\n 7. Ver ponderacion de paciente\n 8. Ver informacion paciente\n 9. Mas opciones\n ")
+	fmt.Scanln(&option)
+
+	//1.1 usuario crea test//
+	//1.2 usuario ingresa preguntas//
+	//2 usuario busca paciente si es que existe
+	//3 usuario registrara a paciente
+	//4 llamar print test
+	//5 paciente solo respondera preguntas
+	//6 se printearan los puntajes segun paciente
+	//7 print info paciente
+	//8 mas opciones
+	//9 CRUD
+
+	switch option {
+	case 1:
+		var idtest, cantquests, selection int
+		fmt.Println("Seleccione alguna de las opciones:\n 1)Crear test\n 2)Agregar Preguntas")
+		fmt.Scanln(&selection)
+		if selection == 1 {
+
+			insertTest(connectionEstablished)
+			//primary := "PRIMARY"
+			//r/eadIDTest, err := connectionEstablished.Prepare("SHOW KEYS FROM TESTS WHERE ID_t = ? ")
+			//if err != nil {
+			//	panic(err.Error())
+			//}
+			//readIDTest.Exec(primary)
+		} else if selection == 2 {
+
+			fmt.Println("Ingrese ID del test para ingresar las preguntas: ")
+			fmt.Scanln(&idtest)
+
+			fmt.Println("Ingrese la cantidad de preguntas deseada para el test: ")
+			fmt.Scanln(&cantquests)
+
+			for i := 1; i <= cantquests; i++ {
+
+				fmt.Printf("-----Pregunta numero %d -----\n", i)
+
+				insertQuestion(connectionEstablished, idtest)
+			}
+		} else {
+			fmt.Println("Ingrese una opcion valida")
+		}
+
+	case 2:
+
+		var idPatient int
+		fmt.Println("Ingrese ID del paciente a buscar: ")
+		fmt.Scanln(&idPatient)
+
+		readPatient(connectionEstablished, idPatient)
+
+	case 3:
+
+		insertPatient(connectionEstablished)
+
+	case 4:
+	case 5:
+	case 6:
+	case 7:
+	case 8:
+	case 9:
+	}
+
 }
