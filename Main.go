@@ -63,6 +63,8 @@ type Session struct {
 	ID_po int
 	date  string
 }
+// UPDATE
+
 func main() {
 	connectionEstablished := conectionBD()
 	//-----------------------------INSERTION-----------------------------
@@ -109,8 +111,10 @@ func main() {
 	//Comprararlo con cutPointy dar resultado -> Deperesion/Normal.
 	//5.B. Ingresar POll.
 	//insertPoll(connectionEstablished, 1, 2) //Recibe ID user, ID test. //Se requiere esa info.
-	//6.B. Ingresar SESSION.
+	//6.B. Ingresar SESSION. 
 	//insertSession(connectionEstablished, 1, 2) //Recibe ID patient y ID poll. //Se requiere esa info.
+
+	//INNOBD
 	readAllUsers(connectionEstablished)
 	fmt.Println("--------------------------------FIN-------------------------------")
 }
@@ -544,6 +548,30 @@ func stateAnswer(connectionEstablished *sql.DB, ID int) {
 		fmt.Printf("La respuesta ID (%v) ha sido habilitado.\n", idAnswer)
 	}
 }
+
+//updates
+
+
+/* func updateUsers(connectionEstablished *sql.DB){
+
+
+}
+
+func updatePatients(connectionEstablished *sql.DB){
+
+
+}
+
+func updateQuestions(connectionEstablished *sql.DB){
+
+
+}
+
+func updateAnswers(connectionEstablished *sql.DB){
+
+
+} */
+
 func menu(connectionEstablished *sql.DB){
 
 	var option int
@@ -551,3 +579,7 @@ func menu(connectionEstablished *sql.DB){
 	fmt.Scanl(&option)
 
 }
+
+
+
+
