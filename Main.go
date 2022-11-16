@@ -651,7 +651,7 @@ func updateUsers(connectionEstablished *sql.DB){
 func updateQuestions(connectionEstablished *sql.DB, ID_test int){
 	
 	fmt.Print("Ingresa la ID de la pregunta: ")
-	fmt.Scanln(&idTest)
+	fmt.Scanln(&ID_question)
 
 	fmt.Print("Formula tu pregunta: ")
 	q := bufio.NewReader(os.Stdin)
@@ -672,7 +672,7 @@ func updateQuestions(connectionEstablished *sql.DB, ID_test int){
 func updateAnswers(connectionEstablished *sql.DB, ID_question int){
 
 	fmt.Print("Ingresa la ID de la pregunta: ")
-	fmt.Scanl(&idAnswer)
+	fmt.Scanln(&idAnswer)
 
 	var point int
 	fmt.Print("Ingresa el nuevo puntaje (entre 0 y 3): ")
@@ -686,7 +686,7 @@ func updateAnswers(connectionEstablished *sql.DB, ID_question int){
 	if err != nil {
 		panic(err.Error())
 	}
-	insertAnswer.Exec(point, observation, ID)
+	insertAnswer.Exec(point, observation, idAnswer)
 	fmt.Println("Respuesta actualizada con exito.")
 
 } 
