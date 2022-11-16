@@ -22,15 +22,17 @@ Building this system requires some dependencies, this are required and must be i
 	go version
 - Set the environment variables. Right click on My PC and select Choose the Advanced System Settings
 from the right side and click on Environment Variables:
-	- GOROOT: this variable denote your path instalation C:\Program Files\Go 
-	- GOPATH: this variable denote your workspace C:\Usuarios\User_Name\go 
+those two variables on system variables: 
+	- GOROOT: this variable denote your path instalation C:\Program Files\Go 	
 	- GOBIN: this variable denote the bin folder inside of your workspace C:\Usuarios\User_Name\go\bin
+this one on user variable:
+	- GOPATH: this variable denote your workspace C:\Usuarios\User_Name\go 
 - Edit the following environment variables: 
 	- PATH: this variable denote the installation on the bin folder C:\Program Files\Go\bin
 - Open a command line and cd to your proyect directory:
 	- $ go mod init sistema
 	- $ go get -u github.com/go-sql-driver/mysql 
-###"Steps of conection's system"	
+##"Steps of conection's system"	
 "Pasos para tener habilitar relaciones en PHPMyAdmin"
 - Iniciar Wampserver, dirigirse a 'MySQL', seleccionar 'my.ini'.
 - Editar 'default-storage'. Debe quedar de la siguiente manera:
