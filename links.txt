@@ -1,2 +1,6 @@
 Inventario de Depresión de Beck (BDI-2)  https://www.psi.uba.ar/academica/carrerasdegrado/psicologia/sitios_catedras/obligatorias/070_psicoterapias1/material/inventario_beck.pdf
 
+https://www.computerweekly.com/es/definicion/MySQL
+https://www.arsys.es/blog/phpmyadmin
+https://openwebinars.net/blog/que-es-mysql/
+https://www.oracle.com/cl/database/what-is-database/
