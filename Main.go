@@ -602,22 +602,78 @@ func updatePatients(connectionEstablished *sql.DB){
 }
 
 func updateUsers(connectionEstablished *sql.DB){
-	var active int
+	
+	var ID int
+	fmt.Print("Ingrese ID del Usuario: ")
+	fmt.Scanln(&ID)
+	
+	var RUN int
+	fmt.Print("Ingresa tu RUN: ")
+	fmt.Scanln(&RUN)
+	
+	var DV string
+	fmt.Print("Ingresa tu digito verificador: ")
+	fmt.Scanln(&DV)
+	
+	fmt.Print("Ingresa tu(s) nombre(s): ")
+	n := bufio.NewReader(os.Stdin)
+	names, _ := n.ReadString('\n')
+	
+	var fatherName string
+	fmt.Print("Ingresa tu apellido paterno: ")
+	fmt.Scanln(&fatherName)
+	
+	var motherName string
+	fmt.Print("Ingresa tu apellido materno: ")
+	fmt.Scanln(&motherName)
+	
+	var birthday string
+	fmt.Print("Ingresa tu fecha de nacimineto (yyyy-mm-dd): ")
+	fmt.Scanln(&birthday)
+	
+	var email string
+	fmt.Print("Ingresa tu correo electronico: ")
+	fmt.Scanln(&email)
+	
+	var password string
+	fmt.Print("Ingresa tu contrasena: ")
+	fmt.Scanln(&password)
+	
+	insertUser, err := connectionEstablished.Prepare("UPDATE answers SET (RUN_U= ?, DV_U, NAME_U= ?, FATHERNAME_U= ?, MOTHERNAME_U= ?, BIRTHDAY_U= ?, EMAIL_U= ?, PASSWORD_U= ?) WHERE ID_U= ?")
+	if err != nil {
+		panic(err.Error())
+	}
 
-
+	updateUsers.Exec(ID, RUN, DV, names, fatherName, motherName, email, birthday, email, password)
+	fmt.Print("Datos actualizados con exito")
 }
 
-func updateQuestions(connectionEstablished *sql.DB){
+/*func updateQuestions(connectionEstablished *sql.DB, ID_test int){
+	
+	fmt.Print("Ingresa la ID de la pregunta: ")
+	fmt.Scanl(&ID)
+	
+	fmt.Print("Formula tu pregunta: ")
+	q := bufio.NewReader(os.Stdin)
+	question, _ := q.ReadString('\n')
+	fmt.Print("Escribe su descripcion: ")
+	d := bufio.NewReader(os.Stdin)
+	description, _ := d.ReadString('\n')
+	InsertQuestion, err := connectionEstablished.Prepare("INSERT INTO questions (ID_Q, ID_T, QUESTION_Q, DESCRIPTION_Q, ACTIVE_Q) VALUES (NULL, ?, ?, ?, 1); ")
+	if err != nil {
+		panic(err.Error())
+	}
+	InsertQuestion.Exec(ID_test, question, description)
+	fmt.Println("Pregunta ingresada con exito.")
+}*/
 
 
-}
 
 func updateAnswers(connectionEstablished *sql.DB){
 
 
 } 
 
-*/
 
 func menu(connectionEstablished *sql.DB){
 
