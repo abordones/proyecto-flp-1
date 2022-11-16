@@ -551,13 +551,17 @@ func stateAnswer(connectionEstablished *sql.DB, ID int) {
 
 //updates
 
-
-/* func updateUsers(connectionEstablished *sql.DB){
-
+/* 
+func updatePatients(connectionEstablished *sql.DB){
+	
+	var RUN int
+	fmt.Print("Ingresa RUN del paciente: ")
+	fmt.Scanln(&RUN)
 
 }
 
-func updatePatients(connectionEstablished *sql.DB){
+func updateUsers(connectionEstablished *sql.DB){
+	var active int
 
 
 }
@@ -570,7 +574,9 @@ func updateQuestions(connectionEstablished *sql.DB){
 func updateAnswers(connectionEstablished *sql.DB){
 
 
-} */
+} 
+
+*/
 
 func menu(connectionEstablished *sql.DB){
 
