@@ -1,11 +1,14 @@
 package main
+
 import (
 	"bufio"
 	"database/sql"
 	"fmt"
 	"os"
+
 	_ "github.com/go-sql-driver/mysql"
 )
+
 type User struct {
 	ID         int
 	RUN        int
@@ -63,15 +66,16 @@ type Session struct {
 	ID_po int
 	date  string
 }
+
 // UPDATE
 
 func main() {
 	connectionEstablished := conectionBD()
 	//-----------------------------INSERTION-----------------------------
 	//insertUser(connectionEstablished)
-	//insertPatient(connectionEstablished)
-	//insertTest(connectionEstablished)
-	//insertQuestion(connectionEstablished, 1) //Recibe ID Test.
+	//insertPatient(connectionEstablished)//
+	//insertTest(connectionEstablished)//
+	//insertQuestion(connectionEstablished, 1) //Recibe ID Test.//
 	//insertAnswer(connectionEstablished, 1) //Recibe ID Question.
 	//insertPoll(connectionEstablished, 1, 1) //Recibe ID user, ID test.
 	//insertSession(connectionEstablished, 1, 1) //Recibe ID patient y ID poll.
@@ -90,8 +94,11 @@ func main() {
 	//readAllPolls(connectionEstablished)
 	//readAllSessions(connectionEstablished)
 	fmt.Println("------------------------------INICIO------------------------------")
+
+	menu(connectionEstablished)
 	//1.A. Crear test.
-	//insertTest(connectionEstablished) //Como conocer el ID del test generado?
+	//listo insertTest(connectionEstablished) //Como conocer el ID del test generado?
+
 	//2.A. Agregarle preguntas.
 	//insertQuestion(connectionEstablished, 2) //Recibe ID Test. //Como conocer el ID del test generado?
 	//insertQuestion(connectionEstablished, 2) //Recibe ID Test. //Como conocer el ID del test generado?
@@ -111,11 +118,10 @@ func main() {
 	//Comprararlo con cutPointy dar resultado -> Deperesion/Normal.
 	//5.B. Ingresar POll.
 	//insertPoll(connectionEstablished, 1, 2) //Recibe ID user, ID test. //Se requiere esa info.
-	//6.B. Ingresar SESSION. 
+	//6.B. Ingresar SESSION.
 	//insertSession(connectionEstablished, 1, 2) //Recibe ID patient y ID poll. //Se requiere esa info.
 
-	//INNOBD
-	readAllUsers(connectionEstablished)
+	//readAllUsers(connectionEstablished)
 	fmt.Println("--------------------------------FIN-------------------------------")
 }
 func conectionBD() (conection *sql.DB) {
@@ -339,6 +345,47 @@ func readAllPatients(connectionEstablished *sql.DB) {
 	}
 	fmt.Println(arrayPatient)
 }
+func readPatient(connectionEstablished *sql.DB, ID_patient int) {
+
+	fmt.Println("Mostrando al paciente")
+	readPatient, err := connectionEstablished.Query("SELECT * FROM patients WHERE ID_p= ? ", ID_patient)
+	if err != nil {
+		panic(err.Error())
+	}
+	patient := Patient{}
+	arrayPatient := []Patient{}
+	for readPatient.Next() {
+		var ID int
+		var RUN int
+		var DV string
+		var name string
+		var fatherName string
+		var motherName string
+		var birthday string
+		var phone int
+		var email string
+		var observation string
+		var active bool
+		err = readPatient.Scan(&ID, &RUN, &DV, &name, &fatherName, &motherName, &birthday, &phone, &email, &observation, &active)
+		if err != nil {
+			panic(err.Error())
+		}
+		patient.ID = ID
+		patient.RUN = RUN
+		patient.DV = DV
+		patient.name = name
+		patient.fatherName = fatherName
+		patient.motherName = motherName
+		patient.birthday = birthday
+		patient.phone = phone
+		patient.email = email
+		patient.observation = observation
+		patient.active = active
+		arrayPatient = append(arrayPatient, patient)
+	}
+	fmt.Println(arrayPatient)
+}
+
 func readAllTests(connectionEstablished *sql.DB) {
 	fmt.Println("Mostrando todos los tests activos")
 	readTest, err := connectionEstablished.Query("SELECT * FROM tests WHERE ACTIVE_T=true")
@@ -367,6 +414,64 @@ func readAllTests(connectionEstablished *sql.DB) {
 		arrayTest = append(arrayTest, test)
 	}
 	fmt.Println(arrayTest)
+}
+
+func readQuestionsbyAnswer(connectionEstablished *sql.DB, ID_test int, cant int) {
+
+	fmt.Println("Responda las Siguientes preguntas:")
+	readQuestions, err := connectionEstablished.Query("SELECT QUESTION_Q FROM questions WHERE ID_t= ?", ID_test)
+	if err != nil {
+		panic(err.Error())
+	}
+	questions := Question{} //Variable := Struct
+	arrayQuestions := []Question{}
+	for readQuestions.Next() {
+
+		var question string
+
+		err = readQuestions.Scan(&question)
+		if err != nil {
+			panic(err.Error())
+		}
+		questions.question = question
+
+		arrayQuestions = append(arrayQuestions, questions)
+	}
+
+	for i := 0; i < len(arrayQuestions); i++ {
+		fmt.Println(arrayQuestions[i])
+		fmt.Print("------\n")
+	}
+}
+
+
+func readQuestionsbyTest(connectionEstablished *sql.DB, ID_test int) {
+
+	fmt.Println("Mostrando preguntas del test: ")
+	readQuestions, err := connectionEstablished.Query("SELECT * FROM questions WHERE ID_t= ? ", ID_test)
+	if err != nil {
+		panic(err.Error())
+	}
+	questions := Question{} //Variable := Struct
+	arrayQuestions := []Question{}
+	for readQuestions.Next() {
+		var ID int
+		var ID_t int
+		var question string
+		var description string
+		var active bool
+		err = readQuestions.Scan(&ID, &ID_t, &question, &description, &active)
+		if err != nil {
+			panic(err.Error())
+		}
+		questions.ID = ID
+		questions.ID_t = ID_t
+		questions.question = question
+		questions.description = description
+		questions.active = active
+		arrayQuestions = append(arrayQuestions, questions)
+	}
+	fmt.Println(arrayQuestions)
 }
 func readAllQuestions(connectionEstablished *sql.DB) {
 	fmt.Println("Mostrando todas las preguntas activas")
@@ -421,6 +526,34 @@ func readAllAnswers(connectionEstablished *sql.DB) {
 		arrayAnswer = append(arrayAnswer, answer)
 	}
 	fmt.Println(arrayAnswer)
+}
+func readAnswersbyQuestion(connectionEstablished *sql.DB, ID_question int) {
+	fmt.Println("Mostrando respuestas del test: ")
+	readAnswers, err := connectionEstablished.Query("SELECT * FROM answers WHERE ID_q= ? ", ID_question)
+	if err != nil {
+		panic(err.Error())
+	}
+	answer := Answer{} //Variable := Struct
+	arrayAnswer := []Answer{}
+	for readAnswers.Next() {
+		var ID int
+		var ID_q int
+		var point string
+		var observation string
+		var active bool
+		err = readAnswers.Scan(&ID, &ID_q, &point, &observation, &active)
+		if err != nil {
+			panic(err.Error())
+		}
+		answer.ID = ID
+		answer.ID_q = ID_q
+		answer.point = point
+		answer.observation = observation
+		answer.active = active
+		arrayAnswer = append(arrayAnswer, answer)
+	}
+	fmt.Println(arrayAnswer)
+
 }
 func readAllPolls(connectionEstablished *sql.DB) {
 	fmt.Println("Mostrando todas las encuestas")
@@ -693,72 +826,152 @@ func updateAnswers(connectionEstablished *sql.DB, ID_question int) {
 func menu(connectionEstablished *sql.DB) {
 
 	var option int
-	fmt.Print(" ")
-	fmt.Print("Ingrese una opcion a elegir:\n 1.Crear test o ingresar preguntas segun test\n 2. Buscar paciente existente\n 4. Registrar paciente\n")
-	fmt.Print(" 5. Ver test\n 6. Responder preguntas\n 7. Ver ponderacion de paciente\n 8. Ver informacion paciente\n 9. Mas opciones\n ")
-	fmt.Scanln(&option)
+	exitMenu := false
 
 	//1.1 usuario crea test//
 	//1.2 usuario ingresa preguntas//
-	//2 usuario busca paciente si es que existe
-	//3 usuario registrara a paciente
-	//4 llamar print test
+	//2 usuario busca paciente si es que existe/
+	//3 usuario registrara a paciente//
+	//4 mostrar test/
 	//5 paciente solo respondera preguntas
-	//6 se printearan los puntajes segun paciente
-	//7 print info paciente
-	//8 mas opciones
-	//9 CRUD
+	//6 se printearan los puntajes segun paciente/
+	//7 Ingresar POll.//
+	//8 Ingresar SESSION.//
+	//9 masopciones/Actualizar matchPoint de TEST.
+	for exitMenu == false {
 
-	switch option {
-	case 1:
-		var idtest, cantquests, selection int
-		fmt.Println("Seleccione alguna de las opciones:\n 1)Crear test\n 2)Agregar Preguntas")
-		fmt.Scanln(&selection)
-		if selection == 1 {
+		fmt.Print(" Opciones a elegir:\n 1. Crear test o ingresar preguntas segun test.\n 2. Buscar paciente existente.\n 3. Registrar paciente.\n")
+		fmt.Print(" 4. Ver test.\n 5. Responder preguntas.\n 6. Ver ponderacion de paciente.\n 7. Registrar cuestionario.\n 8. Registrar sesion.\n 9. Mas opciones.\n ")
+		fmt.Print("Indique su eleccion: ")
+		fmt.Scanln(&option)
 
-			insertTest(connectionEstablished)
-			//primary := "PRIMARY"
-			//r/eadIDTest, err := connectionEstablished.Prepare("SHOW KEYS FROM TESTS WHERE ID_t = ? ")
-			//if err != nil {
-			//	panic(err.Error())
-			//}
-			//readIDTest.Exec(primary)
-		} else if selection == 2 {
+		switch option {
+		case 1:
+			var idTest, cantquests, selection int
+			fmt.Println("Seleccione alguna de las opciones:\n 1)Crear test\n 2)Agregar Preguntas")
+			fmt.Scanln(&selection)
+			if selection == 1 {
 
-			fmt.Println("Ingrese ID del test para ingresar las preguntas: ")
-			fmt.Scanln(&idtest)
+				insertTest(connectionEstablished)
+				//primary := "PRIMARY"
+				//r/eadIDTest, err := connectionEstablished.Prepare("SHOW KEYS FROM TESTS WHERE ID_t = ? ")
+				//if err != nil {
+				//	panic(err.Error())
+				//}
+				//readIDTest.Exec(primary)
+			} else if selection == 2 {
 
-			fmt.Println("Ingrese la cantidad de preguntas deseada para el test: ")
-			fmt.Scanln(&cantquests)
+				fmt.Println("Ingrese ID del test para ingresar las preguntas: ")
+				fmt.Scanln(&idTest)
 
-			for i := 1; i <= cantquests; i++ {
+				fmt.Println("Ingrese la cantidad de preguntas deseada para el test: ")
+				fmt.Scanln(&cantquests)
 
-				fmt.Printf("-----Pregunta numero %d -----\n", i)
+				for i := 1; i <= cantquests; i++ {
 
-				insertQuestion(connectionEstablished, idtest)
+					fmt.Printf("-----Pregunta numero %d -----\n", i)
+
+					insertQuestion(connectionEstablished, idTest)
+				}
+			} else {
+				fmt.Println("Ingrese una opcion valida.")
 			}
-		} else {
-			fmt.Println("Ingrese una opcion valida")
+			fmt.Println("---------------------------------------")
+		case 2:
+			var idPatient int
+
+			fmt.Print("Ingrese ID del paciente a buscar: ")
+			fmt.Scanln(&idPatient)
+
+			readPatient(connectionEstablished, idPatient)
+			fmt.Println("---------------------------------------")
+		case 3:
+			insertPatient(connectionEstablished)
+			fmt.Println("---------------------------------------")
+		case 4:
+			var idTest int
+
+			fmt.Print("Ingrese ID del test a mostrar: ")
+			fmt.Scanln(&idTest)
+
+			readQuestionsbyTest(connectionEstablished, idTest)
+			fmt.Println("---------------------------------------")
+		case 5:
+		//preguntas
+
+		var idtest int
+		var canti int
+
+		fmt.Println("Ingrese la ID del test: ")
+		fmt.Scanln(&idtest)
+
+		readQuestionsbyAnswer(connectionEstablished, idtest, canti)
+
+		fmt.Print("Ingrese la cantidad de respuestas: ")
+		fmt.Scanln(&canti)
+
+		fmt.Println("-------------")
+
+		for i := 0; i < canti; i++ {
+
+			var idQuestion int
+			fmt.Println("Ingresa la ID de la pregunta: ")
+			fmt.Scanln(&idQuestion)
+
+			insertAnswer(connectionEstablished, idQuestion)
+			
 		}
 
-	case 2:
+		case 6:
+			var idQuestion int
 
-		var idPatient int
-		fmt.Println("Ingrese ID del paciente a buscar: ")
-		fmt.Scanln(&idPatient)
+			fmt.Print("Ingrese ID de la pregunta para ver sus respuestas: ")
+			fmt.Scanln(&idQuestion)
 
-		readPatient(connectionEstablished, idPatient)
+			readQuestionsbyTest(connectionEstablished, idQuestion)
+			fmt.Println("---------------------------------------")
+		case 7:
+			var idUser, idTest int
+			fmt.Println("Ingrese ID del usuario para registrar la encuesta: ")
+			fmt.Scanln(&idUser)
 
-	case 3:
+			fmt.Println("Ingrese ID del test ejecutado: ")
+			fmt.Scanln(&idTest)
 
-		insertPatient(connectionEstablished)
+			insertPoll(connectionEstablished, idUser, idTest)
+			fmt.Println("---------------------------------------")
+		case 8:
+			var idPatient, idPoll int
+			fmt.Println("Ingrese ID del paciente para registrar la sesion: ")
+			fmt.Scanln(&idPatient)
 
-	case 4:
-	case 5:
-	case 6:
-	case 7:
-	case 8:
-	case 9:
+			fmt.Println("Ingrese ID de la encuesta ejecutada: ")
+			fmt.Scanln(&idPoll)
+
+			insertSession(connectionEstablished, 1, 2)
+
+			fmt.Println("---------------------------------------")
+		case 9:
+			var option2 int
+
+			fmt.Print(" Opciones a elegir:\n 1. Crear test o ingresar preguntas segun test.\n 2. Buscar paciente existente.\n 3. Registrar paciente.\n")
+			fmt.Print(" 4. Ver test.\n 5. Responder preguntas.\n 6. Ver ponderacion de paciente.\n 7. Ver informacion paciente.\n 8. Mas opciones.\n ")
+			fmt.Print("Indique su eleccion: ")
+			fmt.Scanln(&option2)
+			switch option2 {
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+				exitMenu = true
+				break
+			}
+		}
 	}
 
-	
+}
