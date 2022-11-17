@@ -415,6 +415,36 @@ func readAllTests(connectionEstablished *sql.DB) {
 	}
 	fmt.Println(arrayTest)
 }
+
+func readQuestionsbyAnswer(connectionEstablished *sql.DB, ID_test int, cant int) {
+
+	fmt.Println("Responda las Siguientes preguntas:")
+	readQuestions, err := connectionEstablished.Query("SELECT QUESTION_Q FROM questions WHERE ID_t= ?", ID_test)
+	if err != nil {
+		panic(err.Error())
+	}
+	questions := Question{} //Variable := Struct
+	arrayQuestions := []Question{}
+	for readQuestions.Next() {
+
+		var question string
+
+		err = readQuestions.Scan(&question)
+		if err != nil {
+			panic(err.Error())
+		}
+		questions.question = question
+
+		arrayQuestions = append(arrayQuestions, questions)
+	}
+
+	for i := 0; i < len(arrayQuestions); i++ {
+		fmt.Println(arrayQuestions[i])
+		fmt.Print("------\n")
+	}
+}
+
+
 func readQuestionsbyTest(connectionEstablished *sql.DB, ID_test int) {
 
 	fmt.Println("Mostrando preguntas del test: ")
@@ -866,6 +896,30 @@ func menu(connectionEstablished *sql.DB) {
 			readQuestionsbyTest(connectionEstablished, idTest)
 			fmt.Println("---------------------------------------")
 		case 5:
+		//preguntas
+
+		var idtest int
+		var canti int
+
+		fmt.Println("Ingrese la ID del test: ")
+		fmt.Scanln(&idtest)
+
+		readQuestionsbyAnswer(connectionEstablished, idtest, canti)
+
+		fmt.Print("Ingrese la cantidad de respuestas: ")
+		fmt.Scanln(&canti)
+
+		fmt.Println("-------------")
+
+		for i := 0; i < canti; i++ {
+
+			var idQuestion int
+			fmt.Println("Ingresa la ID de la pregunta: ")
+			fmt.Scanln(&idQuestion)
+
+			insertAnswer(connectionEstablished, idQuestion)
+			
+		}
 
 		case 6:
 			var idQuestion int
@@ -996,4 +1050,5 @@ func menu(connectionEstablished *sql.DB) {
 		}
 	}
 
+	
 }
