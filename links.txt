@@ -14,3 +14,5 @@ https://openwebinars.net/blog/que-es-go/
 https://www.iteramos.com/pregunta/20872/cuales-son-las-ventajas-y-desventajas-del-lenguaje-de-programacion-go
 https://es.wikipedia.org/wiki/Go_(lenguaje_de_programaci%C3%B3n)
 https://es.wikipedia.org/wiki/Aaron_T._Beck
+https://go.dev/
+https://www.wampserver.com/en/
