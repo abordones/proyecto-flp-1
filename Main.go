@@ -372,7 +372,6 @@ func readAllTests(connectionEstablished *sql.DB) {
 
 func readQuestionsbyAnswer(connectionEstablished *sql.DB, ID_test int, cant int) {
 
-	fmt.Println("Responda las Siguientes preguntas:")
 	readQuestions, err := connectionEstablished.Query("SELECT QUESTION_Q FROM questions WHERE ID_t= ?", ID_test)
 	if err != nil {
 		panic(err.Error())
@@ -381,12 +380,14 @@ func readQuestionsbyAnswer(connectionEstablished *sql.DB, ID_test int, cant int)
 	arrayQuestions := []Question{}
 	for readQuestions.Next() {
 
+		var ID int
 		var question string
 
-		err = readQuestions.Scan(&question)
+		err = readQuestions.Scan(&ID, &question)
 		if err != nil {
 			panic(err.Error())
 		}
+		questions.ID = ID
 		questions.question = question
 
 		arrayQuestions = append(arrayQuestions, questions)
