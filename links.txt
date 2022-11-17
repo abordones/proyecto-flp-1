@@ -1,5 +1,4 @@
 Inventario de Depresión de Beck (BDI-2)  https://www.psi.uba.ar/academica/carrerasdegrado/psicologia/sitios_catedras/obligatorias/070_psicoterapias1/material/inventario_beck.pdf
-
 https://www.computerweekly.com/es/definicion/MySQL
 https://www.arsys.es/blog/phpmyadmin
 https://openwebinars.net/blog/que-es-mysql/
@@ -8,3 +7,10 @@ https://www.who.int/es/health-topics/la-d%C3%A9pression#tab=tab_1
 https://www.davila.cl/depresion-en-chile-cifras-sintomas-y-tratamiento/
 https://www.menteamente.com/diagnostico-de-la-depresion
 https://www.minsal.cl/wp-content/uploads/2018/01/2-Resultados-ENS_MINSAL_31_01_2018.pdf
+Wikipedia. (2021, 9 diciembre). Aaron T. Beck. https://es.wikipedia.org/wiki/Aaron_T._Beck
+https://psiquiatria.com/glosario/cogniciones-depresivas-de-beck#:~:text=Definición%3A%20.,2)%20Los%20esquemas%20cognitivos.
+https://www.softzone.es/programas/lenguajes/programacion-go/
+https://openwebinars.net/blog/que-es-go/
+https://www.iteramos.com/pregunta/20872/cuales-son-las-ventajas-y-desventajas-del-lenguaje-de-programacion-go
+https://es.wikipedia.org/wiki/Go_(lenguaje_de_programaci%C3%B3n)
+https://es.wikipedia.org/wiki/Aaron_T._Beck
