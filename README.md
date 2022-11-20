@@ -50,13 +50,25 @@ Building this system requires some dependencies, this are required and must be i
 
 ##### Change the storage mechanism from ISAM to INNODB
 1. Start Wampserver
-2. Go to 'MySQL' and select 'my.ini'
-3. Edit 'default-storage'. It should be as follows	
+2. Go to `MySQL` and select `my.ini`
+3. Edit `default-storage`. It should be as follows	
 
-		-;default-storage-engine=MYISAM.
-		-default-storage-engine=InnoDB.
+		;default-storage-engine=MYISAM.
+		default-storage-engine=InnoDB.
 		
 4. Restart Wampserver
+
+
+### PHP My Admin
+1. Start Wampserver
+2. Select `phpMyAdmin`
+3. Log in using the following default account
+
+		Userbane: root
+		Password: 
+		
+4. Go to create a data base and name it `bd-flp-1`
+5. Import the SQL file `BD.sql`
 	
 
 ## Authorship
