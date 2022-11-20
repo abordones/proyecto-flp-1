@@ -33,8 +33,8 @@ from the right side and click on Environment Variables:
 	- PATH: this variable denote the installation on the bin folder C:\Program Files\Go\bin
 - Open a command line and cd to your proyect directory:
 
-	- $ go mod init sistema
-	- $ go get -u github.com/go-sql-driver/mysql 
+		$ go mod init sistema.
+		$ go get -u github.com/go-sql-driver/mysql.
 	
 	
 	
