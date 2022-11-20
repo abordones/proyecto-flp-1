@@ -48,7 +48,7 @@ Building this system requires some dependencies, this are required and must be i
  - Download the Wamp according to your system architecture and get 3.2.6 version.
 	
 
-##### Change the storage mechanism from ISAM to INNODB
+#### Change the storage mechanism from ISAM to INNODB
 1. Start Wampserver (once started its icon will appear in hidden icons).
 2. Go to `MySQL` and select `my.ini`
 3. Edit `default-storage`. It should be as follows.	
