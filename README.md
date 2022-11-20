@@ -14,7 +14,7 @@ It is a system for conducting an interview with multivalued responses
 
 Building this system requires some dependencies, this are required and must be installed separately.
 
-###GO
+### GO
 
 - all versions of Go for Windows are available on https://golang.google.cn/doc/install
 - Download the Golang according to your system architecture and get go1.19.3 version 
@@ -36,13 +36,13 @@ from the right side and click on Environment Variables:
 	- $ go get -u github.com/go-sql-driver/mysql 
 	
 	
-###Wamp
+### Wamp
 
  - all versions of Wamp for Windows are available on (https://www.wampserver.com/en/)
  - Download the Wamp according to your system architecture and get 3.2.6 version 
 	
 
-###Steps of conection's system
+### Steps of conection's system
 
 "Pasos para tener habilitar relaciones en PHPMyAdmin"
 - Iniciar Wampserver, dirigirse a 'MySQL', seleccionar 'my.ini'.
@@ -54,11 +54,11 @@ from the right side and click on Environment Variables:
 "Add a list of the minimum steps needed to clone the project and get it running locally."
 	
 
-##Authorship
+## Authorship
 	Mati
 	Tsubasa
 	-ABS
 	GonzaloGo
 
-##Licensing
+## Licensing
 	CC0 1.0 Universal.
