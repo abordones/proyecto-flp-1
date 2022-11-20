@@ -14,7 +14,7 @@ Building this system requires some dependencies, this are required and must be i
 
 ### GO
 - All versions of Go for Windows are available on https://golang.google.cn/doc/install
-- Download the Golang according to your system architecture and get go1.19.3 version.
+- Download the Golang according to your system architecture and get `go1.19.3 version`
 - Execute the downloaded archive file and wherever you want to install this.
 - To check if your device is installed, go to the Command line an run the following command:
 
@@ -45,7 +45,7 @@ Building this system requires some dependencies, this are required and must be i
 	
 ### Wamp
  - All versions of Wamp for Windows are available on https://www.wampserver.com/en/
- - Download the Wamp according to your system architecture and get 3.2.6 version.
+ - Download the Wamp according to your system architecture and get `3.2.6 version`
 	
 
 ##### Change the storage mechanism from ISAM to INNODB
