@@ -32,13 +32,15 @@ from the right side and click on Environment Variables:
 - Edit the following environment variables: 
 	- PATH: this variable denote the installation on the bin folder C:\Program Files\Go\bin
 - Open a command line and cd to your proyect directory:
-	 $ go mod init sistema
-	 $ go get -u github.com/go-sql-driver/mysql 
+
+	- $ go mod init sistema
+	- $ go get -u github.com/go-sql-driver/mysql 
+	
 	
 	
 ### Wamp
 
- - all versions of Wamp for Windows are available on (https://www.wampserver.com/en/)
+ - all versions of Wamp for Windows are available on https://www.wampserver.com/en/
  - Download the Wamp according to your system architecture and get 3.2.6 version 
 	
 
