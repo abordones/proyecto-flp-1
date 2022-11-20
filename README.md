@@ -47,7 +47,8 @@ from the right side and click on Environment Variables:
 ### Steps of conection's system
 
 "Change the storage mechanism in the database from ISAM to INNODB"
-- Start Wampserver, go to 'MySQL' and select 'my.ini'.
+- Start Wampserver
+- go to 'MySQL' and select 'my.ini'
 - Edit 'default-storage'. It should be as follows	
 
 		-;default-storage-engine=MYISAM.
@@ -55,7 +56,6 @@ from the right side and click on Environment Variables:
 		
 - Restart Wampserver
 - Crear la base de datos y exportar el archivo sql.
-"Add a list of the minimum steps needed to clone the project and get it running locally."
 	
 
 ## Authorship
