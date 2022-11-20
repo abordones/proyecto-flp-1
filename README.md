@@ -1,5 +1,4 @@
-# PROJECT N1
-# Diagnostic survey for depression
+# PROJECT N1 - Diagnostic survey for depression
 
 ## Description 
 It is a system for conducting an interview with multivalued responses in order to diagnose symptoms of depression.
