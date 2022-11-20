@@ -7,7 +7,6 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
-	"io/ioutil"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -90,16 +89,6 @@ func conectionBD() (conection *sql.DB) {
 	}
 	return conection
 }
-
-func defaultTest(connectionEstablished *sql.DB) {
-
-//if para saber si existe el test o no
-//funcion de leer por lineas con la funcion Readfile
-//insert de una tabala test
-//insert de las preguntas
-
-}
-
 func insertQuestion(connectionEstablished *sql.DB, ID_test int) {
 	fmt.Print("Formula tu pregunta: ")
 	q := bufio.NewReader(os.Stdin)
@@ -766,12 +755,12 @@ func updateQuestions(connectionEstablished *sql.DB, ID_question int) {
 	d := bufio.NewReader(os.Stdin)
 	description, _ := d.ReadString('\n')
 
-	InsertQuestion, err := connectionEstablished.Prepare("UPDATE questions SET QUESTION_Q= ? , DESCRIPTION_Q= ? WHERE ID_Q = ?")
+	updateQuestions, err := connectionEstablished.Prepare("UPDATE questions SET QUESTION_Q= ? , DESCRIPTION_Q= ? WHERE ID_Q = ?")
 	if err != nil {
 		panic(err.Error())
 	}
 
-	InsertQuestion.Exec(question, description, ID_question)
+	updateQuestions.Exec(question, description, ID_question)
 	fmt.Println("---------------------------------------")
 	fmt.Println("Pregunta actualizada con exito.")
 }
@@ -788,15 +777,38 @@ func updateAnswers(connectionEstablished *sql.DB, idAnswer int) {
 	o := bufio.NewReader(os.Stdin)
 	observation, _ := o.ReadString('\n')
 
-	insertAnswer, err := connectionEstablished.Prepare("UPDATE answers SET POINT_A= ?, OBSERVATION_A= ? WHERE ID_A= ?")
+	updateAnswers, err := connectionEstablished.Prepare("UPDATE answers SET POINT_A= ?, OBSERVATION_A= ? WHERE ID_A= ?")
 	if err != nil {
 		panic(err.Error())
 	}
-	insertAnswer.Exec(point, observation, idAnswer)
+	updateAnswers.Exec(point, observation, idAnswer)
 	fmt.Println("---------------------------------------")
 	fmt.Println("Respuesta actualizada con exito.")
 
 }
+
+func updateTest(connectionEstablished *sql.DB, idTest int) {
+	
+	fmt.Print("Nombra al test: ")
+	n := bufio.NewReader(os.Stdin)
+	name, _ := n.ReadString('\n')
+	var cutPoint int
+	fmt.Print("Ingresa el puntaje de corte: ")
+	fmt.Scanln(&cutPoint)
+	var matchPoint int
+	fmt.Print("Ingresa puntaje match: ")
+	fmt.Scanln(&matchPoint)
+	fmt.Print("Ingresa una descripcion: ")
+	o := bufio.NewReader(os.Stdin)
+	description, _ := o.ReadString('\n')
+	updateTest, err := connectionEstablished.Prepare("UPDATE tests SET NAME_T = ?, CUTPOINT_T = ?, MATCHPOINT = ?, DESCRIPTION = ? WHERE ID_T = ?")
+	if err != nil {
+		panic(err.Error())
+	}
+	updateTest.Exec(name, cutPoint, matchPoint, description, idTest)
+	fmt.Println("Test actualizado con exito.")
+}
+
 
 var clear map[string]func()
 
@@ -1022,6 +1034,61 @@ func menu(connectionEstablished *sql.DB) {
 
 					fmt.Println("---------------------------------------")
 				case 8:
+
+					CallClear()
+					var updselect int
+					fmt.Println("Seleccione la opcion a actualizar:\n 1)Paciente.\n 2)Usuario.\n 3)Pregunta.\n 4)Respuesta.")
+					fmt.Scanln(&updselect)
+
+					switch updselect {
+
+					case 1:
+						var idPatient int
+						
+						fmt.Println("Ingrese la ID del Paciente:")
+						fmt.Scanln(&idPatient)
+
+						updatePatients(connectionEstablished, idPatient)
+					
+					case 2:
+						var iduser int
+					
+						fmt.Println("Ingrese la ID del Usuario:")
+						fmt.Scanln(&iduser)
+
+						updateUsers(connectionEstablished, iduser)
+					
+					case 3:
+						var idquest int
+					
+						fmt.Println("Ingrese la ID de la Pregunta:")
+						fmt.Scanln(&idquest)
+
+						updateQuestions(connectionEstablished, idquest)
+					
+					case 4:
+						var idans int
+					
+						fmt.Println("Ingrese la ID de la Respuesta:")
+						fmt.Scanln(&idans)
+
+						updateAnswers(connectionEstablished, idans)
+					case 5:
+						var idtest int
+						
+						fmt.Println("Ingrese la ID del Test")
+						fmt.Scanln(&idtest)
+
+						updateAnswers(connectionEstablished, idtest)
+
+					}
+
+				
+
+
+					fmt.Println("---------------------------------------")
+				
+				case 9:
 					CallClear()
 
 					var selection, idstate int
@@ -1063,50 +1130,7 @@ func menu(connectionEstablished *sql.DB) {
 
 					}
 					fmt.Println("---------------------------------------")
-				case 9:
-
-						CallClear()
-						var updselect int
-						fmt.Println("Seleccione la opcion a actualizar:\n 1)Paciente.\n 2)Usuario.\n 3)Pregunta.\n 4)Respuesta.")
-						fmt.Scanln(&updselect)
-
-						switch updselect {
-
-						case 1:
-							var idPatient int
-							
-							fmt.Println("Ingrese la ID del Paciente:")
-							fmt.Scanln(&idPatient)
-
-							updatePatients(connectionEstablished, idPatient)
-						
-						case 2:
-							var iduser int
-						
-							fmt.Println("Ingrese la ID del Usuario:")
-							fmt.Scanln(&iduser)
-
-							updateUsers(connectionEstablished, iduser)
-						
-						case 3:
-							var idquest int
-						
-							fmt.Println("Ingrese la ID de la Pregunta:")
-							fmt.Scanln(&idquest)
-
-							updateQuestions(connectionEstablished, idquest)
-						
-						case 4:
-							var idans int
-						
-							fmt.Println("Ingrese la ID de la Respuesta:")
-							fmt.Scanln(&idans)
-
-							updateAnswers(connectionEstablished, idans)
-						}
-
-
-					fmt.Println("---------------------------------------")
+				
 
 				case 10:
 
