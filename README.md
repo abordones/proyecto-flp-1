@@ -36,7 +36,7 @@ Building this system requires some dependencies, this are required and must be i
 
 		- PATH: this variable denote the installation on the bin folder C:\Program Files\Go\bin
 
-- Open a command line and cd to your proyect directory:
+4. Open a command line and cd to your proyect directory:
 
 		$ go mod init sistema.
 		$ go get -u github.com/go-sql-driver/mysql.
@@ -49,15 +49,14 @@ Building this system requires some dependencies, this are required and must be i
 	
 
 ##### Change the storage mechanism from ISAM to INNODB
-- Start Wampserver
-- Go to 'MySQL' and select 'my.ini'
-- Edit 'default-storage'. It should be as follows	
+1. Start Wampserver
+2. Go to 'MySQL' and select 'my.ini'
+3. Edit 'default-storage'. It should be as follows	
 
 		-;default-storage-engine=MYISAM.
 		-default-storage-engine=InnoDB.
 		
-- Restart Wampserver
-- Crear la base de datos y exportar el archivo sql.
+4. Restart Wampserver
 	
 
 ## Authorship
