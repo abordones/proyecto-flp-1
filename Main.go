@@ -646,11 +646,11 @@ func stateAnswer(connectionEstablished *sql.DB, ID int) {
 }
 
 // updates
-func updatePatients(connectionEstablished *sql.DB) {
+func updatePatients(connectionEstablished *sql.DB, ID int) {
 
-	var ID int
+	/*var ID int
 	fmt.Print("Ingrese ID del Paciente: ")
-	fmt.Scanln(&ID)
+	fmt.Scanln(&ID)*/
 
 	var RUN int
 	fmt.Print("Ingresa RUN del paciente: ")
@@ -689,19 +689,16 @@ func updatePatients(connectionEstablished *sql.DB) {
 
 	//idPatients := ID
 
-	updatePatients, err := connectionEstablished.Prepare("UPDATE patients SET (RUN_P = ?, DV_P = ?, NAME_P = ?, FATHERNAME_P = ?, MOTHERNAME_P = ?, PHONE_P = ?, EMAIL_P = ?, BIRTHDAY_P = ?, OBSERVATION_P = ?) WHERE ID_P= ?")
+	updatePatients, err := connectionEstablished.Prepare("UPDATE patients SET RUN_P = ?, DV_P = ?, NAME_P = ? , FATHERNAME_P = ?, MOTHERNAME_P = ?, PHONE_P = ? , EMAIL_P = ? , BIRTHDAY_P = ?, OBSERVATION_P = ? WHERE ID_P= ?")
 	if err != nil {
 		panic(err.Error())
 	}
 	updatePatients.Exec(RUN, DV, names, fatherName, motherName, phone, email, birthday, observation, ID)
+	fmt.Println("---------------------------------------")
 	fmt.Print("Datos actualizados con exito")
 }
 
-func updateUsers(connectionEstablished *sql.DB) {
-
-	var ID int
-	fmt.Print("Ingrese ID del Usuario: ")
-	fmt.Scanln(&ID)
+func updateUsers(connectionEstablished *sql.DB, ID int) {
 
 	var RUN int
 	fmt.Print("Ingresa tu RUN: ")
@@ -741,13 +738,15 @@ func updateUsers(connectionEstablished *sql.DB) {
 	}
 
 	updateUsers.Exec(RUN, DV, names, fatherName, motherName, email, birthday, email, password, ID)
+	fmt.Println("---------------------------------------")
 	fmt.Print("Datos actualizados con exito")
 }
 
-func updateQuestions(connectionEstablished *sql.DB, ID_test int) {
-	var ID_question int
+func updateQuestions(connectionEstablished *sql.DB, ID_question int) {
+	
+	/*var ID_question int
 	fmt.Print("Ingresa la ID de la pregunta: ")
-	fmt.Scanln(&ID_question)
+	fmt.Scanln(&ID_question)*/
 
 	fmt.Print("Formula tu pregunta: ")
 	q := bufio.NewReader(os.Stdin)
@@ -756,19 +755,20 @@ func updateQuestions(connectionEstablished *sql.DB, ID_test int) {
 	d := bufio.NewReader(os.Stdin)
 	description, _ := d.ReadString('\n')
 
-	InsertQuestion, err := connectionEstablished.Prepare("UPDATE questions SET (QUESTION_Q= ?, DESCRIPTION_Q= ?) WHERE (ID_Q = ?); ")
+	InsertQuestion, err := connectionEstablished.Prepare("UPDATE questions SET QUESTION_Q= ? , DESCRIPTION_Q= ? WHERE ID_Q = ?")
 	if err != nil {
 		panic(err.Error())
 	}
 
 	InsertQuestion.Exec(question, description, ID_question)
+	fmt.Println("---------------------------------------")
 	fmt.Println("Pregunta actualizada con exito.")
 }
 
-func updateAnswers(connectionEstablished *sql.DB, ID_question int) {
-	var idAnswer int
+func updateAnswers(connectionEstablished *sql.DB, idAnswer int) {
+	/*var idAnswer int
 	fmt.Print("Ingresa la ID de la pregunta: ")
-	fmt.Scanln(&idAnswer)
+	fmt.Scanln(&idAnswer)*/
 
 	var point int
 	fmt.Print("Ingresa el nuevo puntaje (entre 0 y 3): ")
@@ -777,11 +777,12 @@ func updateAnswers(connectionEstablished *sql.DB, ID_question int) {
 	o := bufio.NewReader(os.Stdin)
 	observation, _ := o.ReadString('\n')
 
-	insertAnswer, err := connectionEstablished.Prepare("UPDATE answers SET (POINT_A= ?, OBSERVATION_A= ?) WHERE (ID_A= ?)")
+	insertAnswer, err := connectionEstablished.Prepare("UPDATE answers SET POINT_A= ?, OBSERVATION_A= ? WHERE ID_A= ?")
 	if err != nil {
 		panic(err.Error())
 	}
 	insertAnswer.Exec(point, observation, idAnswer)
+	fmt.Println("---------------------------------------")
 	fmt.Println("Respuesta actualizada con exito.")
 
 }
@@ -952,7 +953,7 @@ func menu(connectionEstablished *sql.DB) {
 				var option2 int
 
 				fmt.Println(" Mas Opciones a elegir:\n 1. Crear usuario o ver todos usuarios.\n 2. Ver todos los Pacientes.\n 3. Ver todos los test.")
-				fmt.Println(" 4. Ver todas las respuestas.\n 5. Ver todas las preguntas.\n 6. Ver todas las encuestas.\n 7. Ver todas las sesiones.\n 8. Desactivar por ID. \n 9. Salir del sistema.")
+				fmt.Println(" 4. Ver todas las preguntas.\n 5. Ver todas las respuestas.\n 6. Ver todas las encuestas.\n 7. Ver todas las sesiones.\n 8. Desactivar por ID. \n 9. Actualizar. \n 10. Salir del sistema.")
 				fmt.Print("Indique su eleccion: ")
 				fmt.Scanln(&option2)
 				switch option2 {
@@ -1053,11 +1054,57 @@ func menu(connectionEstablished *sql.DB) {
 					fmt.Println("---------------------------------------")
 				case 9:
 
+						CallClear()
+						var updselect int
+						fmt.Println("Seleccione la opcion a actualizar:\n 1)Paciente.\n 2)Usuario.\n 3)Pregunta.\n 4)Respuesta.")
+						fmt.Scanln(&updselect)
+
+						switch updselect {
+
+						case 1:
+							var idPatient int
+							
+							fmt.Println("Ingrese la ID del Paciente:")
+							fmt.Scanln(&idPatient)
+
+							updatePatients(connectionEstablished, idPatient)
+						
+						case 2:
+							var iduser int
+						
+							fmt.Println("Ingrese la ID del Usuario:")
+							fmt.Scanln(&iduser)
+
+							updateUsers(connectionEstablished, iduser)
+						
+						case 3:
+							var idquest int
+						
+							fmt.Println("Ingrese la ID de la Pregunta:")
+							fmt.Scanln(&idquest)
+
+							updateQuestions(connectionEstablished, idquest)
+						
+						case 4:
+							var idans int
+						
+							fmt.Println("Ingrese la ID de la Respuesta:")
+							fmt.Scanln(&idans)
+
+							updateAnswers(connectionEstablished, idans)
+						}
+
+
+					fmt.Println("---------------------------------------")
+
+				case 10:
+
 					fmt.Println("Saliendo del sistema")
 					exitMenu = true
-					exitMenu2 = true
+					exitMenu2 = true	
 
 				}
+
 			}
 		}
 	}
