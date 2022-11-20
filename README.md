@@ -21,18 +21,18 @@ Building this system requires some dependencies, this are required and must be i
 		go version	
 	
 - Set the environment variables. Right click on My PC and select Choose the Advanced System Settings
-from the right side and click on Environment Variables:
+- From the right side and click on Environment Variables:
 
-- Those two variables on system variables: 
+1. Those two variables on system variables: 
 
 		- GOROOT: this variable denote your path instalation C:\Program Files\Go 	
 		- GOBIN: this variable denote the bin folder inside of your workspace C:\Usuarios\User_Name\go\bin
 	
-- This one on user variable:
+2. This one on user variable:
 
 		- GOPATH: this variable denote your workspace C:\Usuarios\User_Name\go 
 	
-- Edit the following environment variables: 
+3. Edit the following environment variables: 
 
 		- PATH: this variable denote the installation on the bin folder C:\Program Files\Go\bin
 
