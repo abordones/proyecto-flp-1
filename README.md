@@ -46,6 +46,10 @@ Building this system requires some dependencies, this are required and must be i
 ### Wamp
  - All versions of Wamp for Windows are available on https://www.wampserver.com/en/
  - Download the Wamp according to your system architecture and get `3.2.6 version`
+ 
+ 
+#### My SQL
+- In the installation process, the installation of `MySQL 5.7` will appear in the select components section.
 	
 
 ##### Change the storage mechanism from MYISAM to INNODB
