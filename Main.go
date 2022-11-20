@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"runtime"
+	"io/ioutil"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -89,6 +90,16 @@ func conectionBD() (conection *sql.DB) {
 	}
 	return conection
 }
+
+func defaultTest(connectionEstablished *sql.DB) {
+
+//if para saber si existe el test o no
+//funcion de leer por lineas con la funcion Readfile
+//insert de una tabala test
+//insert de las preguntas
+
+}
+
 func insertQuestion(connectionEstablished *sql.DB, ID_test int) {
 	fmt.Print("Formula tu pregunta: ")
 	q := bufio.NewReader(os.Stdin)
