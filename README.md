@@ -64,7 +64,7 @@ Building this system requires some dependencies, this are required and must be i
 2. Select `phpMyAdmin`
 3. Log in using the following default account.
 
-		Userbane: root
+		Username: root
 		Password: 
 		
 4. Go to create a data base and name it `bd-flp-1`
