@@ -50,6 +50,7 @@ Building this system requires some dependencies, this are required and must be i
  
 #### My SQL
 - In the installation process, the installation of `MySQL 5.7` will appear in the select components section.
+- By default it should appear selected, otherwise select it.
 	
 
 ##### Change the storage mechanism from MYISAM to INNODB
