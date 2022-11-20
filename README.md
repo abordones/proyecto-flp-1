@@ -48,7 +48,7 @@ Building this system requires some dependencies, this are required and must be i
  - Download the Wamp according to your system architecture and get `3.2.6 version`
  
  
-#### My SQL
+##### My SQL
 - In the installation process, the installation of `MySQL 5.7` will appear in the `select components` section.
 - By default it should appear selected, otherwise select it.
 	
