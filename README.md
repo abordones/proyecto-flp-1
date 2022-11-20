@@ -48,8 +48,7 @@ from the right side and click on Environment Variables:
  - Download the Wamp according to your system architecture and get 3.2.6 version 
 	
 
-### Steps of conection's system
-- Change the storage mechanism in the database from ISAM to INNODB"
+### Change the storage mechanism in the database from ISAM to INNODB
 - Start Wampserver
 - Go to 'MySQL' and select 'my.ini'
 - Edit 'default-storage'. It should be as follows	
