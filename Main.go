@@ -416,9 +416,10 @@ func readAllTests(connectionEstablished *sql.DB) {
 	fmt.Println(arrayTest)
 }
 
-func readQuestionsbyAnswer(connectionEstablished *sql.DB, ID_test int, cant int) {
+func readQuestionsbyAnswer(connectionEstablished *sql.DB, ID_test int) {
 
-	readQuestions, err := connectionEstablished.Query("SELECT QUESTION_Q FROM questions WHERE ID_t= ?", ID_test)
+	fmt.Println("Mostrando preguntas del test: ")
+	readQuestions, err := connectionEstablished.Query("SELECT * FROM questions WHERE ID_t= ?", ID_test)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -427,17 +428,25 @@ func readQuestionsbyAnswer(connectionEstablished *sql.DB, ID_test int, cant int)
 	for readQuestions.Next() {
 
 		var ID int
+		var ID_t int
 		var question string
-
-		err = readQuestions.Scan(&ID, &question)
+		var description string
+		var active bool
+		err = readQuestions.Scan(&ID, &ID_t, &question, &description, &active)
 		if err != nil {
 			panic(err.Error())
 		}
 		questions.ID = ID
+		questions.ID_t = ID_t
 		questions.question = question
-
+		questions.description = description
+		questions.active = active
 		arrayQuestions = append(arrayQuestions, questions)
 	}
+
+	//fmt.Println("testeando")
+	//fmt.Println(arrayQuestions)
+
 
 	for i := 0; i < len(arrayQuestions); i++ {
 		fmt.Println(arrayQuestions[i])
@@ -896,30 +905,29 @@ func menu(connectionEstablished *sql.DB) {
 			readQuestionsbyTest(connectionEstablished, idTest)
 			fmt.Println("---------------------------------------")
 		case 5:
-		//preguntas
+			//preguntas
 
-		var idtest int
-		var canti int
+			var idtest int
+			var canti int
 
-		fmt.Println("Ingrese la ID del test: ")
-		fmt.Scanln(&idtest)
+			fmt.Println("Ingrese la ID del test: ")
+			fmt.Scanln(&idtest)
 
-		readQuestionsbyAnswer(connectionEstablished, idtest, canti)
+			readQuestionsbyAnswer(connectionEstablished, idtest)
 
-		fmt.Print("Ingrese la cantidad de respuestas: ")
-		fmt.Scanln(&canti)
+			fmt.Print("Ingrese la cantidad de respuestas: ")
+			fmt.Scanln(&canti)
 
-		fmt.Println("-------------")
+			fmt.Println("-------------")
 
-		for i := 0; i < canti; i++ {
+			for i := 0; i < canti; i++ {
 
-			var idQuestion int
-			fmt.Println("Ingresa la ID de la pregunta: ")
-			fmt.Scanln(&idQuestion)
+				var idQuestion int
+				fmt.Println("Ingresa la ID de la pregunta: ")
+				fmt.Scanln(&idQuestion)
 
-			insertAnswer(connectionEstablished, idQuestion)
-			
-		}
+				insertAnswer(connectionEstablished, idQuestion)
+			}
 
 		case 6:
 			var idQuestion int
@@ -955,7 +963,7 @@ func menu(connectionEstablished *sql.DB) {
 				var option2 int
 
 				fmt.Println(" Mas Opciones a elegir:\n 1. Crear usuario o ver todos usuarios.\n 2. Ver todos los Pacientes.\n 3. Ver todos los test.")
-				fmt.Println(" 4. Ver todas las preguntas.\n 5. Ver todas las preguntas.\n 6. Ver todas las encuestas.\n 7. Ver todas las sesiones.\n 8. Desactivar por ID. \n 9. Salir del sistema.")
+				fmt.Println(" 4. Ver todas las respuestas.\n 5. Ver todas las preguntas.\n 6. Ver todas las encuestas.\n 7. Ver todas las sesiones.\n 8. Desactivar por ID. \n 9. Salir del sistema.")
 				fmt.Print("Indique su eleccion: ")
 				fmt.Scanln(&option2)
 				switch option2 {
