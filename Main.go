@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+	"os/exec"
+	"runtime"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -67,61 +69,13 @@ type Session struct {
 	date  string
 }
 
-// UPDATE
-
 func main() {
 	connectionEstablished := conectionBD()
-	//-----------------------------INSERTION-----------------------------
-	//insertUser(connectionEstablished)
-	//insertPatient(connectionEstablished)//--
-	//insertTest(connectionEstablished)//--
-	//insertQuestion(connectionEstablished, 1) //Recibe ID Test.//--
-	//insertAnswer(connectionEstablished, 1) //Recibe ID Question.--
-	//insertPoll(connectionEstablished, 1, 1) //Recibe ID user, ID test.--
-	//insertSession(connectionEstablished, 1, 1) //Recibe ID patient y ID poll.--
-	//-------------------------------STATE-------------------------------
-	//stateUser(connectionEstablished, 1)
-	//statePatient(connectionEstablished, 1)
-	//stateTest(connectionEstablished, 1)
-	//stateQuestion(connectionEstablished, 1)
-	//stateAnswer(connectionEstablished, 1)
-	//-------------------------------READ-------------------------------
-	//readAllUsers(connectionEstablished)--
-	//readAllPatients(connectionEstablished)--
-	//readAllTests(connectionEstablished)
-	//readAllQuestions(connectionEstablished)
-	//readAllAnswers(connectionEstablished)
-	//readAllPolls(connectionEstablished)
-	//readAllSessions(connectionEstablished)
+
 	fmt.Println("------------------------------INICIO------------------------------")
 
 	menu(connectionEstablished)
-	//1.A. Crear test.
-	//listo insertTest(connectionEstablished) //Como conocer el ID del test generado?--
 
-	//2.A. Agregarle preguntas.
-	//insertQuestion(connectionEstablished, 2) //Recibe ID Test. //Como conocer el ID del test generado?--
-	//insertQuestion(connectionEstablished, 2) //Recibe ID Test. //Como conocer el ID del test generado?--
-	//insertQuestion(connectionEstablished, 2) //Recibe ID Test. //Como conocer el ID del test generado?--
-	//insertQuestion(connectionEstablished, 2) //Recibe ID Test. //Como conocer el ID del test generado?--
-	//1.B. Ingresar Usuario.
-	//insertUser(connectionEstablished) //Como conocer su ID?
-	//2.B. Imprimir TEST.
-	//Necesito ID Test e imprimir desde Questions (WHERE ID_T='?').--
-	//3.B. Agregar respuestas.--
-	//Imprimir question segun ID?
-	//insertAnswer(connectionEstablished, 1) //Recibe ID Question. //Como conocer el ID question generado?--
-	//insertAnswer(connectionEstablished, 2) //Recibe ID Question. //Como conocer el ID question generado?--
-	//insertAnswer(connectionEstablished, 3) //Recibe ID Question. //Como conocer el ID question generado?--
-	//insertAnswer(connectionEstablished, 4) //Recibe ID Question. //Como conocer el ID question generado?--
-	//4.B. Actualizar matchPoint de TEST.
-	//Comprararlo con cutPointy dar resultado -> Deperesion/Normal.
-	//5.B. Ingresar POll.
-	//insertPoll(connectionEstablished, 1, 2) //Recibe ID user, ID test. //Se requiere esa info.
-	//6.B. Ingresar SESSION.
-	//insertSession(connectionEstablished, 1, 2) //Recibe ID patient y ID poll. //Se requiere esa info.
-
-	//readAllUsers(connectionEstablished)
 	fmt.Println("--------------------------------FIN-------------------------------")
 }
 func conectionBD() (conection *sql.DB) {
@@ -832,34 +786,49 @@ func updateAnswers(connectionEstablished *sql.DB, ID_question int) {
 
 }
 
+var clear map[string]func()
+
+func init() {
+	clear = make(map[string]func())
+
+	clear["windows"] = func() {
+		cmd := exec.Command("cmd", "/c", "cls")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	}
+}
+
+func CallClear() {
+	value, ok := clear[runtime.GOOS]
+	if ok {
+		value()
+	} else {
+		panic("Your platform is unsupported! I can't clear terminal screen :(")
+	}
+}
+
 func TestBeck() {
 
 }
 
 func menu(connectionEstablished *sql.DB) {
 
-	var option int
 	exitMenu := false
 
-	//1.1 usuario crea test//
-	//1.2 usuario ingresa preguntas//
-	//2 usuario busca paciente si es que existe/
-	//3 usuario registrara a paciente//
-	//4 mostrar test/
-	//5 paciente solo respondera preguntas
-	//6 se printearan los puntajes segun paciente/
-	//7 Ingresar POll.//
-	//8 Ingresar SESSION.//
-	//9 masopciones/Actualizar matchPoint de TEST.
 	for exitMenu == false {
 
-		fmt.Println(" Opciones a elegir:\n 1. Crear test o ingresar preguntas segun test.\n 2. Buscar paciente existente.\n 3. Registrar paciente.")
+		var option int
+		exitMenu2 := false
+
+		fmt.Println(" Menu\n Opciones a elegir:\n 1. Crear test o ingresar preguntas segun test.\n 2. Buscar paciente existente.\n 3. Registrar paciente.")
 		fmt.Println(" 4. Ver test.\n 5. Responder preguntas.\n 6. Ver ponderacion de paciente.\n 7. Registrar cuestionario.\n 8. Registrar sesion.\n 9. Mas opciones.")
 		fmt.Print("Indique su eleccion: ")
 		fmt.Scanln(&option)
 
 		switch option {
 		case 1:
+			CallClear()
+
 			var idTest, cantquests, selection int
 			fmt.Println("Seleccione alguna de las opciones:\n 1)Crear test\n 2)Agregar Preguntas")
 			fmt.Scanln(&selection)
@@ -886,6 +855,8 @@ func menu(connectionEstablished *sql.DB) {
 			}
 			fmt.Println("---------------------------------------")
 		case 2:
+			CallClear()
+
 			var idPatient int
 
 			fmt.Print("Ingrese ID del paciente a buscar: ")
@@ -894,9 +865,13 @@ func menu(connectionEstablished *sql.DB) {
 			readPatient(connectionEstablished, idPatient)
 			fmt.Println("---------------------------------------")
 		case 3:
+			CallClear()
+
 			insertPatient(connectionEstablished)
 			fmt.Println("---------------------------------------")
 		case 4:
+			CallClear()
+
 			var idTest int
 
 			fmt.Print("Ingrese ID del test a mostrar: ")
@@ -905,6 +880,7 @@ func menu(connectionEstablished *sql.DB) {
 			readQuestionsbyTest(connectionEstablished, idTest)
 			fmt.Println("---------------------------------------")
 		case 5:
+			CallClear()
 			//preguntas
 
 			var idtest int
@@ -912,6 +888,7 @@ func menu(connectionEstablished *sql.DB) {
 
 			fmt.Println("Ingrese la ID del test: ")
 			fmt.Scanln(&idtest)
+			fmt.Println("-------------")
 
 			readQuestionsbyAnswer(connectionEstablished, idtest)
 
@@ -927,9 +904,14 @@ func menu(connectionEstablished *sql.DB) {
 				fmt.Scanln(&idQuestion)
 
 				insertAnswer(connectionEstablished, idQuestion)
+				fmt.Println("-------------")
+
 			}
 
 		case 6:
+
+			CallClear()
+
 			var idQuestion int
 
 			fmt.Print("Ingrese ID de la pregunta para ver sus respuestas: ")
@@ -938,6 +920,8 @@ func menu(connectionEstablished *sql.DB) {
 			readQuestionsbyTest(connectionEstablished, idQuestion)
 			fmt.Println("---------------------------------------")
 		case 7:
+			CallClear()
+
 			var idUser, idTest int
 			fmt.Println("Ingrese ID del usuario para registrar la encuesta: ")
 			fmt.Scanln(&idUser)
@@ -948,6 +932,8 @@ func menu(connectionEstablished *sql.DB) {
 			insertPoll(connectionEstablished, idUser, idTest)
 			fmt.Println("---------------------------------------")
 		case 8:
+			CallClear()
+
 			var idPatient, idPoll int
 			fmt.Println("Ingrese ID del paciente para registrar la sesion: ")
 			fmt.Scanln(&idPatient)
@@ -955,11 +941,14 @@ func menu(connectionEstablished *sql.DB) {
 			fmt.Println("Ingrese ID de la encuesta ejecutada: ")
 			fmt.Scanln(&idPoll)
 
-			insertSession(connectionEstablished, 1, 2)
+			insertSession(connectionEstablished, idPatient, idPoll)
 
 			fmt.Println("---------------------------------------")
 		case 9:
-			for exitMenu == false {
+
+			for exitMenu2 == false {
+
+				//CallClear()
 				var option2 int
 
 				fmt.Println(" Mas Opciones a elegir:\n 1. Crear usuario o ver todos usuarios.\n 2. Ver todos los Pacientes.\n 3. Ver todos los test.")
@@ -967,7 +956,12 @@ func menu(connectionEstablished *sql.DB) {
 				fmt.Print("Indique su eleccion: ")
 				fmt.Scanln(&option2)
 				switch option2 {
+				case 0:
+					CallClear()
+					exitMenu2 = true
 				case 1:
+					CallClear()
+
 					var selection int
 					fmt.Println("Seleccione alguna de las opciones:\n 1)Crear usuario\n 2)Ver Usuarios")
 					fmt.Scanln(&selection)
@@ -980,36 +974,44 @@ func menu(connectionEstablished *sql.DB) {
 					}
 					fmt.Println("---------------------------------------")
 				case 2:
+					CallClear()
 
 					readAllPatients(connectionEstablished)
 
 					fmt.Println("---------------------------------------")
 				case 3:
+					CallClear()
 
 					readAllTests(connectionEstablished)
 
 					fmt.Println("---------------------------------------")
 				case 4:
+					CallClear()
 
 					readAllQuestions(connectionEstablished)
 
 					fmt.Println("---------------------------------------")
 				case 5:
+					CallClear()
 
 					readAllAnswers(connectionEstablished)
 
 					fmt.Println("---------------------------------------")
 				case 6:
+					CallClear()
 
 					readAllPolls(connectionEstablished)
 
 					fmt.Println("---------------------------------------")
 				case 7:
+					CallClear()
 
 					readAllSessions(connectionEstablished)
 
 					fmt.Println("---------------------------------------")
 				case 8:
+					CallClear()
+
 					var selection, idstate int
 					fmt.Println("Seleccione alguna de las opciones:\n 1)Borrar usuario.\n 2)Borrar Paciente.\n 3)Borrar Test.\n 4)Borrar Pregunta.\n 5)Borrar Respuesta. ")
 					fmt.Scanln(&selection)
@@ -1050,13 +1052,13 @@ func menu(connectionEstablished *sql.DB) {
 					}
 					fmt.Println("---------------------------------------")
 				case 9:
+
 					fmt.Println("Saliendo del sistema")
 					exitMenu = true
-					break
+					exitMenu2 = true
+
 				}
 			}
 		}
 	}
-
-	
 }
