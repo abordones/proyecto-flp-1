@@ -13,7 +13,7 @@ It is a system for conducting an interview with multivalued responses in order t
 Building this system requires some dependencies, this are required and must be installed separately.
 
 ### GO
-- All versions of Go for Windows are available on https://golang.google.cn/doc/install
+- All versions of Go for Windows are available on [golang](https://golang.google.cn/doc/install)
 - Download the Golang according to your system architecture and get `go1.19.3 version`
 - Execute the downloaded archive file and wherever you want to install this.
 - To check if your device is installed, go to the Command line an run the following command:
@@ -44,7 +44,7 @@ Building this system requires some dependencies, this are required and must be i
 	
 	
 ### Wamp
- - All versions of Wamp for Windows are available on https://www.wampserver.com/en/
+ - All versions of Wamp for Windows are available on [wampserver](https://www.wampserver.com/en/)
  - Download the Wamp according to your system architecture and get `3.2.6 version`
  
  
