@@ -56,7 +56,7 @@ type Question struct {
 type Answer struct {
 	ID          int
 	ID_q        int
-	point       string
+	point       int
 	observation string
 	active      bool
 }
@@ -70,7 +70,9 @@ type Session struct {
 	ID_po int
 	date  string
 }
-
+type Ponderation struct {
+	ponderation int
+}
 func main() {
 	connectionEstablished := conectionBD()
 
@@ -80,6 +82,7 @@ func main() {
 
 	fmt.Println("--------------------------------FIN-------------------------------")
 }
+
 func conectionBD() (conection *sql.DB) {
 	driver := "mysql"
 	user := "root"
@@ -91,12 +94,33 @@ func conectionBD() (conection *sql.DB) {
 	}
 	return conection
 }
+func ponderationAns(connectionEstablished *sql.DB, ID_poll int, ID_test int ) {
+
+	PonderationAns, err := connectionEstablished.Query("SELECT SUM(POINT_A) FROM answers WHERE (SELECT (ID_T =?) FROM polls WHERE ID_U = ?)",ID_test , ID_poll)
+	if err != nil {
+		panic(err.Error())
+	}
+	ponderation := Ponderation{} //Variable := Struct
+	arrayPonderation := []Ponderation{}
+	for PonderationAns.Next() {
+
+		var point int
+		err = PonderationAns.Scan(&point)
+		if err != nil {
+			panic(err.Error())
+		}
+		ponderation.ponderation = point
+
+		arrayPonderation = append(arrayPonderation, ponderation)
+	}
+	fmt.Println(arrayPonderation)
+}
+
 func createHash(key string) string {
 	hasher := md5.New()
 	hasher.Write([]byte(key))
 	return hex.EncodeToString(hasher.Sum(nil))
 }
-
 func insertQuestion(connectionEstablished *sql.DB, ID_test int) {
 	fmt.Print("Formula tu pregunta: ")
 	q := bufio.NewReader(os.Stdin)
@@ -484,7 +508,7 @@ func readAllAnswers(connectionEstablished *sql.DB) {
 	for readAnswers.Next() {
 		var ID int
 		var ID_q int
-		var point string
+		var point int
 		var observation string
 		var active bool
 		err = readAnswers.Scan(&ID, &ID_q, &point, &observation, &active)
@@ -511,7 +535,7 @@ func readAnswersbyQuestion(connectionEstablished *sql.DB, ID_question int) {
 	for readAnswers.Next() {
 		var ID int
 		var ID_q int
-		var point string
+		var point int
 		var observation string
 		var active bool
 		err = readAnswers.Scan(&ID, &ID_q, &point, &observation, &active)
@@ -930,12 +954,15 @@ func menu(connectionEstablished *sql.DB) {
 
 			CallClear()
 
-			var idQuestion int
+			var id_User int
+			var id_Test int
 
-			fmt.Print("Ingrese ID de la pregunta para ver sus respuestas: ")
-			fmt.Scanln(&idQuestion)
-
-			readQuestionsbyTest(connectionEstablished, idQuestion)
+			fmt.Print( "Ingrese ID del usuario para ver su ponderiacion:")
+			fmt.Scanln(&id_User)
+			fmt.Print( "Ingrese ID del test para ver su ponderiacion:")
+			fmt.Scanln(&id_Test)	
+			
+			ponderationAns(connectionEstablished, id_User, id_Test)
 			fmt.Println("---------------------------------------")
 		case 7:
 			CallClear()
