@@ -2,13 +2,13 @@ package main
 
 import (
 	"bufio"
+	"crypto/md5"
 	"database/sql"
+	"encoding/hex"
 	"fmt"
 	"os"
 	"os/exec"
 	"runtime"
-	"crypto/md5"
-	"encoding/hex"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -92,9 +92,9 @@ func conectionBD() (conection *sql.DB) {
 	return conection
 }
 func createHash(key string) string {
-    hasher := md5.New()
-    hasher.Write([]byte(key))
-    return hex.EncodeToString(hasher.Sum(nil))
+	hasher := md5.New()
+	hasher.Write([]byte(key))
+	return hex.EncodeToString(hasher.Sum(nil))
 }
 
 func insertQuestion(connectionEstablished *sql.DB, ID_test int) {
@@ -173,7 +173,7 @@ func insertUser(connectionEstablished *sql.DB) {
 	fmt.Scanln(&password)
 
 	password = createHash(password)
-	
+
 	insertUser, err := connectionEstablished.Prepare("INSERT INTO users (ID_U, RUN_U, DV_U, NAME_U, FATHERNAME_U, MOTHERNAME_U, BIRTHDAY_U, EMAIL_U, PASSWORD_U, ACTIVE_U) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, '1');")
 	if err != nil {
 		panic(err.Error())
@@ -411,7 +411,6 @@ func readQuestionsbyAnswer(connectionEstablished *sql.DB, ID_test int) {
 
 	//fmt.Println("testeando")
 	//fmt.Println(arrayQuestions)
-
 
 	for i := 0; i < len(arrayQuestions); i++ {
 		fmt.Println(arrayQuestions[i])
@@ -788,7 +787,7 @@ func updateAnswers(connectionEstablished *sql.DB, idAnswer int) {
 }
 
 func updateTest(connectionEstablished *sql.DB, idTest int) {
-	
+
 	fmt.Print("Nombra al test: ")
 	n := bufio.NewReader(os.Stdin)
 	name, _ := n.ReadString('\n')
@@ -808,7 +807,6 @@ func updateTest(connectionEstablished *sql.DB, idTest int) {
 	updateTest.Exec(name, cutPoint, matchPoint, description, idTest)
 	fmt.Println("Test actualizado con exito.")
 }
-
 
 var clear map[string]func()
 
@@ -830,7 +828,6 @@ func CallClear() {
 		panic("Your platform is unsupported! I can't clear terminal screen :(")
 	}
 }
-
 
 func menu(connectionEstablished *sql.DB) {
 
@@ -972,9 +969,9 @@ func menu(connectionEstablished *sql.DB) {
 				//CallClear()
 				var option2 int
 
-				fmt.Println(" Mas Opciones a elegir:\n 1. Crear usuario o ver todos usuarios.\n 2. Ver todos los Pacientes.\n 3. Ver todos los test.")
+				fmt.Println(" Mas Opciones a elegir:\n 0. Regresar al menu anterior. \n 1. Crear usuario o ver todos usuarios.\n 2. Ver todos los Pacientes.\n 3. Ver todos los test.")
 				fmt.Println(" 4. Ver todas las preguntas.\n 5. Ver todas las respuestas.\n 6. Ver todas las encuestas.\n 7. Ver todas las sesiones.\n 8. Actualizar. \n 9. Desactivar por ID .")
-				fmt.Println(" 10. Regresar al menu anterior . \n 11. Salir del sistema.")
+				fmt.Println(" 10. Salir del sistema.")
 				fmt.Print("Indique su eleccion: ")
 				fmt.Scanln(&option2)
 				switch option2 {
@@ -1042,38 +1039,38 @@ func menu(connectionEstablished *sql.DB) {
 
 					case 1:
 						var idPatient int
-						
+
 						fmt.Println("Ingrese la ID del Paciente:")
 						fmt.Scanln(&idPatient)
 
 						updatePatients(connectionEstablished, idPatient)
-					
+
 					case 2:
 						var iduser int
-					
+
 						fmt.Println("Ingrese la ID del Usuario:")
 						fmt.Scanln(&iduser)
 
 						updateUsers(connectionEstablished, iduser)
-					
+
 					case 3:
 						var idquest int
-					
+
 						fmt.Println("Ingrese la ID de la Pregunta:")
 						fmt.Scanln(&idquest)
 
 						updateQuestions(connectionEstablished, idquest)
-					
+
 					case 4:
 						var idans int
-					
+
 						fmt.Println("Ingrese la ID de la Respuesta:")
 						fmt.Scanln(&idans)
 
 						updateAnswers(connectionEstablished, idans)
 					case 5:
 						var idtest int
-						
+
 						fmt.Println("Ingrese la ID del Test")
 						fmt.Scanln(&idtest)
 
@@ -1082,7 +1079,7 @@ func menu(connectionEstablished *sql.DB) {
 					}
 
 					fmt.Println("---------------------------------------")
-				
+
 				case 9:
 					CallClear()
 
@@ -1125,14 +1122,8 @@ func menu(connectionEstablished *sql.DB) {
 
 					}
 					fmt.Println("---------------------------------------")
-				
 
 				case 10:
-
-					fmt.Println("---------------------------------------")
-					exitMenu2 = true
-
-				case 11:
 
 					fmt.Println("Saliendo del sistema")
 					exitMenu = true
