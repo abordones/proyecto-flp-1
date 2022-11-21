@@ -77,10 +77,10 @@ Building this system requires some dependencies, this are required and must be i
 	
 
 ## Authorship
-	Mati
-	Tsubasa
-	-ABS
-	GonzaloGo
+	Matías Escobar
+	Jorge Vega
+	Alonso Bordones
+	Gonzalo Gatica
 
 ## Licensing
 	CC0 1.0 Universal.
