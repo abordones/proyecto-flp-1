@@ -73,7 +73,7 @@ Building this system requires some dependencies, this are required and must be i
 		Password: 
 		
 4. Go to create a data base and name it `bd-flp-1`
-5. Import the SQL file `BD.sql`
+5. Import the SQL file `bd-flp-1.sql`
 	
 
 ## Authorship
